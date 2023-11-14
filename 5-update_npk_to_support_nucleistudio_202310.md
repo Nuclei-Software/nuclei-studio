@@ -143,13 +143,13 @@ buildconfig:
     ## Package Configurations
     configuration:
     nuclei_archext:
-        default_value: "_zba_zbb_zbc_zbs_xxldspn1x"
+        default_value: "_zba_zbb_zbc_zbs"
         type: text
         global: true
         # hints and tips are introduced in Nuclei Studio 2023.10
         # used to show tool tips and input hints
         tips: "Possible other ISA extensions, seperated by underscores, like '_zba_zbb_zbc_zbs_xxldspn1x'"
-        hints: "_zba_zbb_zbc_zbs"
+        hints: "_zba_zbb_zbc_zbs_xxldspn1x"
         description: Nuclei ARCH Extensions
 ```
 
