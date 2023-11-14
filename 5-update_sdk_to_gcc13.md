@@ -2,7 +2,8 @@
 在Nuclei Studio 2023.10中，一个重要变更，是支持GCC 13,所以之前发布的sdk也需要做对应的变更，以更好的适用于Nuclei Studio 2023.10，其中有以下几个变更点。
 
 ## toolchain的升级
-在npk中，我们定义了buildconfig来自定义工程build时的各种参数，Nuclei Studio通过type标识使用的是那一种toolchain，如gcc、clang等，通过type->**toolchain_nam**e & **cross_prefix**来标识使用的toolchain里面具体的那个发行版本。升级SDK以支持GCC 13，对比以下两个例子不难看出，只需要修改toolchain_name: **RISC-V GCC/Newlib**和cross_prefix: **riscv64-unknown-elf-**，就可以使SDK支持GCC 13 。
+在npk中，我们定义了buildconfig来自定义工程build时的各种参数，Nuclei Studio通过type标识使用的是那一种toolchain，如gcc、clang等，通过type->**toolchain_name** & **cross_prefix**来标识使用的toolchain里面具体的那个发行版本。升级SDK以支持GCC 13，对比以下两个例子不难看出，只需要修改toolchain_name: **RISC-V GCC/Newlib**和cross_prefix: **riscv64-unknown-elf-**，就可以使SDK支持在创建工程时，可以选择GCC 13工具链。
+
 以下内容是支持gcc 10 的buildconfig配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）。
 ```
 ## Build Configuration
@@ -64,8 +65,11 @@ buildconfig:
 
 ## archext的升级
 在GCC 13中，对RISC-V 指令扩展使用有了很大的变更，具体内容可以查看Nuclei Studio用户手册2.1.4章内容和ARCH_EXT说明。
+
 [Nuclei Studio用户手册](https://www.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202310.pdf)
+
 [ARCH_EXT说明](https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#arch-ext)
+
 升级SDK时，如果SDK中使用到了RISC-V 指令扩展， 也需要升级对应的配置。在NPK中，RISC-V 指令扩展以是-march=xxx的方式传递给Nuclei Studio，Nuclei Studio接收到相关配置，就会存储并应用到编译的过程中。通过下面这段配置我们就可以得到-march=的值，不难看出与RISC-V指令扩展相关的是NPK中的变量**nuclei_archext**。
 ```
 ## （为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
@@ -154,7 +158,8 @@ configuration:
         description: no std c library will be used, not pass any --specs options
 
 ```
-在新版的SDK中，如果使用--specs=libncrt_xxx.specs 或者链接库里面包含 -lncrt_xxx （表示采用libncrt c库），则需变更为 -lncrt_xxx -lfileops_uart -lheapops_basic。
+在新版的SDK中，如果使用--specs=libncrt_xxx.specs 或者链接库里面包含 -lncrt_xxx （表示采用libncrt c库），则需变更为 -lncrt_xxx -lfileops_uart -lheapops_basic，这也是旧SDK变更为支GCC 13的新SDK的原则。
+
 下面配置为在旧版SDK中使用stdclib,当变量stdclib以libncrt开头时，会直接定义一个--specs=${stdclib}.specs，按照上面我们说的原则，这里应该变成设置-lncrt_\${stdclib} -lfileops_uart -lheapops_basic，所以在新版SDK中的写法就变成了下面的配置方式。
 
 ```
