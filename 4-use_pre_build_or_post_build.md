@@ -7,7 +7,7 @@
 ![](asserts/images/20231113181414.png)
 ![](asserts/images/20231113181518.png)
 
-遇到这种情况，时，可以下载 https://www.nucleisys.com/upload/files/toochain/build-tools/build-tools_202002.zip ，并替换工具链中的build-tools，问题可以得到解决。
+遇到这种情况时，可以下载 https://www.nucleisys.com/upload/files/toochain/build-tools/build-tools_202002.zip ，并替换工具链中的build-tools，问题可以得到解决。
 
 ```
 NucleiStudio\toolchain\build-tools
