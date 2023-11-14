@@ -7,8 +7,8 @@
 ## npk.yml中的工具链升级
 
 在npk中，我们定义了buildconfig来自定义工程build时的各种参数，Nuclei Studio通过type标识使用的是那一种toolchain，如gcc、clang等，
-通过type->**toolchain_name** & **cross_prefix**来标识使用的toolchain里面具体的那个发行版本。升级SDK以支持GCC 13，对比以下两个例子不难看出，
-只需要修改toolchain_name: **RISC-V GCC/Newlib**和cross_prefix: **riscv64-unknown-elf-**，就可以使SDK支持在创建工程时，可以选择GCC 13工具链。
+通过 type->**toolchain_name** & **cross_prefix** 来标识使用的toolchain里面具体的那个发行版本。升级SDK以支持GCC 13，对比以下两个例子不难看出，
+只需要修改 toolchain_name: **RISC-V GCC/Newlib** 和 cross_prefix: **riscv64-unknown-elf-** ，就可以使SDK支持在创建工程时，可以选择GCC 13工具链。
 
 以下内容是支持gcc 10 的buildconfig配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）。
 
@@ -32,7 +32,7 @@ buildconfig:
       description:
 ```
 
-下以内容，是支持GCC 13和Clang的buildconfig配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）。
+下以内容，是支持GCC 13和Clang的**buildconfig**配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）。
 
 ```yaml
 ## Build Configuration
@@ -85,8 +85,8 @@ buildconfig:
 
 升级npk.yml时，如果SDK中使用到了RISC-V 除了标准的**IMAFDC**之外指令扩展，例如**B/P/K/V**， 也需要升级对应的配置。
 
-在NPK中，RISC-V 指令扩展以是-march=xxx的方式传递给Nuclei Studio，Nuclei Studio接收到相关配置，就会存储并应用到编译的过程中。
-以Nuclei SDK中的npk.yml为例，通过下面这段配置我们就可以得到-march=的值，不难看出与RISC-V指令扩展相关的是NPK中的变量**nuclei_archext**。
+在NPK中，RISC-V 指令扩展以是`-march=xxx`的方式传递给Nuclei Studio，Nuclei Studio接收到相关配置，就会存储并应用到编译的过程中。
+以Nuclei SDK中的npk.yml为例，通过下面这段配置我们就可以得到`-march=`的值，不难看出与RISC-V指令扩展相关的是NPK中的变量**nuclei_archext**。
 
 ```yaml
 ## （为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
@@ -114,7 +114,7 @@ buildconfig:
       description:
 ```
 
-在旧版的SDK中，nuclei_archext定义的是一个multicheckbox，用户可以自己选择，而在新版的SDK中nuclei_archext定义的是一个text输入框，
+在旧版的SDK中，nuclei_archext定义的是一个`multicheckbox`，用户可以自己选择，而在新版的SDK中`nuclei_archext`定义的是一个`text`输入框，
 这样用户可以更灵活的使用RISC-V 指令扩展，如果在某些工程或场景下，想要预设一些RISC-V 指令扩展，建议给一个默认值就可以了，可以参考下代的示例代码。
 
 - 用于支持**Nuclei RISC-V Toolchain 2022.12**的写法
@@ -160,10 +160,10 @@ buildconfig:
 
 ## libncrt的升级
 
-libncrt较之前也有了些许变化，在NPK中使用libncrt之前，新旧版SDK中都是一样的在conifguration中定义了一个变量stdclib，
-它的值是一个下拉框，可以选择不同的值。不同点是在得到stdclib后，在common_flags或者其它地方使用stdclib时略有不同。
+libncrt较之前也有了些许变化，在NPK中使用libncrt之前，新旧版SDK中都是一样的在**conifguration**中定义了一个变量`stdclib`，
+它的值是一个下拉框，可以选择不同的值。不同点是在得到`stdclib`后，在`common_flags`或者其它地方使用`stdclib`时略有不同。
 
-关于 stdclib的一些说明，可以参见 https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#stdclib
+关于`stdclib`的一些说明，可以参见 https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#stdclib
 
 ```yaml
 ## 定义stdclib变量
@@ -198,11 +198,10 @@ configuration:
         description: no std c library will be used, and don't search the standard system directories for header files
       - name: nospec
         description: no std c library will be used, not pass any --specs options
-
 ```
 
 在新版的SDK中，如果使用`--specs=libncrt_xxx.specs` 或者链接库里面包含 `-lncrt_xxx` （表示采用libncrt c库），
-则需变更为 `-lncrt_xxx -lfileops_uart -lheapops_basic`，这也是旧SDK变更为支GCC 13的新SDK的原则。
+则需变更为 `-lncrt_xxx -lfileops_uart -lheapops_basic`，这也是旧SDK变更为支持GCC 13的新SDK的原则。
 
 下面配置为在旧版SDK中的npk变量stdclib,当变量stdclib以libncrt开头时，会直接定义一个`--specs=${stdclib}.specs`，
 按照上面我们说的原则，这里应该变成设置`-l$(subst(${stdclib},lib,)) -lfileops_uart -lheapops_basic`，所以在新版SDK中的写法就变成了下面的配置方式。
@@ -305,7 +304,7 @@ buildconfig:
 
 - RTOS的变化: `git diff 0.4.1..0.5.0 OS/***npk.yml`
 
-执行的命令方法如下
+执行查看代码变更命令方法如下
 
 ```shell
 git clone https://github.com/Nuclei-Software/nuclei-sdk/
