@@ -33,3 +33,4 @@ $ cat dhrystone.dasm |grep vs
     80000e28:   02047027                vse64.v v0,(s0)
 ~~~
 
+You can check https://gcc.gnu.org/bugzilla/show_bug.cgi?id=112537 for more details.
