@@ -43,6 +43,8 @@
     
 **2. 升级build-tools**
 
+> Linux版本不需要执行此步骤，只需要确保系统中装了`make`工具就行。
+
 下载`build-tools-1.2`，并替换Nuclei Studio 2023.10中的`NucleiStudio\toolchain\build-tools`中内容。
 
 关于这部分，可以查阅[编译工程时，使用了Pre-build Command/Post-build Command时报错](https://github.com/Nuclei-Software/nuclei-studio/blob/main/4-use_pre_build_or_post_build.md)中的详细说明。
