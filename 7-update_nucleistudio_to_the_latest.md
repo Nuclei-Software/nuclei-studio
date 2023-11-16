@@ -19,7 +19,8 @@
 ### 对2023年11月16日之前下载了Nuclei Studio 2023.10进行升级
 如果您是在2023年11月16日之前下载了Nuclei Studio 2023.10，可以通过以下方式更新您的Nuclei Studio 2023.10 到最新版本
 **1. 升级Nuclei Studio Plugins**
-在Nuclei Studio菜单中找到Help->Install New Software ,然后在Install工具的Work with选中NucleiStudio - https://ide.nucleisys.com/NucleiStudio/,下面会列出所有待更新的插件。
+在Nuclei Studio菜单中找到Help->Install New Software ,然后在Install工具的Work with选中“NucleiStudio - https://ide.nucleisys.com/NucleiStudio/”,下面会列出所有待更新的插件。
+
 ![](asserts/images/195660415249583.png)
 
 在弹出的插件列表中选中需要升级的插件，我们选中Nuclei Studio IDE For RISC-V C/C++ Development 2.1.0 、Nuclei Studio IDE QEMU Debug 1.1.0 ,然后Next。
@@ -35,8 +36,8 @@
 
 经此两步，完成了对Nuclei Studio 2023.10的升级。
     
-### 从官网下载最新和版本
-如果不想做升级工作，可以直接从我们的网站上下载最新的Nuclei Studio 2023.10。
+### 从官网下载最新的版本
+如果不想做手动升级工作，可以直接从我们的网站上下载最新的Nuclei Studio 2023.10。
 - [Windows版下载](https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-win64.zip)
 - [Linux版下载](https://www.nucleisys.com/upload/files/toochain/qemu/nuclei-qemu-2023.10-linux-x64.tar.gz)
 ## 参考资料
