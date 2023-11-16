@@ -11,5 +11,5 @@
 ## 参考资料
 
 - [Nuclei Studio FAQs](https://www.rvmcu.com/nucleistudio-faq.html)
-- [Nuclei Studio/Tools 实时更新补充文档](https://github.com/Nuclei-Software/nuclei-studio)
+- [Nuclei Studio/Tools 不断更新的补充文档](https://github.com/Nuclei-Software/nuclei-studio)
 - [Nuclei Studio Issues](https://github.com/Nuclei-Software/nuclei-studio/issues)
