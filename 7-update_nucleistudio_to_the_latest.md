@@ -1,20 +1,20 @@
 # 更新 Nuclei Studio 2023.10 到最新版本
 
 ## 问题描述
-2023.10发布的版本中存在一些问题:
+2023年11月06日发布的Nuclei Studio 2023.10版本中存在一些问题,引响用户使用:
 * build tools的busybox存在问题导致make 带 pre- post- steps时编译出问题
 * Nuclei Settings中corner cases在特定场景下会出错，
 * Nuclei Settings的打开方式引响工程中其他文件的打开发方式
 * 在QEMU中使用V扩展时，没有传入RVV length
 
-为修复以上问题，我们重新做了一些变更
+我们重新做了一些变更，以修复以上问题：
 * 修改并发布Nuclei Studio Plugins 2.1.0
 * 修改并发布build-tools 1.2
 * 发布了新的Nuclei Studio 2023.10，替换了原来的Nuclei Studio 2023.10包
 
 ## 升级Nuclei Studio 2023.10 到最新版本的方法
 
-因为2023年11月16日之前发布的Nuclei Studio 2023.10中存上述问题，您可以选择手动进行升级，也可以选择重官网上下载我们最新发布的版本。
+如果您的Nuclei Studio 2023.10，是在2023年11月16日之前下载，版本中存在的上述问题可能会引响您的使用体验，您可以选择手动进行升级，也可以选择重官网上下载我们最新发布的版本。
 
 ### 对2023年11月16日之前下载了Nuclei Studio 2023.10进行升级
 如果您是在2023年11月16日之前下载了Nuclei Studio 2023.10，可以通过以下方式更新您的Nuclei Studio 2023.10 到最新版本
