@@ -1,5 +1,7 @@
 # 在编译工程时，使用了Pre-build Command/Post-build Command时报错
 
+> 在 Nuclei Studio 2023.10.17上传的版本中修正，参见[本文](7-update_nucleistudio_202310_to_fixed_version.md)
+
 参见 https://github.com/eclipse-embed-cdt/eclipse-plugins/issues/597
 
 在Nuclei Studio 2023.10版本中，如果在工程编译中需要使用到Pre-build Command/Post-build Command, 因Nuclei Studio中集成的build-tools为v4.4.0版本，而上游CDT中在处理Pre-build Command/Post-build Command的方法，在build-tools v4.4.0无法正常使用，所以会出现报错问题。
