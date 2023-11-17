@@ -1,6 +1,6 @@
 # 在编译工程时，使用了Pre-build Command/Post-build Command时报错
 
-> 在 Nuclei Studio 2023.10.17上传的版本中修正，参见[本文](7-update_nucleistudio_202310_to_fixed_version.md)
+> 在 Nuclei Studio 2023.10.17上传的2023.10 更正版本中修正，参见[本文](7-update_nucleistudio_202310_to_fixed_version.md)
 
 参见 https://github.com/eclipse-embed-cdt/eclipse-plugins/issues/597
 
