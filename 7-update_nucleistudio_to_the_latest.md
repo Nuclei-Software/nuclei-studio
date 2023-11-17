@@ -1,6 +1,6 @@
 # 更新 Nuclei Studio 2023.10 到最新修正版本
 
-> **2023.11.06**上传的Nuclei Studio 2023.10版本存在一些问题，我们进行了修正，并于 **2023.11.16 18:00**替换线上2023.10版本。
+> **2023.11.06**上传的Nuclei Studio 2023.10版本存在一些问题，我们进行了修正，并于 **2023.11.18 18:00**替换线上2023.10版本。
 
 ## 问题描述
 
@@ -10,6 +10,7 @@
 * [Nuclei Settings中corner cases在特定场景下会出错](https://github.com/Nuclei-Software/nuclei-studio/issues/3)
 * [Nuclei Settings的打开方式影响工程中其他文件的打开方式](https://github.com/Nuclei-Software/nuclei-studio/issues/11)
 * [在QEMU中使用V扩展时，没有传入RVV length](https://github.com/Nuclei-Software/nuclei-studio/issues/12)
+* 修复打开一个全新的workspace，创建新的工程的时候，能够创建同名项目的问题，重开workspace即可解决这个问题
 
 **我们重新做了一些变更，以修复以上问题**：
 
@@ -19,12 +20,12 @@
 
 ## 升级Nuclei Studio 2023.10 到最新版本的方法
 
-如果您的Nuclei Studio 2023.10，是在**2023年11月17日**之前下载，版本中存在的上述问题可能会引响您的使用体验，
+如果您的Nuclei Studio 2023.10，是在**2023年11月18日**之前下载，版本中存在的上述问题可能会引响您的使用体验，
 您可以选择手动进行升级，也可以选择重官网上下载我们最新发布的版本。
 
-### 对2023年11月17日之前下载了Nuclei Studio 2023.10进行升级
+### 对2023年11月18日之前下载了Nuclei Studio 2023.10进行升级
 
-如果您是在2023年11月17日之前下载了Nuclei Studio 2023.10，可以通过以下方式更新您的Nuclei Studio 2023.10 到最新版本
+如果您是在2023年11月18日之前下载了Nuclei Studio 2023.10，可以通过以下方式更新您的Nuclei Studio 2023.10 到最新版本
 
 **1. 升级Nuclei Studio Plugins**
 
@@ -39,7 +40,7 @@
 
 在升级过程中，Nuclei Studio会询问Trust Artifacts时，操作如下图，选择Trust Selected, 然后升级完成，Nuclei Studio会重启。至此Nuclei Studio Plugins升级完成。
 
-![](asserts/images/v_17001190261409.png)
+![](asserts/images/v_18001190261409.png)
     
 **2. 升级build-tools**
 
