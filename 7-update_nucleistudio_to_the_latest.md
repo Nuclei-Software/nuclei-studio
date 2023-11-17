@@ -10,7 +10,7 @@
 * [Nuclei Settings中corner cases在特定场景下会出错](https://github.com/Nuclei-Software/nuclei-studio/issues/3)
 * [Nuclei Settings的打开方式影响工程中其他文件的打开方式](https://github.com/Nuclei-Software/nuclei-studio/issues/11)
 * [在QEMU中使用V扩展时，没有传入RVV length](https://github.com/Nuclei-Software/nuclei-studio/issues/12)
-* 修复打开一个全新的workspace，创建新的工程的时候，能够创建同名项目的问题，重开workspace即可解决这个问题
+* [修复打开一个全新的workspace，创建新的工程的时候，能够创建同名项目的问题，重开workspace即可解决这个问题](https://github.com/Nuclei-Software/nuclei-studio/issues/13)
 
 **我们重新做了一些变更，以修复以上问题**：
 
