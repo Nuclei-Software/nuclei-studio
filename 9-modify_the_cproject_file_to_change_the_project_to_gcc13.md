@@ -99,6 +99,7 @@ ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.other
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.otheroptimizations
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.otherwarnings
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.other
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.otheroptimizations
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.otherwarnings
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.other
