@@ -6,7 +6,7 @@
 虽然我们在2023.10的IDE中提供了右键选中工程一键升级的工具（参见IDE的手册第8章节），但是这个只能一个工程一个工程的转换，对于有大量工程需要批量转换的项目而言不太友好，因此
 我们这里列出来如果写脚本进行工程的转换升级，则可以参考如下的思路进行转换。
 
-以下变更仅针对原来就是老的IDE创建的gcc10的工程，进行升级变更，如果需要批量变更，编写脚本的时候应先检查工程是否是riscv gcc10的工程。
+以下变更仅针对Nuclei Studio 2023.10之前版本创建的gcc10的工程，进行升级变更，如果需要批量变更，编写脚本的时候应先检查工程是否是riscv gcc10的工程。
 
 ## 修改toolchain相关配置
 
@@ -107,12 +107,12 @@ ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions
 
 
 1. 在`.cproject`文件中确认否存存在`--specs=libncrt_xxx.specs`，如果存在，则表示这个是一个使用了libncrt的工程，则可以进行后续的步骤
-2. 如果`--specs=libncrt_xxx.specs`存在，先将删除
-3. 如果`-lm`存在，存在则先将删除
+2. 如果`--specs=libncrt_xxx.specs`存在，先将其删除
+3. 如果`-lm`存在，则先将其删除
 4. 查找`ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs`或者`ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs`中是否存`m`，如果存在则先将删除
 5. 查找`ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs`或者`ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs`中是否存`ncrt_xxx`
 6. 根据上面的结果，在`ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs`或者`ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs`中补充对应的值
-    * `--specs=libncrt_xxx.specs`存在，添加`ncrt_xxx`；或者`ncrt_xxx`存在。需要添加`heapops_basic`和`fileops_uart`
+    * `--specs=libncrt_xxx.specs`存在，添加`ncrt_xxx`；或者`ncrt_xxx`存在。需要额外添加`heapops_basic`和`fileops_uart`
 7. 在`ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other`中补上 ` -isystem=/include/libncrt`
 
 ```
@@ -147,6 +147,7 @@ ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.other
 变更后`.cproject`文件的内容
 
 ```xml
+<option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other" value="-isystem=/include/libncrt " valueType="string"/>
 <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs.146128417" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs" valueType="libs">
 	<listOptionValue builtIn="false" value="ncrt_balanced"/>
 	<listOptionValue builtIn="false" value="fileops_uart"/>
