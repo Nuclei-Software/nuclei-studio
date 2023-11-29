@@ -158,4 +158,4 @@ ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.other
 
 完成以上变更后，reload一下工程，工程就可以在Nuclei Studio 2023.10下正常编译、调试、运行了。
 > 说明：
-> 本文档中，所有引用的例子中关于`.cproject`文件中，出现的类似`id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114"`中，`1735566114`是一个Nuclei Studio生成的hash值，不同时间不同工程各不相同，且其不引响配置，如果能保持与原值相同的情况下，尽量保持相同。
+> 本文档中，所有引用的例子中关于`.cproject`文件，出现的类似`id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114"`中，`1735566114`是一个Nuclei Studio生成的hash值，不同时间不同工程各不相同，且其不引响配置，如果能保持与原值相同的情况下，尽量保持相同。
