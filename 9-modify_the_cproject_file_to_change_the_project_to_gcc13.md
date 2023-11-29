@@ -10,7 +10,7 @@
 
 ## 修改toolchain相关配置
 
-在Nuclei Studio 2023.10之前的版本中使用的gcc是做了许多个性化的变更，需要Nuclei Studio 2023.10版中使用的gcc,继承了官方版本的特性和一些命名方式，在工程中的`.cproject`文件中，主要是要修改以下几个值。
+在Nuclei Studio 2023.10之前的版本中使用的gcc是做了许多个性化的变更，需要Nuclei Studio 2023.10版中使用的gcc,继承了官方版本的特性和一些命名方式，在工程中的`.cproject`文件中，主要是要修改以下几个值。其中`ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name`的值是`RISC-V Nuclei GCC` 、`ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id`的值是`3901352267` 、`ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix`的值是`riscv-nuclei-elf-`,则说明工程在创建时所使用的是GCC 10。如果需要使工程支持GCC 13,需要进行如下变更：
 
 * toolchain.name的值 从**RISC-V Nuclei GCC**变更为**RISC-V GCC/Newlib**
 * toolchain.id的值 从**3901352267**变更为**2262347901**
