@@ -14,6 +14,8 @@ NucleiStudio.exe -nosplash -application org.eclipse.cdt.managedbuilder.core.head
 
 > 这个举例的命令 会 弹出一个额外的命令行窗口进行输出。
 
+![Nuclei Studio Command Line Build](asserts/images/nside_cmdbuild_20231201.png)
+
 - `NucleiStudio.exe`：该参数是Nuclei Studio的启动应用，在Nuclei Studio的安装目录下。
 - `-nosplash`：该参数用于关闭启动时的 Splash 屏幕。这意味着在启动 Eclipse 时不会显示一个短暂的加载屏幕。
 - `-application`：该参数用于指定要运行的应用程序。在这里，`org.eclipse.cdt.managedbuilder.core.headlessbuild`
