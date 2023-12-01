@@ -27,12 +27,7 @@ jobs:
 
       - name: Prepare docs
         run: |
-          python3 update.py
-          mkdir docs
-          cp *.md docs/
-          cp -rf asserts/ docs/
-          # update mkdocs.yml
-          python3 update.py
+            bash .github/prepare_doc.sh
 
       - name: Build MkDocs
         run: mkdocs build
