@@ -1,6 +1,6 @@
 # Nuclei Studio Supply Documents
 
-[![Deploy MkDocs](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/mkdoc.yml/badge.svg)](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/mkdoc.yml) [![pages-build-deployment](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/pages/pages-build-deployment)
+[![Deploy MkDocs](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/mkdoc.yml/badge.svg)](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/mkdoc.yml) [![pages-build-deployment](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/pages/pages-build-deployment/badge.svg)](https://nuclei-software.github.io/nuclei-studio/)
 
 Document, User Guide, Wiki, and Discussions For Nuclei Studio
 
