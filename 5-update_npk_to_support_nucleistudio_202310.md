@@ -163,7 +163,7 @@ buildconfig:
 libncrt较之前也有了些许变化，在NPK中使用libncrt之前，新旧版SDK中都是一样的在**conifguration**中定义了一个变量`stdclib`，
 它的值是一个下拉框，可以选择不同的值。不同点是在得到`stdclib`后，在`common_flags`或者其它地方使用`stdclib`时略有不同。
 
-关于`stdclib`的一些说明，可以参见 https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#stdclib
+关于`stdclib`的一些说明，可以参见 [这里](https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#stdclib)
 
 ```yaml
 ## 定义stdclib变量
@@ -306,7 +306,7 @@ buildconfig:
 
 执行查看代码变更命令方法如下
 
-```shell
+~~~shell
 git clone https://github.com/Nuclei-Software/nuclei-sdk/
 cd nuclei-sdk
 git fetch --all 
@@ -315,4 +315,4 @@ git diff 0.4.1..0.5.0 SoC/evalsoc/***npk.yml
 git diff 0.4.1..0.5.0 NMSIS/***npk.yml
 git diff 0.4.1..0.5.0 application/***npk.yml
 git diff 0.4.1..0.5.0 OS/***npk.yml
-```
+~~~
