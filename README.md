@@ -1,5 +1,7 @@
 # Nuclei Studio Supply Documents
 
+[![Deploy MkDocs](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/mkdoc.yml/badge.svg)](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/mkdoc.yml) [![pages-build-deployment](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/pages/pages-build-deployment)
+
 Document, User Guide, Wiki, and Discussions For Nuclei Studio
 
 Please create new doc based on [Doc Template](0-template.md)
