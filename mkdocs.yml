@@ -1,5 +1,7 @@
 site_name: Nuclei Studio Supply Documents
 docs_dir: docs
+repo_url: https://github.com/Nuclei-Software/nuclei-studio
+edit_uri: blob/main/
 nav:
     - Home: README.md
     - 1-cannot-setup-guestmemory.md
