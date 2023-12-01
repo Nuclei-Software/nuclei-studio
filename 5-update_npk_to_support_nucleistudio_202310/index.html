@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>升级npk.yml以支持Nuclei Studio 2023.10 - Nuclei Studio Supply Documents</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u5347\u7ea7npk.yml\u4ee5\u652f\u6301Nuclei Studio 2023.10";
+        var mkdocs_page_input_path = "5-update_npk_to_support_nucleistudio_202310.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Nuclei Studio Supply Documents
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">升级npk.yml以支持Nuclei Studio 2023.10</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#npkyml">npk.yml中的工具链升级</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#imafdcarchext">除标准的IMAFDC之外的扩展(ARCHEXT)的升级</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#libncrt">libncrt的升级</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#link-warning">Link Warning的消除</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#nuclei-sdk-050-npkyml">关于Nuclei SDK 0.5.0 npk.yml 详细变更</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Nuclei Studio Supply Documents</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">升级npk.yml以支持Nuclei Studio 2023.10</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="npkymlnuclei-studio-202310">升级npk.yml以支持Nuclei Studio 2023.10</h1>
+<p>在Nuclei Studio 2023.10中，一个重要变更，是支持GCC 13, 所以之前发布的NPK Package也需要做对应的变更，以更好的适用于Nuclei Studio 2023.10，其中有以下几个变更点。</p>
+<blockquote>
+<p>需要注意新版的npk.yml 不再支持以前 2022.12版本的IDE</p>
+</blockquote>
+<h2 id="npkyml">npk.yml中的工具链升级</h2>
+<p>在npk中，我们定义了buildconfig来自定义工程build时的各种参数，Nuclei Studio通过type标识使用的是那一种toolchain，如gcc、clang等，
+通过 type-&gt;<strong>toolchain_name</strong> &amp; <strong>cross_prefix</strong> 来标识使用的toolchain里面具体的那个发行版本。升级SDK以支持GCC 13，对比以下两个例子不难看出，
+只需要修改 toolchain_name: <strong>RISC-V GCC/Newlib</strong> 和 cross_prefix: <strong>riscv64-unknown-elf-</strong> ，就可以使SDK支持在创建工程时，可以选择GCC 13工具链。</p>
+<p>以下内容是支持gcc 10 的buildconfig配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）。</p>
+<pre><code class="language-yaml">## Build Configuration
+buildconfig:
+  - type: gcc
+    description: Nuclei GNU Toolchain
+    cross_prefix: riscv-nuclei-elf- # optional
+    common_flags: # flags need to be combined together across all packages
+    ldflags:
+    cflags:
+    asmflags:
+    cxxflags:
+    common_defines:
+    prebuild_steps: # could be override by app/bsp type
+      command:
+      description:
+    postbuild_steps: # could be override by app/bsp type
+      command:
+      description:
+</code></pre>
+<p>下以内容，是支持GCC 13和Clang的<strong>buildconfig</strong>配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）。</p>
+<pre><code class="language-yaml">## Build Configuration
+buildconfig:
+  - type: gcc
+    description: Nuclei GNU Toolchain
+    # 升级到 GCC13时，这里进行如下两行的改变
+    # 且针对所有npk.yml的文件只要包含buildconfig的都需要进行修改，不仅仅限于ssp/bsp类型，还包括bsp/app/mwp/osp/sdk类型
+    toolchain_name: RISC-V GCC/Newlib
+    cross_prefix: riscv64-unknown-elf- # optional
+    common_flags: # flags need to be combined together across all packages
+    ldflags:
+    cflags:
+    asmflags:
+    cxxflags:
+    common_defines:
+    prebuild_steps: # could be override by app/bsp type
+      command:
+      description:
+    postbuild_steps: # could be override by app/bsp type
+      command:
+      description:
+  - type: clang
+    description: Nuclei LLVM Toolchain
+    toolchain_name: RISC-V Clang/Newlib
+    cross_prefix: riscv64-unknown-elf- # optional
+    common_flags: # flags need to be combined together across all packages
+    ldflags:
+    cflags:
+    asmflags:
+    cxxflags:
+    common_defines:
+    prebuild_steps: # could be override by app/bsp type
+      command:
+      description:
+    postbuild_steps: # could be override by app/bsp type
+      command:
+      description:
+</code></pre>
+<h2 id="imafdcarchext">除标准的IMAFDC之外的扩展(ARCHEXT)的升级</h2>
+<blockquote>
+<p>以下示例以Nuclei SDK 0.5.0的evalsoc的npk.yml升级举例， 仅考虑GCC的支持，如果需要考虑CLANG的支持，请参见 SDK中evalsoc的npk.yml的详细变更</p>
+</blockquote>
+<p>在GCC 13中，对RISC-V 指令扩展使用有了很大的变更，具体内容可以查看Nuclei Studio用户手册2.1.4章内容和Nuclei SDK中<strong>ARCH_EXT</strong>说明。</p>
+<ul>
+<li>
+<p><a href="https://www.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202310.pdf">Nuclei Studio用户手册</a></p>
+</li>
+<li>
+<p><a href="https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#arch-ext">ARCH_EXT说明</a></p>
+</li>
+</ul>
+<p>升级npk.yml时，如果SDK中使用到了RISC-V 除了标准的<strong>IMAFDC</strong>之外指令扩展，例如<strong>B/P/K/V</strong>， 也需要升级对应的配置。</p>
+<p>在NPK中，RISC-V 指令扩展以是<code>-march=xxx</code>的方式传递给Nuclei Studio，Nuclei Studio接收到相关配置，就会存储并应用到编译的过程中。
+以Nuclei SDK中的npk.yml为例，通过下面这段配置我们就可以得到<code>-march=</code>的值，不难看出与RISC-V指令扩展相关的是NPK中的变量<strong>nuclei_archext</strong>。</p>
+<pre><code class="language-yaml">## （为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+## Build Configuration
+buildconfig:
+  - type: gcc
+    description: Nuclei RISC-V GNU Toolchain #must
+    cross_prefix: riscv-nuclei-elf- # optional
+    common_flags: # flags need to be combined together across all packages
+      # 这里 -march 传递的值 就是 nuclei_core.arch 和 nuclei_archext 两个变量拼接而来
+      # 例如 nuclei_core.arch设置为rv32imafdc, nuclei_archext设置为 _zba_zbb_zbc_zbs_xxldspn1x,
+      # 那么 传递的就是 -march=rv32imafdc_zba_zbb_zbc_zbs_xxldspn1x
+      # 如果你的 march是已知和确定的，这里直接就可以给定 -march/-mabi的选项，无需通过 configuration字段来进行传递
+      - flags: -march=${nuclei_core.arch}$(join(${nuclei_archext},'')) -mabi=${nuclei_core.abi}
+    ldflags:
+    cflags:
+    asmflags:
+    cxxflags:
+    common_defines:
+    prebuild_steps: # could be override by app/bsp type
+      command:
+      description:
+    postbuild_steps: # could be override by app/bsp type
+      command:
+      description:
+</code></pre>
+<p>在旧版的SDK中，nuclei_archext定义的是一个<code>multicheckbox</code>，用户可以自己选择，而在新版的SDK中<code>nuclei_archext</code>定义的是一个<code>text</code>输入框，
+这样用户可以更灵活的使用RISC-V 指令扩展，如果在某些工程或场景下，想要预设一些RISC-V 指令扩展，建议给一个默认值就可以了，可以参考下代的示例代码。</p>
+<ul>
+<li>用于支持<strong>Nuclei RISC-V Toolchain 2022.12</strong>的写法</li>
+</ul>
+<pre><code class="language-yaml">  ## 旧版的SDK中，nuclei_archext定义的是一个multicheckbox
+  ##（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+  nuclei_archext:
+    default_value: []
+    type: multicheckbox
+    global: true
+    description: Nuclei ARCH Extensions
+    choices:
+      - name: b
+        description: Bitmanip Extension
+      - name: p
+        description: Packed SIMD Extension
+      - name: v
+        description: Vector Extension
+</code></pre>
+<ul>
+<li>用于支持<strong>Nuclei RISC-V Toolchain 2023.10</strong>的写法</li>
+</ul>
+<pre><code class="language-yaml">    ## 新版的SDK中nuclei_archext定义的是一个text输入框
+    ## Package Configurations
+    configuration:
+    nuclei_archext:
+        default_value: &quot;_zba_zbb_zbc_zbs&quot;
+        type: text
+        global: true
+        # hints and tips are introduced in Nuclei Studio 2023.10
+        # used to show tool tips and input hints
+        tips: &quot;Possible other ISA extensions, seperated by underscores, like '_zba_zbb_zbc_zbs_xxldspn1x'&quot;
+        hints: &quot;_zba_zbb_zbc_zbs_xxldspn1x&quot;
+        description: Nuclei ARCH Extensions
+</code></pre>
+<p>最终显示创建项目的时候显示效果如下</p>
+<p><img alt="企业微信截图_16999495827037" src="https://github.com/Nuclei-Software/nuclei-studio/assets/1538922/dc9aeec3-0887-4a28-8fb7-418c98c9e4de" /></p>
+<h2 id="libncrt">libncrt的升级</h2>
+<p>libncrt较之前也有了些许变化，在NPK中使用libncrt之前，新旧版SDK中都是一样的在<strong>conifguration</strong>中定义了一个变量<code>stdclib</code>，
+它的值是一个下拉框，可以选择不同的值。不同点是在得到<code>stdclib</code>后，在<code>common_flags</code>或者其它地方使用<code>stdclib</code>时略有不同。</p>
+<p>关于<code>stdclib</code>的一些说明，可以参见 https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#stdclib</p>
+<pre><code class="language-yaml">## 定义stdclib变量
+##（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+## Package Configurations
+configuration:
+  stdclib:
+    default_value: newlib_nano
+    type: choice
+    global: true
+    description: Standard C Library
+    choices:
+      - name: newlib_full
+        description: newlib with full feature
+      - name: newlib_fast
+        description: newlib nano with printf/scanf float
+      - name: newlib_small
+        description: newlib nano with printf float
+      - name: newlib_nano
+        description: newlib nano without printf/scanf float
+      - name: libncrt_fast
+        description: nuclei c runtime library, optimized for speed
+      - name: libncrt_balanced
+        description: nuclei c runtime library, balanced, full feature
+      - name: libncrt_small
+        description: nuclei c runtime library, optimized for size, full feature
+      - name: libncrt_nano
+        description: nuclei c runtime library, optimized for size, no float support
+      - name: libncrt_pico
+        description: nuclei c runtime library, optimized for size, no long/long long support
+      - name: nostd
+        description: no std c library will be used, and don't search the standard system directories for header files
+      - name: nospec
+        description: no std c library will be used, not pass any --specs options
+</code></pre>
+<p>在新版的SDK中，如果使用<code>--specs=libncrt_xxx.specs</code> 或者链接库里面包含 <code>-lncrt_xxx</code> （表示采用libncrt c库），
+则需变更为 <code>-lncrt_xxx -lfileops_uart -lheapops_basic</code>，这也是旧SDK变更为支持GCC 13的新SDK的原则。</p>
+<p>下面配置为在旧版SDK中的npk变量stdclib,当变量stdclib以libncrt开头时，会直接定义一个<code>--specs=${stdclib}.specs</code>，
+按照上面我们说的原则，这里应该变成设置<code>-l$(subst(${stdclib},lib,)) -lfileops_uart -lheapops_basic</code>，所以在新版SDK中的写法就变成了下面的配置方式。</p>
+<pre><code class="language-yaml">## 在旧版SDK中使用stdclib变量
+##（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+## Build Configuration
+buildconfig:
+  - type: gcc
+    description: Nuclei GNU Toolchain
+    cross_prefix: riscv-nuclei-elf- # optional
+    common_flags: # flags need to be combined together across all packages
+      - flags: --specs=${stdclib}.specs
+        condition: $( startswith(${stdclib}, &quot;libncrt&quot;) )
+    ldflags:
+    cflags:
+    asmflags:
+    cxxflags:
+    common_defines:
+    prebuild_steps: # could be override by app/bsp type
+      command:
+      description:
+    postbuild_steps: # could be override by app/bsp type
+      command:
+      description:
+</code></pre>
+<p><strong>转变为</strong></p>
+<pre><code class="language-yaml">## 在新版SDK中使用stdclib变量
+##（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+## Build Configuration
+buildconfig:
+  - type: gcc
+    description: Nuclei GNU Toolchain
+    toolchain_name: RISC-V GCC/Newlib
+    cross_prefix: riscv64-unknown-elf- # optional
+    common_flags: # flags need to be combined together across all packages
+      - flags: --specs=${stdclib}.specs
+        condition: $( startswith(${stdclib}, &quot;libncrt&quot;) )
+    ldflags:
+      - flags: -l$(subst(${stdclib},lib,)) -lheapops_basic -lfileops_uart
+        condition: $( startswith(${stdclib}, &quot;libncrt&quot;) )
+    cflags:
+    asmflags:
+    cxxflags:
+    common_defines:
+    prebuild_steps: # could be override by app/bsp type
+      command:
+      description:
+    postbuild_steps: # could be override by app/bsp type
+      command:
+      description:
+
+</code></pre>
+<h2 id="link-warning">Link Warning的消除</h2>
+<p>在Nuclei Studio 2023.10中集成的GCC 13,在使用过程中会有warning，链接选项增加一个<code>-Wl,--no-warn-rwx-segments</code>可以隐藏warning。</p>
+<p>具体可以参考以下配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）</p>
+<pre><code class="language-yaml">## Build Configuration
+buildconfig:
+  - type: gcc
+    description: Nuclei GNU Toolchain
+    toolchain_name: RISC-V GCC/Newlib
+    cross_prefix: riscv64-unknown-elf- # optional
+    common_flags: # flags need to be combined together across all packages
+    ldflags:
+       # 用于消除gcc13链接阶段的warning
+       - flags: -Wl,--no-warn-rwx-segments
+    cflags:
+    asmflags:
+    cxxflags:
+    common_defines:
+    prebuild_steps: # could be override by app/bsp type
+      command:
+      description:
+    postbuild_steps: # could be override by app/bsp type
+      command:
+      description:
+</code></pre>
+<h2 id="nuclei-sdk-050-npkyml">关于Nuclei SDK 0.5.0 npk.yml 详细变更</h2>
+<p>关于支持Nuclei Studio + Nuclei RISC-V Toolchain 2023.10的npk.yml变更，可以参考nuclei-sdk 0.5.0的变更。</p>
+<ul>
+<li>
+<p>gd32vf103的变化 <code>git diff 0.4.1..0.5.0 SoC/gd32vf103/***npk.yml</code></p>
+</li>
+<li>
+<p>evalsoc的变化: <code>git diff 0.4.1..0.5.0 SoC/evalsoc/***npk.yml</code></p>
+</li>
+<li>
+<p>NMSIS的变化: <code>git diff 0.4.1..0.5.0 NMSIS/***npk.yml</code></p>
+</li>
+<li>
+<p>application的变化: <code>git diff 0.4.1..0.5.0 application/***npk.yml</code></p>
+</li>
+<li>
+<p>RTOS的变化: <code>git diff 0.4.1..0.5.0 OS/***npk.yml</code></p>
+</li>
+</ul>
+<p>执行查看代码变更命令方法如下</p>
+<pre><code class="language-shell">git clone https://github.com/Nuclei-Software/nuclei-sdk/
+cd nuclei-sdk
+git fetch --all 
+git diff 0.4.1..0.5.0 SoC/gd32vf103/***npk.yml
+git diff 0.4.1..0.5.0 SoC/evalsoc/***npk.yml
+git diff 0.4.1..0.5.0 NMSIS/***npk.yml
+git diff 0.4.1..0.5.0 application/***npk.yml
+git diff 0.4.1..0.5.0 OS/***npk.yml
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../4-use_pre_build_or_post_build/" class="btn btn-neutral float-left" title="在编译工程时，使用了Pre-build Command/Post-build Command时报错"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/" class="btn btn-neutral float-right" title="GCC13 auto generated RVV instructions when RVV enabled">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../4-use_pre_build_or_post_build/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

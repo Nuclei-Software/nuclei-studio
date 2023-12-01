@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>OpenOCD在操作容量大于16M-Byte的nor-flash时的问题 - Nuclei Studio Supply Documents</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "OpenOCD\u5728\u64cd\u4f5c\u5bb9\u91cf\u5927\u4e8e16M-Byte\u7684nor-flash\u65f6\u7684\u95ee\u9898";
+        var mkdocs_page_input_path = "8-openocd_202310_flashloader_flaws.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Nuclei Studio Supply Documents
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Nuclei Studio Supply Documents</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="openocd16m-bytenor-flash">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</h1>
+<p>操作0 ~ 16M地址区间spi控制器需要发送三个字节的地址信息，称为3byte地址模式；操作16M ~ 2G地址区间spi控制器则需要发送四个字节的地址信息，称为4byte地址模式；</p>
+<p>nuspi控制器的普通spi和xip默认都是3byte地址模式</p>
+<p>我们在OpenOCD里开发了两组spi驱动分别是nuspi和custom，都可以支持3byte模式和4byte模式，其中nuspi可通过判断操作地址，自动切换模式</p>
+<p>在OpenOCD里有很多种方式可以read/verify flash内的数据，可以归结为两大类，一类是直接通过xip的方式读取flash数据，另一类则是通过调用驱动使用普通spi的方式读取flash数据。</p>
+<p>因此，直接通过xip的方式读取flash数据时，就会有只能读到前面16M地址范围的限制，这样的命令有</p>
+<ul>
+<li>flash verify_image filename [offset] [type]</li>
+<li>dump_image filename address size</li>
+<li>gdb的x命令</li>
+<li>等等 直接读取memory的命令</li>
+</ul>
+<p>当然OpenOCD里面也存在一些读取flash的命令，会直接调用cfg文件注册的spi驱动，这样的命令有</p>
+<ul>
+<li>flash read_bank num filename [offset [length]]</li>
+<li>flash verify_bank num filename [offset]</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../7-update_nucleistudio_202310_to_fixed_version/" class="btn btn-neutral float-left" title="更新 Nuclei Studio 2023.10 到最新修正版本"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/" class="btn btn-neutral float-right" title="通过修改.cproject文件，升级工程工具链到GCC 13">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../7-update_nucleistudio_202310_to_fixed_version/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

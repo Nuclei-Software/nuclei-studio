@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>通过修改.cproject文件，升级工程工具链到GCC 13 - Nuclei Studio Supply Documents</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u901a\u8fc7\u4fee\u6539.cproject\u6587\u4ef6\uff0c\u5347\u7ea7\u5de5\u7a0b\u5de5\u5177\u94fe\u5230GCC 13";
+        var mkdocs_page_input_path = "9-modify_the_cproject_file_to_change_the_project_to_gcc13.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Nuclei Studio Supply Documents
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#toolchain">修改toolchain相关配置</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#risc-v">修改RISC-V扩展相关配置</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#libncrt-c">修改libncrt C库相关配置</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Nuclei Studio Supply Documents</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">通过修改.cproject文件，升级工程工具链到GCC 13</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="cprojectgcc-13">通过修改.cproject文件，升级工程工具链到GCC 13</h1>
+<blockquote>
+<p>Nuclei Studio 2023.10的IDE进行了一次大版本的升级, 其中自带的工具链从gcc10升级到了gcc13, 并且工具链的前缀也发生了变化。
+参见 https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2023.10</p>
+</blockquote>
+<p>虽然我们在2023.10的IDE中提供了右键选中工程一键升级的工具（参见IDE的手册第8章节），但是这个只能一个工程一个工程的转换，对于有大量工程需要批量转换的项目而言不太友好，因此
+我们这里列出来如果写脚本进行工程的转换升级，则可以参考如下的思路进行转换。</p>
+<p>以下变更仅针对Nuclei Studio 2023.10之前版本创建的gcc10的工程，进行升级变更，如果需要批量变更，编写脚本的时候应先检查工程是否是riscv gcc10的工程。</p>
+<h2 id="toolchain">修改toolchain相关配置</h2>
+<p>在Nuclei Studio 2023.10之前的版本中使用的gcc是做了许多个性化的变更，需要Nuclei Studio 2023.10版中使用的gcc,继承了官方版本的特性和一些命名方式，在工程中的<code>.cproject</code>文件中，主要是要修改以下几个值。其中<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name</code>的值是<code>RISC-V Nuclei GCC</code> 、<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id</code>的值是<code>3901352267</code> 、<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix</code>的值是<code>riscv-nuclei-elf-</code>,则说明工程在创建时所使用的是GCC 10。如果需要使工程支持GCC 13,需要进行如下变更：</p>
+<ul>
+<li>toolchain.name的值 从<strong>RISC-V Nuclei GCC</strong>变更为<strong>RISC-V GCC/Newlib</strong></li>
+<li>toolchain.id的值 从<strong>3901352267</strong>变更为<strong>2262347901</strong></li>
+<li>command.prefix的值 从<strong>riscv-nuclei-elf-</strong>变更为<strong>riscv64-unknown-elf-</strong></li>
+</ul>
+<p>变更前<code>.cproject</code>文件的内容</p>
+<pre><code class="language-xml">&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name.129748485&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name&quot; value=&quot;RISC-V Nuclei GCC&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id.1143901706&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id&quot; value=&quot;3901352267&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix.1270840820&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix&quot; value=&quot;riscv-nuclei-elf-&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.c.718590769&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.c&quot; value=&quot;gcc&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.cpp.243660928&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.cpp&quot; value=&quot;g++&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.ar.416250093&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.ar&quot; value=&quot;ar&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objcopy.741068581&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objcopy&quot; value=&quot;objcopy&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objdump.1474975752&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objdump&quot; value=&quot;objdump&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.size.2085350427&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.size&quot; value=&quot;size&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make.1355881376&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make&quot; value=&quot;make&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm.1330665916&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm&quot; value=&quot;rm&quot; valueType=&quot;string&quot;/&gt;
+</code></pre>
+<p>变更后<code>.cproject</code>文件的内容</p>
+<pre><code class="language-xml">&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name.129748485&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name&quot; value=&quot;RISC-V GCC/Newlib&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id.1143901706&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id&quot; value=&quot;2262347901&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix.1270840820&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix&quot; value=&quot;riscv64-unknown-elf-&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.c.718590769&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.c&quot; value=&quot;gcc&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.cpp.243660928&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.cpp&quot; value=&quot;g++&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.ar.416250093&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.ar&quot; value=&quot;ar&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objcopy.741068581&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objcopy&quot; value=&quot;objcopy&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objdump.1474975752&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.objdump&quot; value=&quot;objdump&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.size.2085350427&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.size&quot; value=&quot;size&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make.1355881376&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make&quot; value=&quot;make&quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm.1330665916&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm&quot; value=&quot;rm&quot; valueType=&quot;string&quot;/&gt;
+</code></pre>
+<h2 id="risc-v">修改RISC-V扩展相关配置</h2>
+<p>在Nuclei Studio 2023.10之前的版创建的工程中，RISC-V扩展是存放在四个单独的boolean类型的值中，而在Nuclei Studio 2023.10创建的工程中，
+改为一个string类型的值中,所以我在要在工程的<code>.cproject</code>文件中找到四个旧的值，并按规则转换成为新的RISC-V扩展的字符串，
+存放到<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions</code>中，同时将旧的四个单独的boolean类型的值置空或者删除。</p>
+<pre><code># 四个单独的boolean类型的值
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.rvb
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.rvk
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.dsp
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.vector
+
+# 一个string类型的值
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions
+</code></pre>
+<ol>
+<li>首先，根据<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base</code>确认工程对应的arch是rv32/rv64</li>
+<li>其次，根据<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp</code>确认是否带f/d</li>
+<li>最后，根据对应转换规则转换出正确的RISC-V扩展字符串</li>
+</ol>
+<p>转换规则(特别说明，p的值需要接在RISC-V扩展字符串的最后)：</p>
+<ul>
+<li><code>b</code> -&gt; <code>_zba_zbb_zbc_zbs</code></li>
+<li><code>k</code> -&gt; <code>_zk_zks</code></li>
+<li><code>v</code> -&gt; <code>rv32f/d : _zve32f</code>, <code>rv64f: _zve64f</code>, <code>rv64fd: v</code></li>
+<li><code>p</code> -&gt; <code>rv64: _xxldsp</code>, <code>rv32: _xxldspn1x</code></li>
+</ul>
+<p>例如，现在有一个N307FD的工程，它的<code>arch=rv32imafdcbpv</code>(gcc10)，可以知道它是一个<strong>rv32</strong>,带<strong>fd</strong>并且使用了<strong>bpv</strong>扩展，那么根据转换规则，转换出来的RISC-V扩展字符串为<code>_zba_zbb_zbc_zbs_zve32f_xxldspn1x</code>。</p>
+<p>变更前<code>.cproject</code>文件的内容</p>
+<pre><code class="language-xml">&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base.489743203&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base&quot; value=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32i&quot; valueType=&quot;enumerated&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp.1936924005&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp&quot; value=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.double&quot; valueType=&quot;enumerated&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.rvb.168405526&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.rvb&quot; value=&quot;true&quot; valueType=&quot;boolean&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.dsp.565204765&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.dsp&quot; value=&quot;true&quot; valueType=&quot;boolean&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.vector.1142078455&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.vector&quot; value=&quot;true&quot; valueType=&quot;boolean&quot;/&gt;     
+</code></pre>
+<p>变更后<code>.cproject</code>文件的内容</p>
+<pre><code class="language-xml">&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions.1832321358&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions&quot; value=&quot;_zba_zbb_zbc_zbs_zve32f_xxldspn1x&quot; valueType=&quot;string&quot;/&gt;
+</code></pre>
+<h2 id="libncrt-c">修改libncrt C库相关配置</h2>
+<p>在Nuclei Studio 2023.10之前的版创建的工程中,使用libncrt C库时，会在工程中包含一个<code>--specs=libncrt_xxx.specs</code>或者链接库 
+里面包含 <code>-lncrt_xxx</code>，而在Nuclei Studio 2023.10创建的工程中，如果使用了libncrt C库，需要将<code>--specs=libncrt_xxx.specs</code>的方式变更为<code>-lncrt_xxx</code>，
+然后额外需要链接的时候补上 <code>-lncrt_small -lheapops_basic -lfileops_uart</code>, 通用的target编译选项需要补上 <code>-isystem=/include/libncrt</code></p>
+<p><strong>举例如下</strong>：
+* <code>-lncrt_small</code> -&gt; <code>-lncrt_small -lheapops_basic -lfileops_uart</code>
+* <code>--specs=libncrt_small.specs</code> -&gt; <code>-lncrt_small -lheapops_basic -lfileops_uart</code></p>
+<ol>
+<li>在<code>.cproject</code>文件中确认否存存在<code>--specs=libncrt_xxx.specs</code>，如果存在，则表示这个是一个使用了libncrt的工程，则可以进行后续的步骤</li>
+<li>如果<code>--specs=libncrt_xxx.specs</code>存在，先将其删除</li>
+<li>如果<code>-lm</code>存在，则先将其删除</li>
+<li>查找<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs</code>或者<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs</code>中是否存<code>m</code>，如果存在则先将删除</li>
+<li>查找<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs</code>或者<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs</code>中是否存<code>ncrt_xxx</code></li>
+<li>根据上面的结果，在<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs</code>或者<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs</code>中补充对应的值<ul>
+<li><code>--specs=libncrt_xxx.specs</code>存在，添加<code>ncrt_xxx</code>；或者<code>ncrt_xxx</code>存在。需要额外添加<code>heapops_basic</code>和<code>fileops_uart</code></li>
+</ul>
+</li>
+<li>在<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other</code>中补上 <code>-isystem=/include/libncrt</code></li>
+</ol>
+<pre><code># --specs=libncrt_xxx1.specs可能存在于以下string类型的值
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.otherwarnings
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.otheroptimizations
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.otherwarnings
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.otheroptimizations
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.otherwarnings
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.createflash.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.other
+ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.other
+</code></pre>
+<p>举例，工程中用到了<code>--specs=libncrt_balanced.specs</code></p>
+<p>变更前<code>.cproject</code>文件的内容</p>
+<pre><code class="language-xml">&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other&quot; value=&quot; &quot; valueType=&quot;string&quot;/&gt;
+&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.other.443378574&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.other&quot; value=&quot;--specs=libncrt_balanced.specs&quot; valueType=&quot;string&quot;/&gt;
+</code></pre>
+<p>变更后<code>.cproject</code>文件的内容</p>
+<pre><code class="language-xml">&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other&quot; value=&quot;-isystem=/include/libncrt &quot; valueType=&quot;string&quot;/&gt;
+&lt;option IS_BUILTIN_EMPTY=&quot;false&quot; IS_VALUE_EMPTY=&quot;false&quot; id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs.146128417&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs&quot; valueType=&quot;libs&quot;&gt;
+    &lt;listOptionValue builtIn=&quot;false&quot; value=&quot;ncrt_balanced&quot;/&gt;
+    &lt;listOptionValue builtIn=&quot;false&quot; value=&quot;fileops_uart&quot;/&gt;
+    &lt;listOptionValue builtIn=&quot;false&quot; value=&quot;heapops_basic&quot;/&gt;
+&lt;/option&gt;
+</code></pre>
+<p>完成以上变更后，reload一下工程，工程就可以在Nuclei Studio 2023.10下正常编译、调试、运行了。</p>
+<blockquote>
+<p>说明：
+本文档中，所有引用的例子中关于<code>.cproject</code>文件，出现的类似<code>id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114"</code>中，<code>1735566114</code>是一个Nuclei Studio生成的hash值，不同时间不同工程各不相同，且其不引响配置，如果能保持与原值相同的情况下，尽量保持相同。</p>
+</blockquote>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../8-openocd_202310_flashloader_flaws/" class="btn btn-neutral float-left" title="OpenOCD在操作容量大于16M-Byte的nor-flash时的问题"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../8-openocd_202310_flashloader_flaws/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
