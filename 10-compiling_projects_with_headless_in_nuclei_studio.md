@@ -9,15 +9,17 @@ NucleiStudio.exe -nosplash -application org.eclipse.cdt.managedbuilder.core.head
 - -application：该参数用于指定要运行的应用程序。在这里，`org.eclipse.cdt.managedbuilder.core.headlessbuild` 是指  Headless 构建应用程序。该应用程序用于执行构建操作，而不需要图形用户界面（GUI）。
 - -data：该参数用于指定工作区路径。它告诉 Nuclei Studio 将数据存储在哪里，例如工作空间、项目和文件。
 - -build：该参数用于指定需要编译的工程，`test/Debug`，表示的是编译test工程中的Debug配置；一般Nuclei Studio创建的工程有Debug、Release两套配置，如果不指定配置，这个默认会编译出Debug、Release，可以看到编译后工程目录下有Debug、Release两个目录。
-    >├─.settings
-    >├─application
-    >├─Debug
-    >│  ├─application
-    >│  └─nuclei_sdk
-    >├─nuclei_sdk
-    >└─Release
-    >    ├─application
-    >    └─nuclei_sdk
+```    
+    ├─.settings
+    ├─application
+    ├─Debug
+    │  ├─application
+    │  └─nuclei_sdk
+    ├─nuclei_sdk
+    └─Release
+        ├─application
+        └─nuclei_sdk
+   ```
 - -cleanBuild：该参数与`-build`类似，只是在编译之前，会清空清理工作空间。建议使用`-cleanBuild`。
 - -Debug：该参数用于指定编译过程是Debug模式，在编译时会输出详细的编译过程日志。如果不带此参数，命令将静默执行，没有任何输出。
 
