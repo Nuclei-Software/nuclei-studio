@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 import os
+import re
 from datetime import datetime
 
+def get_numberic_index(filename):
+    #Extract numeric index from the file name using regular expression
+    match = re.match(r'^(\d+)-', filename)
+    return int(match.group(1)) if match else float('inf')
+
 # Find all *.md files except README.md and 0-template.md
-files = sorted([f for f in os.listdir() if f.endswith(".md") and f not in ["README.md", "0-template.md"]])
+filenames = [f for f in os.listdir() if f.endswith(".md") and f not in ["README.md", "0-template.md"]]
+files = sorted(filenames, key=get_numberic_index)
 
 # Generate markdown table
 table = "\n\n"
