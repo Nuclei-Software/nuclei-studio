@@ -12,7 +12,10 @@ table += "\n"
 table += "| Document | Description |\n"
 table += "|:---|:---|\n"
 
+mkdoc_entries = "\n"
+
 for file in files:
+    mkdoc_entries += f"    - {file}\n"
     with open(file, 'r') as f:
         lines = f.readlines()
         if lines:
@@ -21,17 +24,25 @@ for file in files:
             row = f"| [{file}]({file}) | {description} |\n"
             table += row
 
-# Read the existing README.md content
-with open('README.md', 'r') as readme_file:
-    orig_readme = readme_file.read()
+def find_and_replace(fpath, start, end, replace):
+    if os.path.isfile(fpath) == False:
+        print("{fpath} file not exist!")
+        return
+    # Read the existing fpath content
+    with open(fpath, 'r') as handle_file:
+        orig_handle = handle_file.read()
 
-# Update content below ## Documents
-start_index = orig_readme.find('## Documents') + len('## Documents')
-end_index = orig_readme.find('##', start_index)
-updated_readme = orig_readme[:start_index] + table + orig_readme[end_index:]
+    # Update content below ## Documents
+    start_index = orig_handle.find(start) + len(start)
+    end_index = orig_handle.find(end, start_index)
+    updated_handle = orig_handle[:start_index] + replace + orig_handle[end_index:]
 
-# Write the updated content back to README.md
-with open('README.md', 'w') as readme_file:
-    readme_file.write(updated_readme)
 
-print("Table updated in README.md")
+    # Write the updated content back to fpath
+    with open(fpath, 'w') as handle_file:
+        handle_file.write(updated_handle)
+
+    print(f"Updated in {fpath}")
+
+find_and_replace("README.md", "## Documents", "##", table)
+find_and_replace("mkdocs.yml", "README.md", "exclude", mkdoc_entries)
