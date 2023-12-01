@@ -1,0 +1,18 @@
+site_name: Nuclei Studio Supply Documents
+docs_dir: docs
+nav:
+    - Home: README.md
+    - 1-cannot-setup-guestmemory.md
+    - 2-qemu-glib-gio-unexpectedly.md
+    - 3-print_memor_usage_in_ide.md
+    - 4-use_pre_build_or_post_build.md
+    - 5-update_npk_to_support_nucleistudio_202310.md
+    - 6-gcc13_gen_rvv_instructions_when_rvv_enabled.md
+    - 7-update_nucleistudio_202310_to_fixed_version.md
+    - 8-openocd_202310_flashloader_flaws.md
+    - 9-modify_the_cproject_file_to_change_the_project_to_gcc13.md
+exclude_docs: |
+    0-*.md
+theme:
+   name: readthedocs
+   highlightjs: true
