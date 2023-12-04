@@ -84,6 +84,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#libncrt-c">修改libncrt C库相关配置</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#link-warning">增加link warning消除的配置</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -243,10 +245,20 @@ ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.other
     &lt;listOptionValue builtIn=&quot;false&quot; value=&quot;heapops_basic&quot;/&gt;
 &lt;/option&gt;
 </code></pre>
+<h2 id="link-warning">增加link warning消除的配置<a class="headerlink" href="#link-warning" title="Permanent link">&para;</a></h2>
+<p>在GCC 13使用过程中会产生很多的warning信息，可以在链接选项中额外增加<code>-Wl,--no-warn-rwx-segments</code>参数，用以关闭这些warning信息。</p>
+<p>具体参见 <a href="https://sourceware.org/binutils/docs/ld/Options.html#index-_002d_002dwarn_002drwx_002dsegments">https://sourceware.org/binutils/docs/ld/Options.html#index-_002d_002dwarn_002drwx_002dsegments</a></p>
+<p>变更前<code>.cproject</code>文件的内容</p>
+<pre><code class="language-xml">&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.other.1000044097&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.other&quot; value=&quot;&quot; valueType=&quot;string&quot;/&gt;
+</code></pre>
+<p>变更后<code>.cproject</code>文件的内容</p>
+<pre><code class="language-xml">&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.other.1000044097&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.other&quot; value=&quot;-Wl,--no-warn-rwx-segments&quot; valueType=&quot;string&quot;/&gt;
+</code></pre>
 <p>完成以上变更后，reload一下工程，工程就可以在Nuclei Studio 2023.10下正常编译、调试、运行了。</p>
 <blockquote>
-<p>说明：
-本文档中，所有引用的例子中关于<code>.cproject</code>文件，出现的类似<code>id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114"</code>中，<code>1735566114</code>是一个Nuclei Studio生成的hash值，不同时间不同工程各不相同，且其不引响配置，如果能保持与原值相同的情况下，尽量保持相同。</p>
+<p><strong>说明</strong>：</p>
+<p>本文档中，所有引用的例子中关于<code>.cproject</code>文件，出现的类似<code>id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114"</code>中，
+<code>1735566114</code>是一个Nuclei Studio生成的hash值，不同时间不同工程各不相同，且其不影响配置，如果能保持与原值相同的情况下，尽量保持相同。</p>
 </blockquote>
               
             </div>
