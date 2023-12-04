@@ -109,7 +109,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="openocd16m-bytenor-flash">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</h1>
+                <h1 id="openocd16m-bytenor-flash">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题<a class="headerlink" href="#openocd16m-bytenor-flash" title="Permanent link">&para;</a></h1>
 <p>操作0 ~ 16M地址区间spi控制器需要发送三个字节的地址信息，称为3byte地址模式；操作16M ~ 2G地址区间spi控制器则需要发送四个字节的地址信息，称为4byte地址模式；</p>
 <p>nuspi控制器的普通spi和xip默认都是3byte地址模式</p>
 <p>我们在OpenOCD里开发了两组spi驱动分别是nuspi和custom，都可以支持3byte模式和4byte模式，其中nuspi可通过判断操作地址，自动切换模式</p>

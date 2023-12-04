@@ -119,12 +119,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="npkymlnuclei-studio-202310">升级npk.yml以支持Nuclei Studio 2023.10</h1>
+                <h1 id="npkymlnuclei-studio-202310">升级npk.yml以支持Nuclei Studio 2023.10<a class="headerlink" href="#npkymlnuclei-studio-202310" title="Permanent link">&para;</a></h1>
 <p>在Nuclei Studio 2023.10中，一个重要变更，是支持GCC 13, 所以之前发布的NPK Package也需要做对应的变更，以更好的适用于Nuclei Studio 2023.10，其中有以下几个变更点。</p>
 <blockquote>
 <p>需要注意新版的npk.yml 不再支持以前 2022.12版本的IDE</p>
 </blockquote>
-<h2 id="npkyml">npk.yml中的工具链升级</h2>
+<h2 id="npkyml">npk.yml中的工具链升级<a class="headerlink" href="#npkyml" title="Permanent link">&para;</a></h2>
 <p>在npk中，我们定义了buildconfig来自定义工程build时的各种参数，Nuclei Studio通过type标识使用的是那一种toolchain，如gcc、clang等，
 通过 type-&gt;<strong>toolchain_name</strong> &amp; <strong>cross_prefix</strong> 来标识使用的toolchain里面具体的那个发行版本。升级SDK以支持GCC 13，对比以下两个例子不难看出，
 只需要修改 toolchain_name: <strong>RISC-V GCC/Newlib</strong> 和 cross_prefix: <strong>riscv64-unknown-elf-</strong> ，就可以使SDK支持在创建工程时，可以选择GCC 13工具链。</p>
@@ -185,7 +185,7 @@ buildconfig:
       command:
       description:
 </code></pre>
-<h2 id="imafdcarchext">除标准的IMAFDC之外的扩展(ARCHEXT)的升级</h2>
+<h2 id="imafdcarchext">除标准的IMAFDC之外的扩展(ARCHEXT)的升级<a class="headerlink" href="#imafdcarchext" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>以下示例以Nuclei SDK 0.5.0的evalsoc的npk.yml升级举例， 仅考虑GCC的支持，如果需要考虑CLANG的支持，请参见 SDK中evalsoc的npk.yml的详细变更</p>
 </blockquote>
@@ -263,7 +263,7 @@ buildconfig:
 </code></pre>
 <p>最终显示创建项目的时候显示效果如下</p>
 <p><img alt="企业微信截图_16999495827037" src="https://github.com/Nuclei-Software/nuclei-studio/assets/1538922/dc9aeec3-0887-4a28-8fb7-418c98c9e4de" /></p>
-<h2 id="libncrt">libncrt的升级</h2>
+<h2 id="libncrt">libncrt的升级<a class="headerlink" href="#libncrt" title="Permanent link">&para;</a></h2>
 <p>libncrt较之前也有了些许变化，在NPK中使用libncrt之前，新旧版SDK中都是一样的在<strong>conifguration</strong>中定义了一个变量<code>stdclib</code>，
 它的值是一个下拉框，可以选择不同的值。不同点是在得到<code>stdclib</code>后，在<code>common_flags</code>或者其它地方使用<code>stdclib</code>时略有不同。</p>
 <p>关于<code>stdclib</code>的一些说明，可以参见 <a href="https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#stdclib">这里</a></p>
@@ -353,7 +353,7 @@ buildconfig:
       description:
 
 </code></pre>
-<h2 id="link-warning">Link Warning的消除</h2>
+<h2 id="link-warning">Link Warning的消除<a class="headerlink" href="#link-warning" title="Permanent link">&para;</a></h2>
 <p>在Nuclei Studio 2023.10中集成的GCC 13,在使用过程中会有warning，链接选项增加一个<code>-Wl,--no-warn-rwx-segments</code>可以隐藏warning。</p>
 <p>具体可以参考以下配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）</p>
 <pre><code class="language-yaml">## Build Configuration
@@ -377,7 +377,7 @@ buildconfig:
       command:
       description:
 </code></pre>
-<h2 id="nuclei-sdk-050-npkyml">关于Nuclei SDK 0.5.0 npk.yml 详细变更</h2>
+<h2 id="nuclei-sdk-050-npkyml">关于Nuclei SDK 0.5.0 npk.yml 详细变更<a class="headerlink" href="#nuclei-sdk-050-npkyml" title="Permanent link">&para;</a></h2>
 <p>关于支持Nuclei Studio + Nuclei RISC-V Toolchain 2023.10的npk.yml变更，可以参考nuclei-sdk 0.5.0的变更。</p>
 <ul>
 <li>

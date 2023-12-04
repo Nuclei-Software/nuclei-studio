@@ -115,15 +115,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="cprojectgcc-13">通过修改.cproject文件，升级工程工具链到GCC 13</h1>
+                <h1 id="cprojectgcc-13">通过修改.cproject文件，升级工程工具链到GCC 13<a class="headerlink" href="#cprojectgcc-13" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p>Nuclei Studio 2023.10的IDE进行了一次大版本的升级, 其中自带的工具链从gcc10升级到了gcc13, 并且工具链的前缀也发生了变化。
-参见 https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2023.10</p>
+参见 <a href="https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2023.10">https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2023.10</a></p>
 </blockquote>
 <p>虽然我们在2023.10的IDE中提供了右键选中工程一键升级的工具（参见IDE的手册第8章节），但是这个只能一个工程一个工程的转换，对于有大量工程需要批量转换的项目而言不太友好，因此
 我们这里列出来如果写脚本进行工程的转换升级，则可以参考如下的思路进行转换。</p>
 <p>以下变更仅针对Nuclei Studio 2023.10之前版本创建的gcc10的工程，进行升级变更，如果需要批量变更，编写脚本的时候应先检查工程是否是riscv gcc10的工程。</p>
-<h2 id="toolchain">修改toolchain相关配置</h2>
+<h2 id="toolchain">修改toolchain相关配置<a class="headerlink" href="#toolchain" title="Permanent link">&para;</a></h2>
 <p>在Nuclei Studio 2023.10之前的版本中使用的gcc是做了许多个性化的变更，需要Nuclei Studio 2023.10版中使用的gcc,继承了官方版本的特性和一些命名方式，在工程中的<code>.cproject</code>文件中，主要是要修改以下几个值。其中<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name</code>的值是<code>RISC-V Nuclei GCC</code> 、<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id</code>的值是<code>3901352267</code> 、<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix</code>的值是<code>riscv-nuclei-elf-</code>,则说明工程在创建时所使用的是GCC 10。如果需要使工程支持GCC 13,需要进行如下变更：</p>
 <ul>
 <li>toolchain.name的值 从<strong>RISC-V Nuclei GCC</strong>变更为<strong>RISC-V GCC/Newlib</strong></li>
@@ -156,7 +156,7 @@
 &lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make.1355881376&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make&quot; value=&quot;make&quot; valueType=&quot;string&quot;/&gt;
 &lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm.1330665916&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm&quot; value=&quot;rm&quot; valueType=&quot;string&quot;/&gt;
 </code></pre>
-<h2 id="risc-v">修改RISC-V扩展相关配置</h2>
+<h2 id="risc-v">修改RISC-V扩展相关配置<a class="headerlink" href="#risc-v" title="Permanent link">&para;</a></h2>
 <p>在Nuclei Studio 2023.10之前的版创建的工程中，RISC-V扩展是存放在四个单独的boolean类型的值中，而在Nuclei Studio 2023.10创建的工程中，
 改为一个string类型的值中,所以我在要在工程的<code>.cproject</code>文件中找到四个旧的值，并按规则转换成为新的RISC-V扩展的字符串，
 存放到<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions</code>中，同时将旧的四个单独的boolean类型的值置空或者删除。</p>
@@ -192,7 +192,7 @@ ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions
 <p>变更后<code>.cproject</code>文件的内容</p>
 <pre><code class="language-xml">&lt;option id=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions.1832321358&quot; superClass=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions&quot; value=&quot;_zba_zbb_zbc_zbs_zve32f_xxldspn1x&quot; valueType=&quot;string&quot;/&gt;
 </code></pre>
-<h2 id="libncrt-c">修改libncrt C库相关配置</h2>
+<h2 id="libncrt-c">修改libncrt C库相关配置<a class="headerlink" href="#libncrt-c" title="Permanent link">&para;</a></h2>
 <p>在Nuclei Studio 2023.10之前的版创建的工程中,使用libncrt C库时，会在工程中包含一个<code>--specs=libncrt_xxx.specs</code>或者链接库 
 里面包含 <code>-lncrt_xxx</code>，而在Nuclei Studio 2023.10创建的工程中，如果使用了libncrt C库，需要将<code>--specs=libncrt_xxx.specs</code>的方式变更为<code>-lncrt_xxx</code>，
 然后额外需要链接的时候补上 <code>-lncrt_small -lheapops_basic -lfileops_uart</code>, 通用的target编译选项需要补上 <code>-isystem=/include/libncrt</code></p>
