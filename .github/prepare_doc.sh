@@ -10,6 +10,7 @@ python3 update.py
 rm -rf docs site
 mkdir -p docs
 cp -rf *.md docs/
+cp -rf *.css docs/
 cp -rf asserts/ docs/
 
 sed -i "s|0-template.md|https://github.com/Nuclei-Software/nuclei-studio/blob/main/0-template.md|" docs/README.md
