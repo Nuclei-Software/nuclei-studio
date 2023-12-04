@@ -19,3 +19,7 @@ exclude_docs: |
 theme:
    name: readthedocs
    highlightjs: true
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.magiclink
