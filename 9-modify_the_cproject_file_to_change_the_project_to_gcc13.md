@@ -157,7 +157,7 @@ ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.other
 ```
 
 ## 增加link warning消除的配置
-在GCC 13使用过程中会产生很多的warning信息，为了频闭这些warning信息，可以在链接选项中增加-Wl,--no-warn-rwx-segments可以参数。
+在GCC 13使用过程中会产生很多的warning信息，可以在链接选项中增加-Wl,--no-warn-rwx-segments参数，用以频闭这些warning信息。
 变更前`.cproject`文件的内容
 
 ```xml
