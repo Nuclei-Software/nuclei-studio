@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>在编译工程时，使用了Pre-build Command/Post-build Command时报错 - Nuclei Studio Supply Documents</title>
+    <title>OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable - Nuclei Studio Supply Documents</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,8 +13,8 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "\u5728\u7f16\u8bd1\u5de5\u7a0b\u65f6\uff0c\u4f7f\u7528\u4e86Pre-build Command/Post-build Command\u65f6\u62a5\u9519";
-        var mkdocs_page_input_path = "4-use_pre_build_or_post_build.md";
+        var mkdocs_page_name = "OpenOCD\u70e7\u5199\u7a0b\u5e8f\u65f6\u62a5\u9519Error:Device ID 8xle2g8a6d is not known as FESPI capable";
+        var mkdocs_page_input_path = "11-openocd_reported_error_not_known_as_fespi_capable.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -56,10 +56,8 @@
                 <li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
-    <ul class="current">
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
                 </li>
               </ul>
               <ul>
@@ -86,8 +84,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+    <ul class="current">
+    </ul>
                 </li>
               </ul>
       </div>
@@ -104,9 +104,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">在编译工程时，使用了Pre-build Command/Post-build Command时报错</li>
+      <li class="breadcrumb-item active">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/4-use_pre_build_or_post_build.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/11-openocd_reported_error_not_known_as_fespi_capable.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -114,23 +114,71 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="pre-build-commandpost-build-command">在编译工程时，使用了Pre-build Command/Post-build Command时报错<a class="headerlink" href="#pre-build-commandpost-build-command" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p>在 Nuclei Studio 2023.10.17上传的2023.10 更正版本中修正，参见<a href="../7-update_nucleistudio_202310_to_fixed_version/">本文</a></p>
-</blockquote>
-<p>参见 <a href="https://github.com/eclipse-embed-cdt/eclipse-plugins/issues/597">eclipse-embed-cdt/eclipse-plugins#597</a></p>
-<p>在Nuclei Studio 2023.10版本中，如果在工程编译中需要使用到Pre-build Command/Post-build Command, 因Nuclei Studio中集成的build-tools为v4.4.0版本，而上游CDT中在处理Pre-build Command/Post-build Command的方法，在build-tools v4.4.0无法正常使用，所以会出现报错问题。</p>
-<p><img alt="" src="../asserts/images/20231113181414.png" />
-<img alt="" src="../asserts/images/20231113181518.png" /></p>
-<p>遇到这种情况时，可以下载 <a href="https://www.nucleisys.com/upload/files/toochain/build-tools/build-tools_202002.zip">https://www.nucleisys.com/upload/files/toochain/build-tools/build-tools_202002.zip</a> ，并替换工具链中的build-tools，问题可以得到解决。</p>
-<pre><code>NucleiStudio\toolchain\build-tools
+                <h1 id="openocderrordevice-id-8xle2g8a6d-is-not-known-as-fespi-capable">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable<a class="headerlink" href="#openocderrordevice-id-8xle2g8a6d-is-not-known-as-fespi-capable" title="Permanent link">&para;</a></h1>
+<p>Nuclei Studio 2023.10版中烧写程序时有报以下错误：</p>
+<p>参见这个 <a href="https://github.com/riscv-mcu/hbird-sdk/issues/8">https://github.com/riscv-mcu/hbird-sdk/issues/8</a></p>
+<pre><code>Info : Using libusb driver
+Info : clock speed 1000 kHz
+Info : JTAG tap: riscv.cpu tap/device found: 0x1e200a6d (mfg: 0x536 (Nuclei System Technology Co Ltd), part: 0xe200, ver: 0x1)
+Info : [riscv.cpu] Found 0 triggers
+halted at 0x200000b2 due to debug interrupt
+Info : Examined RISCV core; XLEN=32, misa=0x40001105
+[riscv.cpu] Target successfully examined.
+Info : starting gdb server for riscv.cpu on 3333
+Info : Listening on port 3333 for gdb connections
+Error: Device ID 0x1e200a6d is not known as FESPI capable
+Error: auto_probe failed
+</code></pre>
+<p>因为在openocd 2023.10中，将<code>flash bank $_FLASHNAME</code>从<code>fespi</code>修改为了<code>nuspi</code>，需要工程中的openocd配置文件中的<code>fespi</code>修改为了<code>nuspi</code>，
+以蜂鸟工程为例，将<code>hbird_sdk/SoC/hbirdv2/Board/mcu200t/openocd_hbirdv2.cfg</code>修改为如下配置，工程即可正常使用。</p>
+<pre><code>adapter_khz     1000
+
+interface ftdi
+ftdi_vid_pid 0x0403 0x6010
+ftdi_oscan1_mode off
+
+transport select jtag
+
+ftdi_layout_init 0x0008 0x001b
+ftdi_layout_signal nSRST -oe 0x0020 -data 0x0020
+ftdi_layout_signal TCK -data 0x0001
+ftdi_layout_signal TDI -data 0x0002
+ftdi_layout_signal TDO -input 0x0004
+ftdi_layout_signal TMS -data 0x0008
+ftdi_layout_signal JTAG_SEL -data 0x0100 -oe 0x0100
+
+set _CHIPNAME riscv
+jtag newtap $_CHIPNAME cpu -irlen 5
+
+set _TARGETNAME $_CHIPNAME.cpu
+target create $_TARGETNAME riscv -chain-position $_TARGETNAME
+$_TARGETNAME configure -work-area-phys 0x80000000 -work-area-size 10000 -work-area-backup 1
+
+set _FLASHNAME $_CHIPNAME.flash
+flash bank $_FLASHNAME nuspi 0x20000000 0 0 0 $_TARGETNAME
+# Set the ILM space also as flash, to make sure it can be add breakpoint with hardware trigger
+#flash bank onboard_ilm nuspi 0x80000000 0 0 0 $_TARGETNAME
+
+# Expose Nuclei self-defined CSRS range 770-800,835-850,1984-2032,2064-2070
+# See https://github.com/riscv/riscv-gnu-toolchain/issues/319#issuecomment-358397306
+# Then user can view the csr register value in gdb using: info reg csr775 for CSR MTVT(0x307)
+riscv expose_csrs 770-800,835-850,1984-2032,2064-2070
+
+init
+#reset
+if {[ info exists pulse_srst]} {
+  ftdi_set_signal nSRST 0
+  ftdi_set_signal nSRST z
+}
+halt
+# We must turn on this because otherwise the IDE version debug cannot download the program into flash
+flash protect 0 0 last off
 </code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../3-print_memor_usage_in_ide/" class="btn btn-neutral float-left" title="How to print memory usage in Nuclei Studio"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../5-update_npk_to_support_nucleistudio_202310/" class="btn btn-neutral float-right" title="升级npk.yml以支持Nuclei Studio 2023.10">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../10-compiling_projects_with_headless_in_nuclei_studio/" class="btn btn-neutral float-left" title="在Nuclei Studio下用命令行编译工程"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr/>
@@ -157,10 +205,8 @@
         </span>
     
     
-      <span><a href="../3-print_memor_usage_in_ide/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../10-compiling_projects_with_headless_in_nuclei_studio/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
-    
-      <span><a href="../5-update_npk_to_support_nucleistudio_202310/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
