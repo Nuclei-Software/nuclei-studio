@@ -14,6 +14,7 @@ nav:
     - 8-openocd_202310_flashloader_flaws.md
     - 9-modify_the_cproject_file_to_change_the_project_to_gcc13.md
     - 10-compiling_projects_with_headless_in_nuclei_studio.md
+    - 11-openocd_reported_error_not_known_as_fespi_capable.md
 exclude_docs: |
     0-*.md
 theme:
