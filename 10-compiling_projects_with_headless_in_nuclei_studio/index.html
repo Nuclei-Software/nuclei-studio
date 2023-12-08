@@ -125,8 +125,11 @@
 <p><strong>提醒</strong>: 请确保 NucleiStudio的PATH已经设置到系统中，这样 <code>NucleiStudio.exe</code>/<code>NucleiStudio</code> 才可以被执行。</p>
 <p><strong>下面以Windows系统举例</strong></p>
 </blockquote>
-<pre><code class="language-shell">NucleiStudio.exe -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug -Debug
+<pre><code class="language-shell">NucleiStudio.exe --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug -Debug
 </code></pre>
+<blockquote>
+<p><code>--launcher.suppressErrors</code> 用来屏蔽构建出错时，Eclipse会出错弹窗.</p>
+</blockquote>
 <p>如果需要在<strong>2022.12版本</strong>的IDE上进行使用，则需要先设置好toolchain目录下<code>gcc/bin</code>和<code>build-tools/bin</code>的路径到系统PATH中，然后将<code>NucleiStudio.exe</code>换成<code>eclipsec.exe</code></p>
 <p>针对<strong>2022.12版本</strong>，命令举例如下:</p>
 <pre><code class="language-shell"># 这里请修改成自己的IDE路径
@@ -134,14 +137,15 @@ set NSIDE=D:\NucleiStudio_IDE_202212-win64\NucleiStudio
 # 必须设置好系统PATH
 set PATH=%NSIDE%\toolchain\gcc\bin;%NSIDE%\toolchain\build-tools\bin;%PATH%
 # 注意NucleiStudio.exe换成了eclipsec.exe
-%NSIDE%\eclipsec.exe -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug
+%NSIDE%\eclipsec.exe --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug
 </code></pre>
 <blockquote>
 <p>这个<strong>2023.10</strong>版本的举例的命令 会 弹出一个额外的命令行窗口进行输出。</p>
 </blockquote>
-<p><img alt="Nuclei Studio Command Line Build" src="../asserts/images/nside_cmdbuild_20231201.png" /></p>
+<p><img alt="Nuclei Studio Command Line Build" src="../asserts/images/wx_20231208153525.png" /></p>
 <ul>
 <li><code>NucleiStudio.exe</code>：该参数是Nuclei Studio的启动应用，在Nuclei Studio的安装目录下。</li>
+<li><code>--launcher.suppressErrors</code>：该参数是用于抑制Nuclei Studio启动时的错误信息。</li>
 <li><code>-nosplash</code>：该参数用于关闭启动时的 Splash 屏幕。这意味着在启动 Eclipse 时不会显示一个短暂的加载屏幕。</li>
 <li><code>-application</code>：该参数用于指定要运行的应用程序。在这里，<code>org.eclipse.cdt.managedbuilder.core.headlessbuild</code>
    是指  Headless 构建应用程序。该应用程序用于执行构建操作，而不需要图形用户界面（GUI）。</li>
