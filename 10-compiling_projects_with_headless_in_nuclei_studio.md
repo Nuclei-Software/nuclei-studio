@@ -1,18 +1,33 @@
 # 在Nuclei Studio下用命令行编译工程
 
+> 以下文档是在**2023.10**版本的IDE中实测，其他版本可能需要做一些调整适配才可以正常工作。
+
 Nuclei Studio是图形化（GUI）的代码编写工具，但是在某些特定的场景下，用户需要通过命令行来快速编译工程，
 在Nuclei Studio中，只需要一行命令就可以实现。下载好Nuclei Studio后，在Nuclei Studio的workspace已经创建好了需要编译的工程`test`,
 **同时Nuclei Studio已退出运行**, 执行以下命令就可以完成工程的编译。
 
 > **提醒**: 请确保 NucleiStudio的PATH已经设置到系统中，这样 `NucleiStudio.exe`/`NucleiStudio` 才可以被执行。
->
+ 
 > **下面以Windows系统举例**
 
 ~~~shell
 NucleiStudio.exe -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug -Debug
 ~~~
 
-> 这个举例的命令 会 弹出一个额外的命令行窗口进行输出。
+如果需要在**2022.12版本**的IDE上进行使用，则需要先设置好toolchain目录下`gcc/bin`和`build-tools/bin`的路径到系统PATH中，然后将`NucleiStudio.exe`换成`eclipsec.exe`
+
+针对**2022.12版本**，命令举例如下:
+
+~~~shell
+# 这里请修改成自己的IDE路径
+set NSIDE=D:\NucleiStudio_IDE_202212-win64\NucleiStudio
+# 必须设置好系统PATH
+set PATH=%NSIDE%\toolchain\gcc\bin;%NSIDE%\toolchain\build-tools\bin;%PATH%
+# 注意NucleiStudio.exe换成了eclipsec.exe
+%NSIDE%\eclipsec.exe -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug
+~~~
+
+> 这个**2023.10**版本的举例的命令 会 弹出一个额外的命令行窗口进行输出。
 
 ![Nuclei Studio Command Line Build](asserts/images/nside_cmdbuild_20231201.png)
 
