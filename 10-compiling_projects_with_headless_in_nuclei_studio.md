@@ -11,8 +11,10 @@ Nuclei Studio是图形化（GUI）的代码编写工具，但是在某些特定�
 > **下面以Windows系统举例**
 
 ~~~shell
-NucleiStudio.exe -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug -Debug
+NucleiStudio.exe --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug -Debug
 ~~~
+
+> `--launcher.suppressErrors` 用来屏蔽构建出错时，Eclipse会出错弹窗.
 
 如果需要在**2022.12版本**的IDE上进行使用，则需要先设置好toolchain目录下`gcc/bin`和`build-tools/bin`的路径到系统PATH中，然后将`NucleiStudio.exe`换成`eclipsec.exe`
 
@@ -24,14 +26,15 @@ set NSIDE=D:\NucleiStudio_IDE_202212-win64\NucleiStudio
 # 必须设置好系统PATH
 set PATH=%NSIDE%\toolchain\gcc\bin;%NSIDE%\toolchain\build-tools\bin;%PATH%
 # 注意NucleiStudio.exe换成了eclipsec.exe
-%NSIDE%\eclipsec.exe -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug
+%NSIDE%\eclipsec.exe --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug
 ~~~
 
 > 这个**2023.10**版本的举例的命令 会 弹出一个额外的命令行窗口进行输出。
 
-![Nuclei Studio Command Line Build](asserts/images/nside_cmdbuild_20231201.png)
+![Nuclei Studio Command Line Build](asserts/images/wx_20231208153525.png)
 
 - `NucleiStudio.exe`：该参数是Nuclei Studio的启动应用，在Nuclei Studio的安装目录下。
+- `--launcher.suppressErrors`：该参数是用于抑制Nuclei Studio启动时的错误信息。
 - `-nosplash`：该参数用于关闭启动时的 Splash 屏幕。这意味着在启动 Eclipse 时不会显示一个短暂的加载屏幕。
 - `-application`：该参数用于指定要运行的应用程序。在这里，`org.eclipse.cdt.managedbuilder.core.headlessbuild`
    是指  Headless 构建应用程序。该应用程序用于执行构建操作，而不需要图形用户界面（GUI）。
