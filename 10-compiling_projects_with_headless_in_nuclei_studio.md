@@ -14,6 +14,8 @@ Nuclei Studio是图形化（GUI）的代码编写工具，但是在某些特定�
 NucleiStudio.exe --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug -Debug
 ~~~
 
+> `--launcher.suppressErrors` 用来屏蔽构建出错时，Eclipse会出错弹窗.
+
 如果需要在**2022.12版本**的IDE上进行使用，则需要先设置好toolchain目录下`gcc/bin`和`build-tools/bin`的路径到系统PATH中，然后将`NucleiStudio.exe`换成`eclipsec.exe`
 
 针对**2022.12版本**，命令举例如下:
