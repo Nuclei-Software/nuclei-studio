@@ -29,4 +29,4 @@ Click [this link](https://nuclei-software.github.io/nuclei-studio/) to see onlin
 | [9-modify_the_cproject_file_to_change_the_project_to_gcc13.md](9-modify_the_cproject_file_to_change_the_project_to_gcc13.md) | 通过修改.cproject文件，升级工程工具链到GCC 13 |
 | [10-compiling_projects_with_headless_in_nuclei_studio.md](10-compiling_projects_with_headless_in_nuclei_studio.md) | 在Nuclei Studio下用命令行编译工程 |
 | [11-openocd_reported_error_not_known_as_fespi_capable.md](11-openocd_reported_error_not_known_as_fespi_capable.md) | OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable |
-
+| [12-The-issue-of-dhrystone-scoring-on-the-IDE.md](12-The-issue-of-dhrystone-scoring-on-the-IDE.md) | 关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题 |
