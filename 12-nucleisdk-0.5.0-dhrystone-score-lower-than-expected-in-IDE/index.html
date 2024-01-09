@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>因内存不足，导致在Nuclei Studio中启动qemu失败 - Nuclei Studio Supply Documents</title>
+    <title>关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题 - Nuclei Studio Supply Documents</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,8 +13,8 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "\u56e0\u5185\u5b58\u4e0d\u8db3\uff0c\u5bfc\u81f4\u5728Nuclei Studio\u4e2d\u542f\u52a8qemu\u5931\u8d25";
-        var mkdocs_page_input_path = "1-cannot-setup-guestmemory.md";
+        var mkdocs_page_name = "\u5173\u4e8edhrystone\u5728IDE\u4e0a\u8dd1\u5206\u548cNSDK\u547d\u4ee4\u884c\u8dd1\u5206\u4e0d\u4e00\u81f4\u7684\u95ee\u9898";
+        var mkdocs_page_input_path = "12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -44,10 +44,8 @@
                 <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
-    <ul class="current">
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
                 </li>
               </ul>
               <ul>
@@ -90,8 +88,14 @@
                 <li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
+    </li>
+    </ul>
                 </li>
               </ul>
       </div>
@@ -108,9 +112,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">因内存不足，导致在Nuclei Studio中启动qemu失败</li>
+      <li class="breadcrumb-item active">关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/1-cannot-setup-guestmemory.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -118,18 +122,37 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="nuclei-studioqemu">因内存不足，导致在Nuclei Studio中启动qemu失败<a class="headerlink" href="#nuclei-studioqemu" title="Permanent link">&para;</a></h1>
-<p>在实际开发中发现，因电脑同时运行了很多的进程或者电脑本身的系统内存不足，致使在Nuclei Studio中，使用qemu进行程序调试时，可能出现如下报错:</p>
-<pre><code>qemu-system-riscv64.exe: cannot set up quest memory 'riscv.evalsoc.flashxip' Invalid argument
-</code></pre>
-<p><img alt="" src="../asserts/images/cannotsetupguestmemiry.png" /></p>
-<p>一般可以通过关闭某些应用，释放一部分内存以供qemu使用，即可解决些问题。</p>
+                <h1 id="dhrystoneidensdk">关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题<a class="headerlink" href="#dhrystoneidensdk" title="Permanent link">&para;</a></h1>
+<h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>在0.5.0版本的sdk-nuclei_sdk中，为了IDE上使用libncrt库的时候编译有些程序不报错，设置了会默认带上-msave-restore。但在使用newlib时，该选项会导致跑分降低。</p>
+<h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>在跑分的时候，需要在对应项目的Properties -&gt; C/C++ Build -&gt; Settings中，取消对Small prologue/epilogue(-msave-restore)的选中。
+具体流程和示例图如下：</p>
+<ol>
+<li>
+<p>下载sdk-nuclei_sdk 0.5.0组件包。</p>
+</li>
+<li>
+<p>新建一个Nuclei RISCV-V C/C++ project。</p>
+</li>
+<li>
+<p>在新建项目的过程中，选中Dhrystone Benchmark和N307FD Core组件,其他选项默认设置即可。此时运行，跑分为1.405。</p>
+</li>
+<li>
+<p>但实际在需要跑分时，要先取消选中-msave-restore选项，该跑分结果为1.664。</p>
+</li>
+</ol>
+<p><img alt="" src="../asserts/images/12-1.png" />
+<img alt="" src="../asserts/images/12-2.png" />
+<img alt="" src="../asserts/images/12-3.png" />
+<img alt="" src="../asserts/images/12-4.png" />
+<img alt="" src="../asserts/images/12-5.png" />
+<img alt="" src="../asserts/images/12-6.png" /></p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../2-qemu-glib-gio-unexpectedly/" class="btn btn-neutral float-right" title="windows 11下使用Nuclei Studio进行qemu调试程序时报错">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../11-openocd_reported_error_not_known_as_fespi_capable/" class="btn btn-neutral float-left" title="OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr/>
@@ -156,10 +179,8 @@
         </span>
     
     
-      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../11-openocd_reported_error_not_known_as_fespi_capable/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
-    
-      <span><a href="../2-qemu-glib-gio-unexpectedly/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
