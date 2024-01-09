@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题 - Nuclei Studio Supply Documents</title>
+    <title>关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题 - Nuclei Studio Supply Documents</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,7 +13,7 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "\u5173\u4e8edhrystone\u5728IDE\u4e0a\u8dd1\u5206\u548cNSDK\u547d\u4ee4\u884c\u8dd1\u5206\u4e0d\u4e00\u81f4\u7684\u95ee\u9898";
+        var mkdocs_page_name = "\u5173\u4e8edhrystone\u5728IDE\u4e0a\u8dd1\u5206\u548cNSDK 0.5.0\u547d\u4ee4\u884c\u8dd1\u5206\u4e0d\u4e00\u81f4\u7684\u95ee\u9898";
         var mkdocs_page_input_path = "12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md";
         var mkdocs_page_url = null;
       </script>
@@ -89,7 +89,7 @@
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
     </li>
@@ -112,7 +112,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题</li>
+      <li class="breadcrumb-item active">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
@@ -122,24 +122,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="dhrystoneidensdk">关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题<a class="headerlink" href="#dhrystoneidensdk" title="Permanent link">&para;</a></h1>
+                <h1 id="dhrystoneidensdk-050">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题<a class="headerlink" href="#dhrystoneidensdk-050" title="Permanent link">&para;</a></h1>
 <h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>在0.5.0版本的sdk-nuclei_sdk中，为了IDE上使用libncrt库的时候编译有些程序不报错，设置了会默认带上-msave-restore。但在使用newlib时，该选项会导致跑分降低。</p>
+<p>在0.5.0版本的sdk-nuclei_sdk中，为了IDE上使用libncrt库的时候编译有些程序不报错，设置了会默认带上<code>-msave-restore</code>。
+但在创建dhrystone用例工程时，选择使用newlib库后，该选项会导致跑分降低，不符合CPU的真实跑分。</p>
 <h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>在跑分的时候，需要在对应项目的Properties -&gt; C/C++ Build -&gt; Settings中，取消对Small prologue/epilogue(-msave-restore)的选中。
+<p>在跑分的时候，需要在对应项目的<code>Properties -&gt; C/C++ Build -&gt; Settings</code>中，取消对<code>Small prologue/epilogue(-msave-restore)</code>的选中。
 具体流程和示例图如下：</p>
 <ol>
 <li>
-<p>下载sdk-nuclei_sdk 0.5.0组件包。</p>
+<p>下载<strong>sdk-nuclei_sdk 0.5.0</strong> NPK组件包。</p>
 </li>
 <li>
-<p>新建一个Nuclei RISCV-V C/C++ project。</p>
+<p>新建一个<strong>Nuclei RISCV-V C/C++ project</strong>。</p>
 </li>
 <li>
-<p>在新建项目的过程中，选中Dhrystone Benchmark和N307FD Core组件,其他选项默认设置即可。此时运行，跑分为1.405。</p>
+<p>在新建项目的过程中，选中<strong>Dhrystone Benchmark</strong>和<strong>N307FD Core</strong>,其他选项默认设置即可。此时直接编译运行，跑分为<strong>1.405</strong>。</p>
 </li>
 <li>
-<p>但实际在需要跑分时，要先取消选中-msave-restore选项，该跑分结果为1.664。</p>
+<p>但实际需要跑分时，要先取消选中<code>-msave-restore</code>选项，该跑分结果为<strong>1.664</strong>。</p>
 </li>
 </ol>
 <p><img alt="" src="../asserts/images/12-1.png" />
