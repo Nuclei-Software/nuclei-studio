@@ -7,7 +7,7 @@
 > [!NOTE]
 > - The latest version of Nuclei Studio IDE is **2024.06**, which can be found in https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2024.06
 
-- **Nuclei Studio IDE Documentation**: https://nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202402.pdf
+- **Nuclei Studio IDE Documentation**: https://nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.pdf
 - **Nuclei Tools(Toolchain/OpenOCD/Qemu/Model) Documentation**: https://doc.nucleisys.com/nuclei_tools/
 
 
