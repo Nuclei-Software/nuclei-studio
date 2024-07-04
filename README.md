@@ -37,3 +37,6 @@ Click [this link](https://nuclei-software.github.io/nuclei-studio/) to see onlin
 | [10-compiling_projects_with_headless_in_nuclei_studio.md](10-compiling_projects_with_headless_in_nuclei_studio.md) | 在Nuclei Studio下用命令行编译工程 |
 | [11-openocd_reported_error_not_known_as_fespi_capable.md](11-openocd_reported_error_not_known_as_fespi_capable.md) | OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable |
 | [12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md](12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md) | 关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题 |
+| [13-error_could_not_find_an_available_hardware_trigger.md](13-error_could_not_find_an_available_hardware_trigger.md) | Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available |
+| [14-cannot_find_-lncrt_balanced_no_such_file_or_directory.md](14-cannot_find_-lncrt_balanced_no_such_file_or_directory.md) | cannot find -lncrt_balanced: No such file or directory |
+

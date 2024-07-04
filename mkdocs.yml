@@ -15,6 +15,9 @@ nav:
     - 9-modify_the_cproject_file_to_change_the_project_to_gcc13.md
     - 10-compiling_projects_with_headless_in_nuclei_studio.md
     - 11-openocd_reported_error_not_known_as_fespi_capable.md
+    - 12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md
+    - 13-error_could_not_find_an_available_hardware_trigger.md
+    - 14-cannot_find_-lncrt_balanced_no_such_file_or_directory.md
 exclude_docs: |
     0-*.md
 theme:
