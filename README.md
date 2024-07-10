@@ -1,4 +1,4 @@
-# Nuclei Studio Supply Documents
+![image](https://github.com/Nuclei-Software/nuclei-studio/assets/1538922/70588644-7a33-4125-a75c-fd0bfc9b3d56)# Nuclei Studio Supply Documents
 
 [![Deploy MkDocs](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/mkdoc.yml/badge.svg)](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/mkdoc.yml) [![pages-build-deployment](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/pages/pages-build-deployment/badge.svg)](https://nuclei-software.github.io/nuclei-studio/)
 
@@ -13,6 +13,7 @@
 
 - **Nuclei Studio IDE Documentation**: https://nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.pdf
 - **Nuclei Tools(Toolchain/OpenOCD/Qemu/Model) Documentation**: https://doc.nucleisys.com/nuclei_tools/
+- **Nuclei Studio NPK Introduction**: https://github.com/Nuclei-Software/nuclei-sdk/wiki/Nuclei-Studio-NPK-Introduction
 
 
 Please create new doc based on [Doc Template](0-template.md)
