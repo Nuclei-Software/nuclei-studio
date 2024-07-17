@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available - Nuclei Studio Supply Documents</title>
+    <title>UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7 - Nuclei Studio Supply Documents</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,8 +13,8 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Error: Couldn\u0027t find an available hardware trigger / Error: can\u0027t add breakpoint: resource not available";
-        var mkdocs_page_input_path = "13-error_could_not_find_an_available_hardware_trigger.md";
+        var mkdocs_page_name = "UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7";
+        var mkdocs_page_input_path = "15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -92,22 +92,22 @@
                 <li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
-    </li>
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../13-error_could_not_find_an_available_hardware_trigger/">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</a>
                 </li>
               </ul>
               <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/">cannot find -lncrt_balanced: No such file or directory</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7/">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
+    </li>
+    </ul>
                 </li>
               </ul>
       </div>
@@ -124,9 +124,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</li>
+      <li class="breadcrumb-item active">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/13-error_could_not_find_an_available_hardware_trigger.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -134,23 +134,55 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="error-couldnt-find-an-available-hardware-trigger-error-cant-add-breakpoint-resource-not-available">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available<a class="headerlink" href="#error-couldnt-find-an-available-hardware-trigger-error-cant-add-breakpoint-resource-not-available" title="Permanent link">&para;</a></h1>
+                <h1 id="unsatisfiedlinkerror-of-swt-win32-4965r8dll-on-windows-7">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7<a class="headerlink" href="#unsatisfiedlinkerror-of-swt-win32-4965r8dll-on-windows-7" title="Permanent link">&para;</a></h1>
 <h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>在NucleiStudio中使用OpenOCD调试hbird/hbirdv2处理器（不支持硬件断点）或者 Nuclei 100 系列的处理器时，当程序运行在Flash/FlashXip下时，会报Error。</p>
-<pre><code>Error: Couldn't find an available hardware trigger.
-Error: can't add breakpoint: resource not available
+<p>用户在Windows 7、Windows 8下使用NucleiStudio 2024.06时，发现启动不了，在<code>NucleiStudio\configuration</code>目录的日志中可以看到以下报错内容：</p>
+<pre><code>!ENTRY org.eclipse.osgi 4 0 2024-07-16 10:41:57.010
+!MESSAGE Application error
+!STACK 1
+java.lang.UnsatisfiedLinkError: Could not load SWT library. Reasons: 
+    C:\NucleiStudio\configuration\org.eclipse.osgi\492\0\.cp\swt-win32-4965r11.dll: 找不到指定的程序。
+    no swt-win32 in java.library.path: C:\NucleiStudio;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:/NucleiStudio//plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin/server;C:/NucleiStudio//plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin;C:\Java\JCDK3.0.4_ClassicEdition\bin;C:\Java\jdk1.6.0_26\bin;C:\Java\jdk1.6.0_26\lib;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;D:\Python25;C:\NucleiStudio;;.
+    no swt in java.library.path: C:\NucleiStudio;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:/NucleiStudio//plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin/server;C:/NucleiStudio//plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin;C:\Java\JCDK3.0.4_ClassicEdition\bin;C:\Java\jdk1.6.0_26\bin;C:\Java\jdk1.6.0_26\lib;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;D:\Python25;C:\NucleiStudio;;.
+    C:\Users\username\.swt\lib\win32\x86_64\swt-win32-4965r11.dll: 找不到指定的程序。
+    Can't load library: C:\Users\username\.swt\lib\win32\x86_64\swt-win32.dll
+    Can't load library: C:\Users\username\.swt\lib\win32\x86_64\swt.dll
+    C:\Users\username\.swt\lib\win32\x86_64\swt-win32-4965r11.dll: 找不到指定的程序。
+
+    at org.eclipse.swt.internal.Library.loadLibrary(Library.java:345)
+    at org.eclipse.swt.internal.Library.loadLibrary(Library.java:254)
+    at org.eclipse.swt.internal.C.&lt;clinit&gt;(C.java:19)
+    at org.eclipse.swt.internal.win32.STARTUPINFO.&lt;clinit&gt;(STARTUPINFO.java:42)
+    at org.eclipse.swt.widgets.Display.&lt;clinit&gt;(Display.java:149)
+    at org.eclipse.ui.internal.Workbench.createDisplay(Workbench.java:721)
+    at org.eclipse.ui.PlatformUI.createDisplay(PlatformUI.java:185)
+    at org.eclipse.ui.internal.ide.application.IDEApplication.createDisplay(IDEApplication.java:182)
+    at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:125)
+    at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:208)
+    at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:143)
+    at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:109)
+    at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:439)
+    at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:271)
+    at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+    at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+    at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:668)
+    at org.eclipse.equinox.launcher.Main.basicRun(Main.java:605)
+    at org.eclipse.equinox.launcher.Main.run(Main.java:1481)
+
 </code></pre>
-<p><img alt="" src="../asserts/images/13-1.png" /></p>
-<p><img alt="" src="../asserts/images/13-2.png" /></p>
-<p>是因为所运行的CPU不支持硬件断点，导致程序运行在Flash上的时候，IDE调试功能无法正常工作，这个是IDE会需要打一个临时断点的缘故导致的。如果需要下载并运行程序，切换到Run运行模式可以正常运行程序。</p>
+<p>是因为在eclipse 2024.06版本中，有使用到一些特性，而该特性对操作系统有要求，可以参考 <a href="https://github.com/eclipse-platform/eclipse.platform.swt/issues/1252">https://github.com/eclipse-platform/eclipse.platform.swt/issues/1252</a></p>
+<p><img alt="" src="../asserts/images/15-1.png" /></p>
+<p>并且在eclipse的官方文档中，针对eclipse测试的操作系统中也做了说明，对某些版本的操作系统不再做兼容。可以参考 <a href="https://eclipse.dev/eclipse/development/plans/eclipse_project_plan_4_32.xml#target_environments">https://eclipse.dev/eclipse/development/plans/eclipse_project_plan_4_32.xml#target_environments</a></p>
+<p><img alt="" src="../asserts/images/15-2.png" /></p>
+<p>而NucleiStudio 2024.06是基于eclipse 2024.06，所以也会有同类型的问题。</p>
 <h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>当在调试此类型处理器时，如果需要调试的话，就需要将程序编译运行在RAM上。</p>
+<p>请在windows 10或以上的版本操作系统上使用 NucleiStudio 2024.06。</p>
+<p>如果想在Windows 7、Windows 8等低版本的操作系统上使用NucleiStudio，可以考虑使用NucleiStudio 2024.02及以下版本。</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/" class="btn btn-neutral float-left" title="关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/" class="btn btn-neutral float-right" title="cannot find -lncrt_balanced: No such file or directory">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/" class="btn btn-neutral float-left" title="cannot find -lncrt_balanced: No such file or directory"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr/>
@@ -177,10 +209,8 @@ Error: can't add breakpoint: resource not available
         </span>
     
     
-      <span><a href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
-    
-      <span><a href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
