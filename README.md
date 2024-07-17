@@ -44,4 +44,5 @@ Click [this link](https://nuclei-software.github.io/nuclei-studio/) to see onlin
 | [12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md](12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md) | 关于dhrystone在IDE上跑分和NSDK命令行跑分不一致的问题 |
 | [13-error_could_not_find_an_available_hardware_trigger.md](13-error_could_not_find_an_available_hardware_trigger.md) | Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available |
 | [14-cannot_find_-lncrt_balanced_no_such_file_or_directory.md](14-cannot_find_-lncrt_balanced_no_such_file_or_directory.md) | cannot find -lncrt_balanced: No such file or directory |
+| [15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7.md](15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7.md) | UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7 |
 
