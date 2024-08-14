@@ -32,15 +32,15 @@
 在Nuclei Studio菜单中找到**Help->Install New Software**, 然后在Install工具的`Work with`
 选中`NucleiStudio - https://ide.nucleisys.com/NucleiStudio/`,下面会列出所有待更新的插件。
 
-![](asserts/images/195660415249583.png)
+![](asserts/images/7/195660415249583.png)
 
 在弹出的插件列表中选中需要升级的插件，我们选中`RISC-V C/C++ Cross Development Tools`, 然后Next。
 
-![](asserts/images/v_20231116151002.png)
+![](asserts/images/7/v_20231116151002.png)
 
 在升级过程中，Nuclei Studio会询问Trust Artifacts时，操作如下图，选择Trust Selected, 然后升级完成，Nuclei Studio会重启。至此Nuclei Studio Plugins升级完成。
 
-![](asserts/images/v_18001190261409.png)
+![](asserts/images/7/v_18001190261409.png)
     
 **2. 升级build-tools**
 

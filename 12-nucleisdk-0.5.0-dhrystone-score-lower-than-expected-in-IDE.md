@@ -18,9 +18,9 @@
 
 4. 但实际需要跑分时，要先取消选中`-msave-restore`选项，该跑分结果为**1.664**。
 
-![](asserts/images/12-1.png)
-![](asserts/images/12-2.png)
-![](asserts/images/12-3.png)
-![](asserts/images/12-4.png)
-![](asserts/images/12-5.png)
-![](asserts/images/12-6.png)
+![](asserts/images/12/12-1.png)
+![](asserts/images/12/12-2.png)
+![](asserts/images/12/12-3.png)
+![](asserts/images/12/12-4.png)
+![](asserts/images/12/12-5.png)
+![](asserts/images/12/12-6.png)

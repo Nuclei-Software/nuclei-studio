@@ -41,11 +41,11 @@ java.lang.UnsatisfiedLinkError: Could not load SWT library. Reasons:
 
 是因为在eclipse 2024.06版本中，有使用到一些特性，而该特性对操作系统有要求，可以参考 https://github.com/eclipse-platform/eclipse.platform.swt/issues/1252
 
-![](asserts/images/15-1.png)
+![](asserts/images/15/15-1.png)
 
 并且在eclipse的官方文档中，针对eclipse测试的操作系统中也做了说明，对某些版本的操作系统不再做兼容。可以参考 https://eclipse.dev/eclipse/development/plans/eclipse_project_plan_4_32.xml#target_environments
 
-![](asserts/images/15-2.png)
+![](asserts/images/15/15-2.png)
 
 而NucleiStudio 2024.06是基于eclipse 2024.06，所以也会有同类型的问题。
 

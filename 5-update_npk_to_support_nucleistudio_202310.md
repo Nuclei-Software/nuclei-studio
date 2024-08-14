@@ -155,7 +155,7 @@ buildconfig:
 
 最终显示创建项目的时候显示效果如下
 
-![企业微信截图_16999495827037](https://github.com/Nuclei-Software/nuclei-studio/assets/1538922/dc9aeec3-0887-4a28-8fb7-418c98c9e4de)
+![](asserts/images/5/create_project.png)
 
 
 ## libncrt的升级
