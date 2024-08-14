@@ -6,6 +6,6 @@
 qemu-system-riscv64.exe: cannot set up quest memory 'riscv.evalsoc.flashxip' Invalid argument
 ```
 
-![](asserts/images/cannotsetupguestmemiry.png)
+![](asserts/images/1/cannotsetupguestmemiry.png)
 
 一般可以通过关闭某些应用，释放一部分内存以供qemu使用，即可解决些问题。

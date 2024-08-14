@@ -31,7 +31,7 @@ set PATH=%NSIDE%\toolchain\gcc\bin;%NSIDE%\toolchain\build-tools\bin;%PATH%
 
 > 这个**2023.10**版本的举例的命令 会 弹出一个额外的命令行窗口进行输出。
 
-![Nuclei Studio Command Line Build](asserts/images/wx_20231208153525.png)
+![Nuclei Studio Command Line Build](asserts/images/10/wx_20231208153525.png)
 
 - `NucleiStudio.exe`：该参数是Nuclei Studio的启动应用，在Nuclei Studio的安装目录下。
 - `--launcher.suppressErrors`：该参数是用于抑制Nuclei Studio启动时的错误信息。
