@@ -18,6 +18,9 @@ nav:
     - 12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md
     - 13-error_could_not_find_an_available_hardware_trigger.md
     - 14-cannot_find_-lncrt_balanced_no_such_file_or_directory.md
+    - 15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7.md
+    - 16-incomplete_data_output_when_using_profiling_function.md
+    - 17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage.md
 exclude_docs: |
     0-*.md
 theme:
