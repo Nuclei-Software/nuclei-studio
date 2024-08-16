@@ -111,7 +111,11 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用Profiling功能时数据输出不完整</a>
+                <li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用Profiling功能时可能遇到的一些问题</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">一个例子用来展示 Profiling 以及 Code coverage 功能</a>
                 </li>
               </ul>
       </div>
@@ -144,8 +148,8 @@
 <pre><code>Error: Couldn't find an available hardware trigger.
 Error: can't add breakpoint: resource not available
 </code></pre>
-<p><img alt="" src="../asserts/images/13-1.png" /></p>
-<p><img alt="" src="../asserts/images/13-2.png" /></p>
+<p><img alt="" src="../asserts/images/13/13-1.png" /></p>
+<p><img alt="" src="../asserts/images/13/13-2.png" /></p>
 <p>是因为所运行的CPU不支持硬件断点，导致程序运行在Flash上的时候，IDE调试功能无法正常工作，这个是IDE会需要打一个临时断点的缘故导致的。如果需要下载并运行程序，切换到Run运行模式可以正常运行程序。</p>
 <h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>当在调试此类型处理器时，如果需要调试的话，就需要将程序编译运行在RAM上。</p>

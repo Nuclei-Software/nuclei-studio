@@ -111,7 +111,11 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用Profiling功能时数据输出不完整</a>
+                <li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用Profiling功能时可能遇到的一些问题</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">一个例子用来展示 Profiling 以及 Code coverage 功能</a>
                 </li>
               </ul>
       </div>
@@ -175,9 +179,9 @@ java.lang.UnsatisfiedLinkError: Could not load SWT library. Reasons:
 
 </code></pre>
 <p>是因为在eclipse 2024.06版本中，有使用到一些特性，而该特性对操作系统有要求，可以参考 <a href="https://github.com/eclipse-platform/eclipse.platform.swt/issues/1252">https://github.com/eclipse-platform/eclipse.platform.swt/issues/1252</a></p>
-<p><img alt="" src="../asserts/images/15-1.png" /></p>
+<p><img alt="" src="../asserts/images/15/15-1.png" /></p>
 <p>并且在eclipse的官方文档中，针对eclipse测试的操作系统中也做了说明，对某些版本的操作系统不再做兼容。可以参考 <a href="https://eclipse.dev/eclipse/development/plans/eclipse_project_plan_4_32.xml#target_environments">https://eclipse.dev/eclipse/development/plans/eclipse_project_plan_4_32.xml#target_environments</a></p>
-<p><img alt="" src="../asserts/images/15-2.png" /></p>
+<p><img alt="" src="../asserts/images/15/15-2.png" /></p>
 <p>而NucleiStudio 2024.06是基于eclipse 2024.06，所以也会有同类型的问题。</p>
 <h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>请在windows 10或以上的版本操作系统上使用 NucleiStudio 2024.06。</p>
@@ -187,7 +191,7 @@ java.lang.UnsatisfiedLinkError: Could not load SWT library. Reasons:
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/" class="btn btn-neutral float-left" title="cannot find -lncrt_balanced: No such file or directory"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../16-incomplete_data_output_when_using_profiling_function/" class="btn btn-neutral float-right" title="使用Profiling功能时数据输出不完整">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../16-incomplete_data_output_when_using_profiling_function/" class="btn btn-neutral float-right" title="使用Profiling功能时可能遇到的一些问题">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
