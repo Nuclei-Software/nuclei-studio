@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>使用Profiling功能时可能遇到的一些问题 - Nuclei Studio Supply Documents</title>
+    <title>使用 Profiling 功能时可能遇到的一些问题 - Nuclei Studio Supply Documents</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,7 +13,7 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "\u4f7f\u7528Profiling\u529f\u80fd\u65f6\u53ef\u80fd\u9047\u5230\u7684\u4e00\u4e9b\u95ee\u9898";
+        var mkdocs_page_name = "\u4f7f\u7528 Profiling \u529f\u80fd\u65f6\u53ef\u80fd\u9047\u5230\u7684\u4e00\u4e9b\u95ee\u9898";
         var mkdocs_page_input_path = "16-incomplete_data_output_when_using_profiling_function.md";
         var mkdocs_page_url = null;
       </script>
@@ -105,9 +105,9 @@
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">使用Profiling功能时可能遇到的一些问题</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">使用 Profiling 功能时可能遇到的一些问题</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#1-gprofgcov">问题1：日志打印中报片上内存不足，没有充足空间存放 gprof/gcov 数据</a>
+    <li class="toctree-l2"><a class="reference internal" href="#1-gprofgcov">问题1：日志打印中报片上内存不足，没有充足内存来存放 gprof/gcov 数据</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#_1">解决方案</a>
     </li>
@@ -140,7 +140,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">使用Profiling功能时可能遇到的一些问题</li>
+      <li class="breadcrumb-item active">使用 Profiling 功能时可能遇到的一些问题</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/16-incomplete_data_output_when_using_profiling_function.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
@@ -150,17 +150,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="profiling">使用Profiling功能时可能遇到的一些问题<a class="headerlink" href="#profiling" title="Permanent link">&para;</a></h1>
-<p>目前使用 Profiling 功能可能遇到一些问题，记录如下：
-* <strong>问题1</strong>：日志打印中报片上内存不足，没有充足空间存放 gprof/gcov 数据
-* <strong>问题2</strong>：采用串口输出的方式收集数据，打印被冲掉，Console 或 Terminal 收集的数据不全，导致数据解析失败，不能生成<code>gmon.out</code>文件或者<code>*.gcno</code>文件
-* <strong>问题3</strong>：删掉 <code>gmon.out</code> 文件，再次解析时，弹出 No files have been generated 错误弹框</p>
-<h3 id="1-gprofgcov">问题1：日志打印中报片上内存不足，没有充足空间存放 gprof/gcov 数据<a class="headerlink" href="#1-gprofgcov" title="Permanent link">&para;</a></h3>
-<p>gprof/gcov data 需要存到片上内存上，需要占用片上内存空间(几十到几百KB不等)，占用内存的大小与用例规模有关，需要确保片上内存足够大。</p>
+                <h1 id="profiling">使用 Profiling 功能时可能遇到的一些问题<a class="headerlink" href="#profiling" title="Permanent link">&para;</a></h1>
+<p>目前使用 Profiling 功能可能遇到一些问题，记录如下：<br />
+<em> </em><em>问题1</em><em>：日志打印中报片上内存不足，没有充足内存来存放 gprof/gcov 数据
+* </em><em>问题2</em><em>：采用串口输出的方式收集数据，打印被冲掉，Console 或 Terminal 收集的数据不全，导致数据解析失败，弹出 No files have been generated 错误弹框<br />
+</em> <strong>问题3</strong>：删掉 <code>gmon.out</code> 文件，再次解析时，弹出 No files have been generated 错误弹框</p>
+<h3 id="1-gprofgcov">问题1：日志打印中报片上内存不足，没有充足内存来存放 gprof/gcov 数据<a class="headerlink" href="#1-gprofgcov" title="Permanent link">&para;</a></h3>
+<p>gprof/gcov data 需要存到片上内存上，占用内存的大小与用例规模有关(几十到几百KB不等)，需要确保片上内存足够大。</p>
 <p><img alt="Alt text" src="../asserts/images/16/overflow.png" /></p>
 <h3 id="_1">解决方案<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
-<p>首先需要确认软件配置的内存大小与硬件实际大小相匹配（ilm/sram/flash/ddr/）,可以使用内存大一点的下载方式（如 <code>DOWNLOAD=ddr</code>）。</p>
-<p>修改软件配置的内存大小，与硬件实际大小相匹配：
+<p>首先需要确认软件配置的内存大小与硬件实际大小相匹配（ilm/sram/flash/ddr/），否则需要适配软件链接脚本内存布局： <br />
 比如，如果是 <code>DOWNLOAD=ilm</code> 模式下载，可以按硬件的 ilm 与 dlm 大小适配。
 对于 nuclei sdk 0.6.0 版本，修改的文件为<code>nuclei-sdk/SoC/evalsoc/Board/nuclei_fpga_eval/Source/GCC/gcc_evalsoc_ilm.ld</code></p>
 <pre><code class="language-c">INCLUDE evalsoc.memory
@@ -171,31 +170,29 @@ MEMORY
   ram (wxa!r) : ORIGIN = DLM_MEMORY_BASE,   LENGTH = DLM_MEMORY_SIZE
 }
 </code></pre>
+<p>如果 <code>DOWNLOAD=ilm</code> 模式内存不足，可以使用内存大一点的下载方式（如 <code>DOWNLOAD=ddr</code>）。</p>
 <h3 id="2console-terminal">问题2：Console 或 Terminal 收集的数据不全导致数据解析时失败<a class="headerlink" href="#2console-terminal" title="Permanent link">&para;</a></h3>
-<p>在 NucleiStudio 2024.06 中，当选择使用串口输出的方式使用 Profiling 功能时，可能遇到在使用 <code>Parse and Generate Hexdump</code> 解析数据时时没有生成对应的 <code>gmon.out</code> 文件或者 <code>*.gcno</code> 文件。这可能是因为串口数据被冲掉，导致数据不完整，从而解析失败
+<p>在 NucleiStudio 2024.06 中，当选择使用串口输出的方式使用 Profiling 功能时，可能使用 <code>Parse and Generate Hexdump</code> 解析数据时弹出 No files have been generated 错误弹框，最后没有生成对应的 <code>gmon.out</code> 文件或者 <code>*.gcno</code> 文件。这可能是因为串口数据被冲掉，导致数据不完整从而解析失败
 <img alt="generated_fail" src="../asserts/images/16/generated_fail.png" /></p>
-<p>确认方法：需确保串口打印开始时的打印没有被冲掉，参考<a href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">一个例子用来展示Profiling以及Code coverage功能</a></p>
+<p><strong>确认方法：</strong><br />
+需确保串口开始时的打印没有被冲掉，参考<a href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">一个例子用来展示Profiling以及Code coverage功能</a></p>
 <p><img alt="parse_profiling_fail" src="../asserts/images/16/parse_profiling_fail.png" /></p>
 <h3 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
 <p>因为在Console或者Terminal中，对输出的内容条数有限制，当输出的内容长度超过限制时，前面的内容会被冲掉，导致内容不完整，这样会解析失败。</p>
-<p>需要调节 Console 或 Terminal 输出大小限制，确保数据没有被冲掉。为了更方便的使用 Profiling 功能，可以将 Console 和 Terminal 中对输出内容的上限做修改。</p>
-<ul>
-<li>
-<p>建议将Console中输出内容条限修改为不受限制。
+<p>需要调节 Console 或 Terminal 输出大小限制，确保数据没有被冲掉。  <br />
+* 建议将Console中输出内容条限修改为不受限制。<br />
 Window-&gt;Preference 进入如下界面：
 <img alt="config_console_limit" src="../asserts/images/16/config_console_limit.png" /></p>
-</li>
-<li>
-<p>建议将Terminal中输出内容条限修改为一个较大的值。
+<ul>
+<li>建议将Terminal中输出内容条限修改为一个较大的值。<br />
 Window-&gt;Preference 进入如下界面：
-<img alt="config_terminal_limit" src="../asserts/images/16/config_terminal_limit.png" /></p>
-</li>
+<img alt="config_terminal_limit" src="../asserts/images/16/config_terminal_limit.png" /></li>
 </ul>
 <h3 id="3-gmonout-no-files-have-been-generated">问题3：删掉 gmon.out 文件，再次解析，弹出 No files have been generated 错误弹框<a class="headerlink" href="#3-gmonout-no-files-have-been-generated" title="Permanent link">&para;</a></h3>
 <p>手动删掉工程文件夹下的 gmon.out 文件，再次解析时出现 <code>No files have been generated</code> 的错误弹框</p>
 <p><img alt="generated_fail" src="../asserts/images/16/generated_fail.png" /></p>
 <h3 id="_3">解决方案<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
-<p>手动删掉 gmon.out 文件后，需要手动刷新一下工程。
+<p>手动删掉 gmon.out 文件后，需要手动刷新一下工程。<br />
 <img alt="refresh_project" src="../asserts/images/16/refresh_project.png" /></p>
               
             </div>
