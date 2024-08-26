@@ -7,7 +7,7 @@
 ### Nuclei Model Profiling
 
 在[一个例子用来展示 Profiling 以及 Code coverage 功能](https://nuclei-software.github.io/nuclei-studio/17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/)中已经通过 qemu 以及上板测试两种运行方式展示了
-如何在IDE中导入特定程序进行 Profiling，此文档将介绍如何在 Nuclei Model 中进行 Profiling。
+如何在IDE中导入特定程序进行 Profiling，此文档中的一部分将介绍如何针对Nuclei Model 完成 Profiling。
 
 Nuclei Model Profiling 的优势：
 - 无需使用开发板等硬件
@@ -18,7 +18,7 @@ Nuclei Model Profiling 的优势：
 
 ### NICE/VNICE 自定义指令加速
 
-**NICE/VNICE**使得用户可以结合自己的应用扩展自定义指令，将芯来的标准处理器核扩展成为面向领域专用的处理器。**NICE**适用于无需使用Vector的自定义指令，**VNICE**适用于需要使用Vector的自定义指令。
+**NICE/VNICE**使得用户可以结合自己的应用扩展自定义指令，将芯来的标准处理器核扩展成为面向领域专用的处理器。**NICE** 适用于无需使用 RISCV Vector 的自定义指令，**VNICE** 适用于需要使用 RISCV Vector 的自定义指令。
 
 [demo_nice](https://doc.nucleisys.com/nuclei_sdk/design/app.html#demo-nice)/[demo_vnice](https://doc.nucleisys.com/nuclei_sdk/design/app.html#demo-vnice)介绍了 Nuclei 针对 **NICE/VNICE** 的 demo 应用
 是如何编译运行的，此文档将通过改造一个更为常见的 AES 加解密的例子，说明该如何使用 **NICE/VNICE** 指令替换热点函数，然后通过 Nuclei Studio 的 Profiling 功能分析替换前后的程序性能。
@@ -52,7 +52,7 @@ File->New->New Nuclei RISC-V C/C++ Project，选择Nuclei FPGA Evalution Board->
 
 #### step2：基于 demo_vnice 工程移植 aes_demo 裸机用例
 
-移植 aes_demo 时，需要保留 `demo_vnice` 中的 insn.h 内嵌汇编头文件，方便后续添加自定义的 **NICE/VNICE** 指令，在 main.c 中还需要保留 **NICE/VNICE** 指令执行前的CSR使能代码：
+移植 aes_demo 时，需要保留 `demo_vnice` 中的 `insn.h` 内嵌汇编头文件框架，方便后续添加自定义的 **NICE/VNICE** 指令，在 `main.c` 中还需要保留 **NICE/VNICE** 指令执行前的CSR使能代码：
 
 ~~~c
 __RV_CSR_SET(CSR_MSTATUS, MSTATUS_XS);
@@ -125,7 +125,7 @@ static void aes_mix_columns_dec(
 }
 ~~~
 
-由于输入输出地址一样，可以考虑用一条 **NICE** 指令替换，内嵌汇编中只使用到了`rs1`描述入参地址，不需要`rd`和`rs2`：
+由于输入输出地址一样，可以考虑用一条 **NICE** 指令替换，内嵌汇编中只使用到了`rs1`描述入参地址，不需要使用`rd`和`rs2`：
 
 ~~~
 __STATIC_FORCEINLINE void custom_aes_mix_columns_dec(uint8_t* addr)
@@ -197,7 +197,7 @@ static void aes_mix_columns_enc(
 }
 ~~~
 
-考虑到可能会无法用一条指令替换，可使用2条 **VNICE** 指令，第一条 load 16 byte 数据到 Vector 寄存器，第二条再完成计算以及 store：
+考虑到指令实现可能无法只用1条指令完成，可使用2条 **VNICE** 指令替换此算法，第一条 load 16 byte 数据到 Vector 寄存器，第二条再完成计算以及 store：
 
 ~~~
 __STATIC_FORCEINLINE vint8m1_t __custom_vnice_load_v_i8m1 (uint8_t* addr)
@@ -221,7 +221,7 @@ __STATIC_FORCEINLINE void __custom_vnice_aes_mix_columns_enc_i8m1 (uint8_t *addr
 }
 ~~~
 
-用户通过定义 Vector 寄存器用上刚定义好的 VNICE 指令如下：
+用户通过定义 Vector 寄存器以及使用上定义好的 VNICE 指令如下：
 
 ~~~
 static void aes_mix_columns_enc(
@@ -261,10 +261,9 @@ static void aes_mix_columns_enc(
 
 #### step6：在 Nuclei Model 中实现 NICE/VNICE 指令
 
-此部分不是本文档的重点，用户可以通过 Nuclei Studio 中 NICE Wizard 配置完成 **NICE/VNICE** 指令的实现模板生成，并在其中实现自定义指令和指令 cycle 的添加。
+此部分不是本文档的重点，用户可以通过 Nuclei Studio 中的 NICE Wizard 配置完成 **NICE/VNICE** 指令的实现模板生成，并在其中实现自己的自定义指令和指令 cycle 的添加。
 
-当前 AES demo 的 **NICE/VNICE** 指令已经实现在  包含在了新的 Nuclei Studio中，标定 `custom_aes_mix_columns_dec` 为3cycle，`__custom_vnice_load_v_i8m1` 为1cycle，
- `__custom_vnice_aes_mix_columns_enc_i8m1` 为2cycle。
+当前 AES demo 的 **NICE/VNICE** 指令已经实现在[环境准备的model可执行程序 xl_cpumodel](#环境准备)中，标定 `custom_aes_mix_columns_dec` 为3cycle，`__custom_vnice_load_v_i8m1` 为1cycle，`__custom_vnice_aes_mix_columns_enc_i8m1` 为2cycle。
 
 #### step7：热点函数再分析
 
@@ -276,5 +275,5 @@ static void aes_mix_columns_enc(
 
 ![image-parse_gprof_aes_enc_dec](asserts/images/18/parse_gprof_aes_enc_dec.png)
 
-AES加解密demo：[优化后工程链接下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc5f6zPQW)
+AES加解密 NICE/VNICE demo：[优化后工程链接下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc5f6zPQW)
 
