@@ -46,7 +46,7 @@ AES加解密demo：[优化前工程链接下载](https://drive.weixin.qq.com/s?k
 
 File->New->New Nuclei RISC-V C/C++ Project，选择Nuclei FPGA Evalution Board->sdk-nuclei_sdk @0.6.0
 
-**注意：** Nuclei SDK 需选择 0.6.0 及以后版本才支持 model Profiling
+**注意：** Nuclei SDK 需选择 0.6.0 及以后版本
 
 ![image-create_aes_project](asserts/images/18/create_aes_project.png)
 
@@ -65,7 +65,7 @@ __RV_CSR_SET(CSR_MSTATUS, MSTATUS_XS);
 #### step3：model 仿真程序
 
 Nuclei Model 仿真程序需要配置 Nuclei Studio 中的 RVProf 运行配置，打开 Nuclei Studio 的 Run Configurations 后，先在 Main 选项卡中选择编译好的 elf 文件路径，然后在 RVProf 选项卡
-的 Config options 中配置 `--trace=1 --gprof=1 --logdir=Debug`，`--trace=1` 表示开启 rvtrace，`--gprof=1` 表示开启 gprof 功能，`--logdir=Debug` 则表示最终生成的 *.rvtrace 文件、
+的 Config options 中完成 model 运行配置 `--trace=1 --gprof=1 --logdir=Debug`，`--trace=1` 表示开启 rvtrace，`--gprof=1` 表示开启 gprof 功能，`--logdir=Debug` 则表示最终生成的 *.rvtrace 文件、
 *.gmon 文件存存放的路径为当前工程下的 Debug 目录，然后点击 Run，model 就开始运行程序了。
 
 ![image-Main_configuration](asserts/images/18/Main_configuration.png)
@@ -221,7 +221,7 @@ __STATIC_FORCEINLINE void __custom_vnice_aes_mix_columns_enc_i8m1 (uint8_t *addr
 }
 ~~~
 
-用户通过定义 Vector 寄存器以及使用上定义好的 VNICE 指令如下：
+用户通过定义 Vector 寄存器以及使用上定义好的 VNICE 指令内嵌汇编如下：
 
 ~~~
 static void aes_mix_columns_enc(
