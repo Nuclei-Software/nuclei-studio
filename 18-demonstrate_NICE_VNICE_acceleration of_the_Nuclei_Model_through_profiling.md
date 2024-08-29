@@ -1,6 +1,6 @@
 # 通过Profiling展示Nuclei Model NICE/VNICE指令加速
 
-> 由于 Nuclei Model 仅支持Linux版本，所以此文档的测试都是基于 Nuclei Studio 的 Linux版本完成的。
+> 由于 Nuclei Model 仅支持Linux版本，所以此文档的测试都是基于 Nuclei Studio 的 Linux版本 (>= 2024.06) 完成的。
 
 ## 背景描述
 
@@ -14,7 +14,7 @@ Nuclei Model Profiling 的优势：
 - model 中内建了 gprof 功能，无需 Profiling 库和 `gcc -pg` 选项就可以产生 Profiling 文件
 - 采取了指令级别的采样，可以进行指令级别的 Profiling 分析
 
-在[NucleiStudio_User_Guide.pdf](https://download.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202406.pdf)相关章节对 Nuclei Model 如何仿真性能分析已经有较详细的描述，此文档以一个例子来展示其实际应用。
+在[NucleiStudio_User_Guide.pdf](https://download.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202406.pdf)相关章节对 Nuclei Model 如何仿真性能分析配置已经有较详细的描述，此文档以一个例子来展示其实际应用。
 
 ### NICE/VNICE 自定义指令加速
 
@@ -287,13 +287,15 @@ AES demo 中定义的 **NICE/VNICE** 指令实现如下图，通过指令的 `op
 
 **NICE** 指令实现可以参考 `nice/inc/decode_macros.h` 和 `xlspike/include/riscv` 中的头文件，**VNICE** 指令实现可以参考 `xlspike/include/riscv/v_ext_macros.h`，在指令实现完后，将自定义指令需要的 cycle 数 n 直接标定：`STATE.mcycle->bump(n);` 即可。
 
+这里根据硬件通过 **NICE/VNICE** 实现此算法的理论值，标定 `custom_aes_mix_columns_dec` 为7 cycle，`__custom_vnice_load_v_i8m1` 为1 cycle，`__custom_vnice_aes_mix_columns_enc_i8m1` 为2 cycle。
+
 ![image-xlmodel_nice_aes](asserts/images/18/xlmodel_nice_aes.png)
 
 实现 AES demo 的 **NICE/VNICE** 指令的 Nuclei model 软件包[添加AES NICE指令model软件包下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc1wrUKu1)，用户通过此软件包编译运行得到的 model 可执行程序和[环境准备](#环境准备)中的model可执行程序 `xl_cpumodel`一样，同样需要替换到 Linux 版 Nuclei Studio 2024.06 `NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel` 才可以使用生效。
 
 #### step7：热点函数再分析
 
-重新完成 step4：解析 gprof 数据，双击 `gprof0.gmon` 可以看到 CPU 占用率较高的热点函数已经没有 `aes_mix_columns_enc` 和 `aes_mix_columns_dec` 了：
+重新完成 step3：model 仿真程序，双击 `gprof0.gmon` 可以看到 CPU 占用率较高的热点函数已经没有 `aes_mix_columns_enc` 和 `aes_mix_columns_dec` 了：
 
 ![image-parse_gprof_nice](asserts/images/18/parse_gprof_nice.png)
 
