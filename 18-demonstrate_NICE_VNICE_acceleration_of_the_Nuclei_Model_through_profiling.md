@@ -336,7 +336,7 @@ AES demo 中定义的 **NICE/VNICE** 指令实现如下图，通过指令的 `op
 
 ![image-parse_gprof_aes_enc_dec](asserts/images/18/parse_gprof_aes_enc_dec.png)
 
-数据统计如下：
+数据统计如下：(`enc`: `aes_mix_columns_enc`, `dec`: `aes_mix_columns_dec`)
 
 | Function                    | Before Optimization | NICE/VNICE Optimization  |
 |-----------------------------|---------------------|--------------------------|
