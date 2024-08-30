@@ -27,13 +27,9 @@ Nuclei Model Profiling 的优势：
 
 ### 环境准备
 
-由于 Nuclei Model 针对 AES 加解密程序 **NICE/VNICE** 指令做了新的实现，所以不能直接使用Linux 版的 Nuclei Studio，提供了实现 AES 加解密程序 **NICE/VNICE** 指令 model 的可执行程序 xl_cpumodel(https://drive.weixin.qq.com/s?k=ABcAKgdSAFc03skCLp)，用户需要替换到 Linux 版 Nuclei Studio 2024.06 `NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel`中使用。
-
 Nuclei Studio：[NucleiStudio 2024.06 Linux](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202406-lin64.tgz)
 
-AES加解密demo：[优化前工程链接下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcR7Ti53K)
-
-### model Profiling
+### Model Profiling
 
 工程创建方式有两种：
 
@@ -62,26 +58,38 @@ __RV_CSR_SET(CSR_MSTATUS, MSTATUS_XS);
 
 ![image-compile_aes_demo](asserts/images/18/compile_aes_demo.png)
 
+用户可以下载我们移植好的 AES 加解密 demo：[优化前AES工程链接下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcR7Ti53K)
+
+下载 zip 包后，可以直接导入到 nuclei studio 中运行(导入步骤：File->Import->Existing Projects into Workspace->Next->Select archive file->选择zip压缩包->next即可)
+
 #### step3：model 仿真程序
 
-Nuclei Model 仿真程序需要配置 Nuclei Studio 中的 RVProf 运行配置，打开 Nuclei Studio 的 `Run Configurations` 后，先在 `Main` 选项卡中选择编译好的 elf 文件路径，然后在 `RVProf` 选项卡
+首先将 `aes_debug.h` 中的 `LOCAL_DEBUG` 打开，准备测试 AES 算法的整体 cycle 数。
+
+Nuclei Model 仿真程序需要配置 Nuclei Studio 中的 RVProf 运行配置，打开 Nuclei Studio 主菜单栏的 `Run` 选项的 `Run Configurations` 后，先在 `Main` 选项卡中选择编译好的 elf 文件路径，然后在 `RVProf` 选项卡
 的 `Config options` 中完成 model 运行配置 `--trace=1 --gprof=1 --logdir=Debug`，`--trace=1` 表示开启 rvtrace，`--gprof=1` 表示开启 gprof 功能生成 `*.gmon` 文件，`--logdir=Debug` 则表示最终生成的 `*.rvtrace` 文件、`*.gmon` 文件存存放的路径为当前工程下的 Debug 目录，取消勾选 `Start RVProf locally`，然后点击 `Apply` 和 `Run`，model 就开始运行程序了。
 
 ![image-Main_configuration](asserts/images/18/Main_configuration.png)
 
 ![image-RVProf_configuration](asserts/images/18/RVProf_configuration.png)
 
-在 Console 中会看到 `Total elapsed time` 说明 model 已经完成仿真了：
+在 Console 中会看到 `Total elapsed time` 说明 model 已经完成仿真了，得到 AES 算法整体消耗 154988 cycle。
 
-![image-model_run_aes_demo](asserts/images/18/model_run_aes_demo.png)
+![image-ase_demo_cycle](asserts/images/18/aes_demo_cycle.png)
+
+将 `aes_debug.h` 中的 `LOCAL_DEBUG` 关掉去掉程序打印，为了准确测试 Profiling 数据，确保 Nuclei Studio 的 launch bar 为 `aes_demo Debug`, 重新 Run model：
+
+![image-aes_demo_profiling](asserts/images/18/aes_demo_profiling.png)
 
 #### step4：解析 gprof 数据
 
-model 仿真程序完成后，双击打开生成的 `gprof*.gmon` 文件，切换到函数视图，点击 `% Time`从高到低排列函数 CPU 占用率，由于model采用了指令级别的采样，`Time/Call`显示的是每个函数的cycle数：
+model 仿真程序完成后，双击打开生成的 `gprof*.gmon` 文件，切换到函数视图，点击 `% Time`从高到低排列函数 CPU 占用率。
+
+**注意：** `Time/Call` 显示的是每个函数的函数体 text 段的 cycle 数，并不是整个函数的 cycle 数，是不计入其中子函数占用的 cycle 数的。
 
 ![image-parse_gprof](asserts/images/18/parse_gprof.png)
 
-从而得到 CPU 占用率最高的 **TOP5**热点函数为：
+从而得到 CPU 占用率最高的 **TOP5** 热点函数为：
 
 ~~~
 aes_mix_columns_dec
@@ -91,11 +99,15 @@ aes_ecb_decrypt
 aes_ecb_encrypt
 ~~~
 
+**注意：** 此时需要备份当前的 `aes_demo` 工程，改名为 `aes_demo_nice` 工程，这样可以在 Nuclei Studio 中同时打开两个工程，方便添加 **NICE/VNICE** 指令优化后的工程和原 `aes_demo` 工程进行 Profiling 比较。
+
 #### step5：NICE/VNICE 指令替换
 
-获取热点函数后，用户可以通过研究热点函数算法特点，将其替换为 **NICE/VNICE** 指令，从而提升整体程序性能。
+用户需要在备份的 `aes_demo_nice` 工程下，研究热点函数算法特点，将其替换为 **NICE/VNICE** 指令，从而提升整体程序性能。
 
-TOP1 热点函数为 `aes_mix_columns_dec`，实现了 AES 算法解密的逆混合列，输入一个状态矩阵，经过计算后原地址输出一个计算后的状态矩阵，实现了 Load 数据、逆混合运算以及 Store 数据，代码如下：
+在包含 AES 加解密的 **TOP5** 热点函数的 `aes_dec.c` 和 `aes_dec.c` 两个C文件中 `#include "insn.h"` 以便添加 **NICE/VNICE** 指令替换。
+
+**TOP1** 热点函数为 `aes_mix_columns_dec`，实现了 AES 算法解密的逆混合列，输入一个状态矩阵，经过计算后原地址输出一个计算后的状态矩阵，实现了 Load 数据、逆混合运算以及 Store 数据，代码如下：
 
 ~~~c
 static void aes_mix_columns_dec(
@@ -124,7 +136,7 @@ static void aes_mix_columns_dec(
 }
 ~~~
 
-由于输入输出地址一样，可以考虑用一条 **NICE** 指令替换，指令的 `opcode`、`funct3` 和 `funct7` 都可以在编码位域中自定义，该指令设置 `opcode` 为 `Custom-0`，`funct3` 设置为0，`funct7` 设置为0x10，寄存器只使用到 `rs1` 描述入参地址，不需要使用 `rd` 和 `rs2`，指令内嵌汇编如下：
+由于输入输出地址一样，可以考虑用一条 **NICE** 指令替换，指令的 `opcode`、`funct3` 和 `funct7` 都可以在编码位域中自定义，该指令设置 `opcode` 为 `Custom-0`，`funct3` 设置为0，`funct7` 设置为0x10，寄存器只使用到 `rs1` 描述入参地址，不需要使用 `rd` 和 `rs2`，指令写到 `insn.h` 中，内嵌汇编如下：
 
 ~~~c
 __STATIC_FORCEINLINE void custom_aes_mix_columns_dec(uint8_t* addr)
@@ -134,7 +146,7 @@ __STATIC_FORCEINLINE void custom_aes_mix_columns_dec(uint8_t* addr)
 }
 ~~~
 
-用户可以定义一个 `USE_NICE` 的宏选择是否使用 **NICE** ，改写 `aes_mix_columns_dec` 如下 ：
+用户可以在 `insn.h` 中定义一个 `USE_NICE` 的宏选择是否使用 **NICE** ，在 `aes_dec.c` 改写 `aes_mix_columns_dec` 如下 ：
 
 ~~~c
 static void aes_mix_columns_dec(
@@ -168,7 +180,7 @@ static void aes_mix_columns_dec(
 }
 ~~~
 
-TOP2 热点函数为 `aes_mix_columns_enc`，和 TOP1 类似，实现的是 AES 加密的逆混合列，同样也是输入一个状态矩阵，经过计算后原地址输出一个计算后的状态矩阵：
+**TOP2** 热点函数为 `aes_mix_columns_enc`，和 TOP1 类似，实现的是 AES 加密的逆混合列，同样也是输入一个状态矩阵，经过计算后原地址输出一个计算后的状态矩阵：
 
 ~~~c
 static void aes_mix_columns_enc(
@@ -198,8 +210,7 @@ static void aes_mix_columns_enc(
 
 考虑到指令实现可能无法只用1条指令完成，可使用2条 **VNICE** 指令替换此算法，第一条 load 16 byte 数据到 Vector 寄存器，第二条再完成计算以及 store。
 
-指令的 `opcode`、`funct3` 和 `funct7` 仍然可以在编码位域中自定义，第一条指令使用 `rd` 描述 Vector 寄存器，`rs1` 描述入参地址，第二条指令使用 `rs1` 描述入参地址，`rs1` 描述入参 Vector 寄存器，
-两条 **VNICE** 指令的内嵌汇编如下：
+指令的 `opcode`、`funct3` 和 `funct7` 仍然可以在编码位域中自定义，第一条指令使用 `rd` 描述 Vector 寄存器，`rs1` 描述入参地址，第二条指令使用 `rs1` 描述入参地址，`rs1` 描述入参 Vector 寄存器，两条 **VNICE** 指令的内嵌汇编写到 `insn.h` 中，定义如下：
 
 ~~~c
 __STATIC_FORCEINLINE vint8m1_t __custom_vnice_load_v_i8m1 (uint8_t* addr)
@@ -223,13 +234,13 @@ __STATIC_FORCEINLINE void __custom_vnice_aes_mix_columns_enc_i8m1 (uint8_t *addr
 }
 ~~~
 
-用户通过定义 Vector 寄存器以及使用上定义好的 VNICE 指令内嵌汇编改写 `aes_mix_columns_enc` 如下：
+用户通过定义 Vector 寄存器以及使用上定义好的 VNICE 指令内嵌汇编改写 `aes_enc.c` 中的 `aes_mix_columns_enc` 如下：
 
 ~~~c
 static void aes_mix_columns_enc(
     uint8_t     ct [16]       //!< Current block state
 ){
-#ifdef USE_VNICE
+#ifdef USE_NICE
     uint32_t blkCnt = 16;
     size_t l;
     vint8m1_t vin;
@@ -279,29 +290,64 @@ static void aes_mix_columns_enc(
 打开 `nice.cc` 文件，用户需要用该文件的 `do_nice` 函数实现所有自定义的 **NICE/VNICE** 指令，当前 `do_nice` 里包含了针对 `demo_nice` 或 `demo_vnice` 的 Nuclei定义的 **NICE/VNICE** 指令，
 用户可以参考其中注释完成自己的自定义指令。
 
-**注意：** 当用户编写自定义 **NICE/VNICE** 指令时，需要关掉 `NUCLEI_NICE_SCALAR` 和 `NUCLEI_NICE_VECTOR`宏，以免和自定义的指令编码相冲突。
+**注意：** 当用户编写自定义 **NICE/VNICE** 指令时，需要关掉和 Nuclei `demo_nice`/`demo_vnice` 对应的 `NUCLEI_NICE_SCALAR`/`NUCLEI_NICE_VECTOR` 宏，以免和用户自定义的指令编码相冲突。
 
 ![image-nice_inst_intro](asserts/images/18/nice_inst_intro.png)
 
 AES demo 中定义的 **NICE/VNICE** 指令实现如下图，通过指令的 `opcode`、`funct3` 和 `funct7` 编写条件判断语句指定该条指令，然后在其中实现指令行为以及指令 cycle 数添加。
 
-**NICE** 指令实现可以参考 `nice/inc/decode_macros.h` 和 `xlspike/include/riscv` 中的头文件，**VNICE** 指令实现可以参考 `xlspike/include/riscv/v_ext_macros.h`，在指令实现完后，将自定义指令需要的 cycle 数 n 直接标定：`STATE.mcycle->bump(n);` 即可。
+**NICE** 指令实现中，`MMU` 宏表示 memory 访问，load memory 使用 `MMU.load_uint<n>`，store memory 使用 `MMU.store_uint<n>`，`RD`、`RS1`、`RS2`、`RS3` 宏表示其对应标量寄存器中的值，`FRS1`、`FRS2`、`FRS3` 宏表示其对应浮点寄存器中的值，这些宏的使用可以参考 `nice/inc/decode_macros.h`。
 
-这里根据硬件通过 **NICE/VNICE** 实现此算法的理论值，标定 `custom_aes_mix_columns_dec` 为7 cycle，`__custom_vnice_load_v_i8m1` 为1 cycle，`__custom_vnice_aes_mix_columns_enc_i8m1` 为2 cycle。
+**VNICE** 指令实现中仍然是用 `MMU` 宏访问 memory，只不过 Vector 寄存器数据会存储在 `P.VU.elt` 类中，用户可以参考 `xlspike/include/riscv/v_ext_macros.h`完成相关代码编写。
+
+在指令实现完后，将自定义指令需要的 cycle 数 n 直接标定：`STATE.mcycle->bump(n);` 即可，这里根据硬件通过 **NICE/VNICE** 实现此算法的理论值，标定 `custom_aes_mix_columns_dec` 为 7 cycle，`__custom_vnice_load_v_i8m1` 为 1 cycle，`__custom_vnice_aes_mix_columns_enc_i8m1` 为 2 cycle。
 
 ![image-xlmodel_nice_aes](asserts/images/18/xlmodel_nice_aes.png)
 
-实现 AES demo 的 **NICE/VNICE** 指令的 Nuclei model 软件包[添加AES NICE指令model软件包下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc1wrUKu1)，用户通过此软件包编译运行得到的 model 可执行程序和[环境准备](#环境准备)中的model可执行程序 `xl_cpumodel`一样，同样需要替换到 Linux 版 Nuclei Studio 2024.06 `NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel` 才可以使用生效。
+以上介绍了用户如何从原始 Nuclei Model 软件包添加自定义 **NICE/VNICE** 指令，接下来需要将新编译出的 model 可执行程序导入到 Nuclei Studio 中，为了不和 Nuclei Studio 原始 model 名称混淆，可以将 model 导入到 `NucleiStudio/toolchain/nucleimodel/bin_aes/` 的创建路径下，我们提供了两种 model 可执行程序获取方式：
+1. 实现 AES demo **NICE/VNICE** 指令的 Nuclei model 软件包[添加AES NICE指令model软件包](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc1wrUKu1)，编译后将 `xl_cpumodel` 可执行程序导入上述路径。
+2. 编译好的 model 的可执行程序 [xl_cpumodel](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc03skCLp)，直接导入上述路径。
 
 #### step7：热点函数再分析
 
-重新完成 step3：model 仿真程序，双击 `gprof0.gmon` 可以看到 CPU 占用率较高的热点函数已经没有 `aes_mix_columns_enc` 和 `aes_mix_columns_dec` 了：
+**注意：** 请务必完成 step6 中介绍的实现了 **NICE/VNICE** 指令的 model 导入 Nuclei Studio 中才能用 model Run `aes_demo_nice` 工程。
+
+首先打开 Nuclei Studio 主菜单栏的 `Run` 选项的 `Run Configurations`，model 配置需要重新添加一份 Nuclei Studio 中的 RVProf 运行配置 `aes_demo_nice Debug`：
+
+![image-new_rvprof_configuration](asserts/images/18/new_rvprof_configuration.png)
+
+将 `Main` 选项卡的 `Project` 通过 `Browse` 改为 `aes_demo_nice`，`C/C++ Application` 通过 `Search Project` 改为 `aes_demo_nice.elf`:
+
+![image-aes_main_configuration](asserts/images/18/aes_main_configuration.png)
+
+然后将 `RVProf` 选项卡中的 model 执行路径 `Executable path` 改为 step6 中新修改 model 的执行路径： `.../NucleiStudio/toolchain/nucleimodel/bin_aes/xl_cpumodel`:
+
+![image-aes_rvprof_configuration](asserts/images/18/aes_rvprof_configuration.png)
+
+运行前将 `aes_debug.h` 中的 `LOCAL_DEBUG` 打开，测试优化后 AES 算法的整体 cycle 数，选择 Nuclei Studio 的 launch bar 的 `aes_demo_nice Debug`后 Run model，得到 AES 算法优化后整体消耗 cycle 数从优化前的 154988 降到了 35619 cycle。
+
+![image-aes_demo_nice_cycle](asserts/images/18/aes_demo_nice_cycle.png)
+
+将 `aes_debug.h` 中的 `LOCAL_DEBUG` 关掉测试重新 Run model 测试 Profiling 数据，双击 `gprof0.gmon` 可以看到 CPU 占用率较高的热点函数已经没有 `aes_mix_columns_enc` 和 `aes_mix_columns_dec` 了：
 
 ![image-parse_gprof_nice](asserts/images/18/parse_gprof_nice.png)
 
-搜索 `aes_mix_columns_enc` 和 `aes_mix_columns_dec` ，CPU 占用率 `aes_mix_columns_enc` 从8.05%降到了2.93%，`aes_mix_columns_dec` 从57.87%降到了0.42%，函数消耗 cycle 数 `aes_mix_columns_enc` 从1141 cycle 降到了146 cycle，`aes_mix_columns_dec` 从8209 cycle 降到了 21 cycle，说明了 **NICE/VNICE** 指令可以大幅的提高程序算法性能。
+搜索 `aes_mix_columns_enc` 和 `aes_mix_columns_dec` ，CPU 占用率 `aes_mix_columns_enc` 从 8.05% 降到了 2.93%，`aes_mix_columns_dec` 从 57.87% 降到了 0.5%，函数 Time per Call 消耗 cycle 数 `aes_mix_columns_enc` 从 1141 cycle 降到了 146 cycle，`aes_mix_columns_dec` 从 8209 cycle 降到了 25 cycle，说明了 **NICE/VNICE** 指令可以大幅的提高程序算法性能。
 
 ![image-parse_gprof_aes_enc_dec](asserts/images/18/parse_gprof_aes_enc_dec.png)
 
-AES加解密 NICE/VNICE demo：[优化后工程链接下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc5f6zPQW)
+数据统计如下：
+
+| Function                    | Before Optimization | NICE/VNICE Optimization  |
+|-----------------------------|---------------------|--------------------------|
+| CPU Usage `%` (`enc`)       | 8.05                | 2.93                     |
+| CPU Usage `%` (`dec`)       | 57.87               | 0.5                      |
+| Time per Call Cycles (`enc`)| 1,141               | 146                      |
+| Time per Call Cycles (`dec`)| 8,209               | 25                       |
+
+| AES Program Total           | Before Optimization | NICE/VNICE Optimization  |
+|-----------------------------|---------------------|--------------------------|
+| Cycles                      | 154,988             | 35,619                   |
+
+AES加解密 NICE/VNICE demo：[优化后AES工程链接下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc5f6zPQW)
 
