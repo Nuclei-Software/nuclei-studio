@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>一个例子用来展示 Profiling 以及 Code coverage 功能 - Nuclei Studio Supply Documents</title>
+    <title>Nuclei Studio使用Profiling功能进行性能调优举例 - Nuclei Studio Supply Documents</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,7 +13,7 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "\u4e00\u4e2a\u4f8b\u5b50\u7528\u6765\u5c55\u793a Profiling \u4ee5\u53ca Code coverage \u529f\u80fd";
+        var mkdocs_page_name = "Nuclei Studio\u4f7f\u7528Profiling\u529f\u80fd\u8fdb\u884c\u6027\u80fd\u8c03\u4f18\u4e3e\u4f8b";
         var mkdocs_page_input_path = "17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage.md";
         var mkdocs_page_url = null;
       </script>
@@ -109,7 +109,7 @@
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">一个例子用来展示 Profiling 以及 Code coverage 功能</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Nuclei Studio使用Profiling功能进行性能调优举例</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
     </li>
@@ -148,7 +148,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">一个例子用来展示 Profiling 以及 Code coverage 功能</li>
+      <li class="breadcrumb-item active">Nuclei Studio使用Profiling功能进行性能调优举例</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
@@ -158,37 +158,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="profiling-code-coverage">一个例子用来展示 Profiling 以及 Code coverage 功能<a class="headerlink" href="#profiling-code-coverage" title="Permanent link">&para;</a></h1>
+                <h1 id="nuclei-studioprofiling">Nuclei Studio使用Profiling功能进行性能调优举例<a class="headerlink" href="#nuclei-studioprofiling" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p>文档是基于 Nuclei Studio 的 <strong>2024.06</strong> Windows 版本实测。</p>
 </blockquote>
 <h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>Nuclei Studio 2024.06 提供 Profiling 功能、Call Graph 功能 以及 Code coverage 功能，方便用户使用。简单描述如下：<br />
-<em> </em><em>Profiling 功能</em><em>：基于 binutils gprof 工具，可用于分析函数调用关系、调用次数、以及运行时间；通过 Profiling 抓取热点函数可以用来分析程序的瓶颈，以便进行性能优化。
-* </em><em>Call Graph 功能</em><em>：基于 Profiling 功能，将函数调用关系、调用次数、以及运行时间用图展示出来，方便开发人员分析。
-* </em><em>Code coverage 功能</em>*：基于 gcc 编译器提供 gcov 工具，可用来查看源码文件的代码覆盖率，帮助开发人员确定测试用例是否足够充分，是否覆盖了被测代码的所有分支和路径。</p>
+<p>Nuclei Studio 2024.06 提供 Profiling 功能、Call Graph 功能 以及 Code coverage 功能，方便用户使用。 简单描述如下：  </p>
+<ul>
+<li><strong>Profiling 功能</strong>：基于 binutils gprof 工具，可用于分析函数调用关系、调用次数、以及运行时间；通过 Profiling 抓取热点函数可以用来分析程序的瓶颈，以便进行性能优化。</li>
+<li><strong>Call Graph 功能</strong>：基于 Profiling 功能，将函数调用关系、调用次数、以及运行时间用图展示出来，方便开发人员分析。</li>
+<li><strong>Code coverage 功能</strong>：基于 gcc 编译器提供 gcov 工具，可用来查看源码文件的代码覆盖率，帮助开发人员确定测试用例是否足够充分，是否覆盖了被测代码的所有分支和路径。</li>
+</ul>
 <p>在 <a href="https://download.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202406.pdf">NucleiStudio_User_Guide.pdf</a> 相关章节对这几个功能已经有较详细的描述，这篇文档以一个例子来展示它们的实际应用。</p>
 <h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <h3 id="1">1 环境准备<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
-<p><strong>所需材料：</strong><br />
-* Nuclei studio：<a href="https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202406-win64.zip">NucleiStudio 2024.06</a>，以 Windows 版本为例
-* 用例： 以 <a href="https://sourceforge.net/projects/opencore-amr/files/vo-amrwbenc/vo-amrwbenc-0.1.3.tar.gz/download">AMR-WB-enc</a> 即自适应多速率宽带编码音频算法为例，用户可以移植自己的用例</p>
+<p><strong>所需材料：</strong>  </p>
+<ul>
+<li>Nuclei Studio：<a href="https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202406-win64.zip">NucleiStudio 2024.06</a>，以 Windows 版本为例</li>
+<li>用例： 以 <a href="https://sourceforge.net/projects/opencore-amr/files/vo-amrwbenc/vo-amrwbenc-0.1.3.tar.gz/download">AMR-WB-enc</a> 即自适应多速率宽带编码音频算法为例，用户可以移植自己的用例</li>
+</ul>
 <p><strong>基于 nuclei-sdk v0.6.0 移植 amrwbenc 裸机用例：</strong></p>
-<p>打开 Nuclei studio 建立 amrwbenc 工程，然后移植 amrwbenc 源码，最终用例可正常运行。用户可以移植自己的用例，不同用例移植的细节各不相同，这一步不是这篇文档的重点，略过。</p>
+<p>打开 Nuclei Studio 建立 amrwbenc 工程，然后移植 amrwbenc 源码，最终用例可正常运行。用户可以移植自己的用例，不同用例移植的细节各不相同，这一步不是这篇文档的重点，略过。</p>
 <h3 id="2-profiling">2 Profiling 功能<a class="headerlink" href="#2-profiling" title="Permanent link">&para;</a></h3>
-<p>Nuclei studio 中 Profiling 功能基于 binutils gprof 工具。编译时需带特定的编译选项 <code>-pg</code> 来编译指定源码文件，编译成功后得到 ELF 文件，然后在实际开发板上运行并收集需要的 gmon.out 文件，最终在 IDE 上以图形化的方式展示。所以还需要在用例末尾添加 gprof 数据收集代码，有两种方式：<br />
-* 方式1：移植 gprof 数据收集代码到自己的工程中，代码可以参考 <a href="https://github.com/Nuclei-Software/nuclei-sdk/tree/master/Components/profiling#readme">Profiling README</a>
-* 方式2：基于 Nuclei studio 中的 Profiling demo 进行改造，即用自己的用例替换掉 Profiling demo 工程的的用例部分</p>
+<p>Nuclei studio 中 Profiling 功能基于 binutils gprof 工具。编译时需带特定的编译选项 <code>-pg</code> 来编译指定源码文件，编译成功后得到 ELF 文件，
+然后在实际开发板上运行并收集需要的 gmon.out 文件，最终在 IDE 上以图形化的方式展示。所以还需要在用例末尾添加 gprof 数据收集代码，有两种方式：</p>
+<ul>
+<li>方式1：移植 gprof 数据收集代码到自己的工程中，代码可以参考 <a href="https://github.com/Nuclei-Software/nuclei-sdk/tree/master/Components/profiling#readme">Profiling README</a></li>
+<li>方式2：基于 Nuclei Studio 中的 Profiling demo 进行改造，即用自己的用例替换掉 Profiling demo 工程的的用例部分</li>
+</ul>
 <p>下面示例采用后一种方法进行演示：</p>
 <p><strong>step1：新建 Profiling demo 工程</strong></p>
-<p>File-&gt;New-&gt;New Nuclei RISC-V C/C++ Project，选择Nuclei FPGA Evalution Board-&gt;sdk-nuclei_sdk @0.6.0</p>
+<p><code>File-&gt;New-&gt;New Nuclei RISC-V C/C++ Project</code>，选择 <code>Nuclei FPGA Evalution Board-&gt;sdk-nuclei_sdk @0.6.0</code></p>
 <p><strong>注意：</strong> Nuclei SDK 需选择 0.6.0 及以后版本才支持 Profiling 与 Code coverage 功能</p>
 <p><img alt="建立Profiling demo" src="../asserts/images/17/build_profiling_demo.png" /></p>
 <p><strong>step2：基于 Profiling demo 工程移植 amrwbenc 裸机用例</strong></p>
 <p>删掉 Profiling demo 工程中 application 中的原始用例，替换成 amrwbenc 用例，形成如下目录结构，并确保能编译成功。 </p>
 <p>这里提供本示例使用的工程，有兴趣可以下载使用：<br />
 <a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCRlyEVI">优化前的工程下载链接</a></p>
-<p>下载 zip 包后，可以直接导入到 nuclei studio 中运行(导入步骤：File-&gt;Import-&gt;Existing Projects into Workspace-&gt;Next-&gt;Select archive file-&gt;选择zip压缩包-&gt;next即可)</p>
+<p>下载 zip 包后，可以直接导入到 Nuclei Studio 中运行(导入步骤：<code>File-&gt;Import-&gt;Existing Projects into Workspace-&gt;Next-&gt;Select archive file-&gt;选择zip压缩包-&gt;next</code>即可)</p>
 <p><img alt="移植amrwbenc用例" src="../asserts/images/17/amrwbenc_demo.png" /></p>
 <p><strong>step3：在用例结尾处添加 grof 数据收集代码，并添加 -pg 编译选项，重新编译代码</strong></p>
 <p>在 main 函数的结尾处添加 gprof 数据收集代码：</p>
@@ -212,20 +219,20 @@
 <ul>
 <li>gprof_collect(0)：在缓冲区中收集 gprof 或 gcov 数据，在调试程序时可以使用 GDB 脚本转储 gcov 或 gprof 二进制文件</li>
 <li>gprof_collect(1)：使用 semihost 直接将 gprof 或 gcov 数据写入文件中</li>
-<li>gprof_collect(2)：直接在 Console 或 Serial Terminal 中转储 gcov 或 gprofdata</li>
+<li>gprof_collect(2)：直接在 Console 或 Serial Terminal 中打印 gcov 或 gprof 数据，然后可以通过IDE中 <code>Parse and Generate HexDump</code> 功能进行解析数据并保存到PC上</li>
 </ul>
 <p>详情可参考 <a href="https://github.com/Nuclei-Software/nuclei-sdk/tree/master/Components/profiling#readme">Profiling README</a>，这里以将 gprof data 打印到串口（Console 或 Serial Terminal）为例。</p>
-<p>添加 <code>-pg</code> 编译选项，重新编译代码：</p>
+<p>对需要进行profiling的代码添加 <code>-pg</code> 编译选项，重新编译代码：</p>
 <p><strong>注意：</strong> 选择 application, 对关键代码添加 <code>-pg</code> 编译选项，这个用例只有 C 代码，只对 C 代码添加 <code>-pg</code> 编译选项即可</p>
 <p><img alt="add_pg_compile" src="../asserts/images/17/add_pg_compile.png" /></p>
 <p><strong>step4：运行程序</strong></p>
-<p>有几种方式：</p>
+<p>有几种方式可以运行程序：</p>
 <ul>
 <li>qemu 模拟器（不需要硬件，简单跑一下流程，测试结果不准确）</li>
 <li>上板测试 （基于定时器采集数据）</li>
-<li>基于 xl_cpumodel (Nuclei near cycle model)，参考: <a href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a></li>
+<li>基于 xl_cpumodel (Nuclei Near Cycle Model)，参考: <a href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a></li>
 </ul>
-<p>这一篇文章只介绍 qemu 仿真与上板测试两种方式，qemu 收集的数据打印到 Console 口，上板实际运行输出到 Nuclei studio 的 Serial Terminal 口。</p>
+<p>这一篇文章只介绍 qemu 仿真与上板测试两种方式，qemu 收集的数据打印到 Console 口，上板实际运行输出到 Nuclei Studio 的 Serial Terminal 口。</p>
 <p><strong>step5：解析 gprof 数据</strong></p>
 <p>开始解析 gprof 数据。<strong>注意：</strong> 这一步可能遇到一些问题，解决方法可参考 <a href="../16-incomplete_data_output_when_using_profiling_function/">Profiling与 Code coverage 功能可能遇到的问题</a></p>
 <ul>
@@ -236,16 +243,17 @@
 解析完成后，会在当前工程目录下生成 gmon.out，双击打开展示：<br />
 <img alt="profiling_on_qemu" src="../asserts/images/17/profiling_on_qemu.png" />   </p>
 <ul>
-<li>上板测试
-上板测试的步骤与 qemu 类似，唯一不同的是 gprof 数据输出到 Serial Terminal 上。  </li>
+<li>上板测试</li>
 </ul>
+<p>上板测试的步骤与 qemu 类似，唯一不同的是 gprof 数据输出到 Serial Terminal 上。  </p>
 <p>配置 Serial Terminal:</p>
 <p><strong>注意</strong>:如果串口工具已经打开，确保每次运行 gprof 前，清除掉串口打印（鼠标右键-&gt; Clear Terminal），避免对数据解析产生影响。  </p>
 <p><img alt="config_uart" src="../asserts/images/17/config_uart.png" />  </p>
-<p>同样, 全选 log，调用解析脚本解析，在工程文件夹下生成 gmon.out 文件，双击打开。
-如下图是在板子上运行得到的 gprof 数据：<br />
-<img alt="profiling_on_fpga" src="../asserts/images/17/profiling_on_fpga.png" /></p>
-<p>从而得到 TOP5 热点函数为：</p>
+<p>同样, 全选 log，右键选择<code>Parse and Generate HexDump</code> 功能，就会在工程文件夹下生成 gmon.out 文件，
+刷新工程后，就可以双击打开这个gmon.out 文件。</p>
+<p>如下图是在<strong>板子上实际运行</strong>得到的 gprof 数据：  </p>
+<p><img alt="profiling_on_fpga" src="../asserts/images/17/profiling_on_fpga.png" /></p>
+<p>从而得到 TOP5 热点函数为（实际上板测试）：</p>
 <pre><code class="language-c">cor_h_vec_012
 ACELP_4t64_fx
 voAWB_Residu
@@ -260,10 +268,13 @@ voAWB_Syn_filt
 <li>针对算法进行优化，使用更好的算法实现热点函数</li>
 <li>使用 RISC-V 扩展指令（ RVP/RVV 扩展等）优化</li>
 </ul>
-<p>这里以 RVP 扩展为例，按照热点函数从高到低，用 P 扩展来优化。需要确定所用硬件支持 P 扩展。</p>
+<p>这里以 RVP 扩展为例，按照热点函数从高到低，用 RVP 扩展来优化。需要确定所用硬件支持 RVP 扩展。</p>
 <p><strong>举例如下：</strong></p>
-<p>TOP1 热点函数为 <code>cor_h_vec_012</code>，分析函数，尝试使用 P 扩展优化：</p>
-<p>如下以 <code>defined __riscv_xxldspn3x</code> 隔开的代码表示使用 Nuclei N3 P 扩展指令优化的代码。其中<code>__RV_DSMALDA</code> 是一条 Nuclei N3 P扩展指令，实现了 一次完成 4 笔 int16 相乘，最后累加，结果存放到 int64 变量中。这些指令可参考 <a href="https://github.com/Nuclei-Software/nuclei-sdk/blob/master/NMSIS/Core/Include/core_feature_dsp.h">Nuclei P 扩展指令</a></p>
+<p>TOP1 热点函数为 <code>cor_h_vec_012</code>，分析函数，尝试使用 RVP 扩展优化：</p>
+<p>如下以 <code>#if defined __riscv_xxldspn3x</code> 隔开的代码表示使用 Nuclei N3 P 扩展指令优化的代码。
+其中<code>__RV_DSMALDA</code> 是一条 Nuclei N3 P扩展指令，实现了 一次完成 4 笔 int16 相乘，最后累加，结果存放到 int64 变量中。</p>
+<p>这些指令Intrinsic API可参考 <a href="https://github.com/Nuclei-Software/nuclei-sdk/blob/master/NMSIS/Core/Include/core_feature_dsp.h">Nuclei P 扩展指令Intrinsic API</a></p>
+<p>具体的RVP指令手册，请联系芯来科技获取。</p>
 <p>优化后的工程如下，可以与优化之前的工程做对比，只优化了<code>cor_h_vec_012</code> 算子:</p>
 <p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcpMkNUj4">优化后的工程下载链接</a></p>
 <p>使用 Nuclei N3 P 扩展指令优化的代码片段如下：</p>
@@ -369,33 +380,36 @@ voAWB_Syn_filt
 }
 
 </code></pre>
-<p>这个算子进行 P 扩展优化后，编译时带上 dsp 扩展编译：</p>
+<p>这个算子进行 P 扩展优化后，<strong>编译时务必带上</strong> dsp 扩展选项进行编译，如下图所示：</p>
 <p><img alt="Alt text" src="../asserts/images/17/set_p_ext_opt.png" /></p>
 <p>CLean Project 并重新编译，重新跑一次profiling，可以看到优化效果，<code>cor_h_vec_012</code> 函数占用率有所下降，函数调用时间也有所减少。</p>
 <p><img alt="Alt text" src="../asserts/images/17/profiling_on_fpga_opt.png" /></p>
-<p><strong>注意：</strong> 上述仅提供简单的示例，用户可以依次对热点函数进行分析并优化，运行过程中由于采样等原因，导致 TOP 函数分布有所波动，这是正常的，最终精确的分析需要统计最终的总 cycle 数，然后计算提升比。</p>
+<p><strong>注意：</strong> 上述仅提供简单的示例，用户可以依次对热点函数进行分析并优化，运行过程中由于采样等原因，
+导致 TOP 函数分布有所波动，这是正常的，最终精确的分析需要统计最终的总 cycle 数，然后计算提升比。</p>
 <h3 id="2-call-graph">2 Call Graph 功能<a class="headerlink" href="#2-call-graph" title="Permanent link">&para;</a></h3>
-<p>Nuclei Studio 中 Call Graph 主要是通过分析 Profiling 的数据来获取到程序中函数的调用关系。
-<img alt="call_graph" src="../asserts/images/17/call_graph.png" /></p>
+<p>Nuclei Studio 中 Call Graph 主要是通过分析 Profiling 的数据来获取到程序中函数的调用关系。</p>
+<p><img alt="call_graph" src="../asserts/images/17/call_graph.png" /></p>
 <p>Call Graph 功能包括如下几种视图：</p>
 <ul>
-<li>
-<p>Radial View<br />
-本视图中展示了程序的调用关系。
-<img alt="Radial View" src="../asserts/images/17/Radial_View.png" /></p>
-</li>
-<li>
-<p>Tree View<br />
-展示了 Radial View 中所选中的程序的调用关系、耗时所占比率、调用次数等信息；选中某一个函数，可以查看到它的父节点以及子节点等信息。
-<img alt="Tree View" src="../asserts/images/17/Tree_View.png" /></p>
-</li>
-<li>Level View<br />
-与 Tree View 有点类似，展示了程序的调用关系以及调用次数。
-<img alt="Level_View" src="../asserts/images/17/Level_View.png" /></li>
-<li>Aggregate View<br />
-以方图的方式，非常直观的展示了程序的耗时关系。
-<img alt="Aggregate View" src="../asserts/images/17/Aggregate_View.png" /></li>
+<li>Radial View</li>
 </ul>
+<p>本视图中展示了程序的调用关系。</p>
+<p><img alt="Radial View" src="../asserts/images/17/Radial_View.png" /></p>
+<ul>
+<li>Tree View</li>
+</ul>
+<p>展示了 Radial View 中所选中的程序的调用关系、耗时所占比率、调用次数等信息；选中某一个函数，可以查看到它的父节点以及子节点等信息。</p>
+<p><img alt="Tree View" src="../asserts/images/17/Tree_View.png" /></p>
+<ul>
+<li>Level View</li>
+</ul>
+<p>与 Tree View 有点类似，展示了程序的调用关系以及调用次数。</p>
+<p><img alt="Level_View" src="../asserts/images/17/Level_View.png" /></p>
+<ul>
+<li>Aggregate View</li>
+</ul>
+<p>以方图的方式，非常直观的展示了程序的耗时关系。</p>
+<p><img alt="Aggregate View" src="../asserts/images/17/Aggregate_View.png" /></p>
 <h3 id="3-code-coverage">3 Code coverage 功能<a class="headerlink" href="#3-code-coverage" title="Permanent link">&para;</a></h3>
 <p>Nuclei studio 中 Code coverage 功能基于 gcc 编译器提供的 gcov 工具，编译时需带特定的编译选项 <code>-coverage</code> 来编译指定源码文件，编译成功后得到 ELF 文件，然后在实际开发板上运行并收集需要的 coverage 文件(gcda/gcno 文件)，最终在 IDE 上以图形化的方式展示。</p>
 <p>使用方法与 Profiling 功能类似，这里仅对不同的地方进行说明：</p>
@@ -419,13 +433,13 @@ voAWB_Syn_filt
     return 0;
 }
 </code></pre>
-<p>添加<code>-coverage</code>编译选项，重新编译代码：
-<img alt="add_coverage_compile" src="../asserts/images/17/add_coverage_compile.png" /></p>
-<p><strong>step4：运行程序</strong><br />
-可以在qemu中模拟运行，或者上板实际运行都可以（统计覆盖率，不涉及到性能分析，所以使用 qemu 或者上板测试都可以）。<br />
-<img alt="prase coverage data" src="../asserts/images/17/prase_coverage_data.png" /><br />
-解析之后，在Debug-&gt;application文件夹下生成了 gcda 与 gcno 文件，双击打开即可<br />
-<img alt="coverage_result" src="../asserts/images/17/coverage_result.png" />  </p>
+<p>添加<code>-coverage</code>编译选项，重新编译代码：</p>
+<p><img alt="add_coverage_compile" src="../asserts/images/17/add_coverage_compile.png" /></p>
+<p><strong>step4：运行程序</strong>  </p>
+<p>可以在qemu中模拟运行，或者上板实际运行都可以（统计覆盖率，不涉及到性能分析，所以使用 qemu 或者上板测试都可以）。  </p>
+<p><img alt="prase coverage data" src="../asserts/images/17/prase_coverage_data.png" />  </p>
+<p>解析之后，在Debug-&gt;application文件夹下生成了 gcda 与 gcno 文件，双击打开即可  </p>
+<p><img alt="coverage_result" src="../asserts/images/17/coverage_result.png" />  </p>
 <h3 id="4">4 补充<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Profiling 与 Code coverage 功能可以同时打开，只需添加一起收集 Profiling 数据与 Code coverage 数据的代码，并在编译时添加 <code>-pg -coverage</code> 编译选项。</li>
@@ -439,8 +453,12 @@ voAWB_Syn_filt
 </code></pre>
 <p><img alt="add_pg_coverage_compile" src="../asserts/images/17/add_pg_coverage_compile.png" /></p>
 <ol>
-<li>可能遇见的问题：  </li>
-<li>片上内存不足，打印日志中有错误打印，gprof/gcov data 需要占用一定大小空间</li>
+<li>
+<p>使用Profiling可能遇见的问题：</p>
+</li>
+<li>
+<p>片上内存不足，打印日志中有错误打印，gprof/gcov data 需要占用一定大小空间</p>
+</li>
 <li>Console 或 Terminal 收集的数据不全导致解析数据不正确，需确认数据没有被冲掉，需要调节 Console 或 Terminal 输出大小限制</li>
 <li>手动删掉 gmon.out 文件，再次解析，弹出 No files have been generated 错误弹框</li>
 </ol>
