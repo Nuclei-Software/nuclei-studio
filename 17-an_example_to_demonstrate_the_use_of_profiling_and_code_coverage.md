@@ -20,11 +20,6 @@ Nuclei Studio 2024.06 提供 Profiling 功能、Call Graph 功能 以及 Code co
 * Nuclei studio：[NucleiStudio 2024.06](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202406-win64.zip)，以 Windows 版本为例
 * 用例： 以 [AMR-WB-enc](https://sourceforge.net/projects/opencore-amr/files/vo-amrwbenc/vo-amrwbenc-0.1.3.tar.gz/download) 即自适应多速率宽带编码音频算法为例，用户可以移植自己的用例
 
-这里提供本示例使用的工程，有兴趣可以下载使用：  
-[优化前的工程下载链接](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCRlyEVI)
-
-下载 zip 包后，可以直接导入到 nuclei studio 中运行(导入步骤：File->Import->Existing Projects into Workspace->Next->Select archive file->选择zip压缩包->next即可)
-
 **基于 nuclei-sdk v0.6.0 移植 amrwbenc 裸机用例：**
 
 打开 Nuclei studio 建立 amrwbenc 工程，然后移植 amrwbenc 源码，最终用例可正常运行。用户可以移植自己的用例，不同用例移植的细节各不相同，这一步不是这篇文档的重点，略过。
@@ -47,7 +42,12 @@ File->New->New Nuclei RISC-V C/C++ Project，选择Nuclei FPGA Evalution Board->
 
 **step2：基于 Profiling demo 工程移植 amrwbenc 裸机用例**
 
-删掉 Profiling demo 工程中 application 中的原始用例，替换成 amrwbenc 用例，形成如下目录结构，并确保能编译成功。
+删掉 Profiling demo 工程中 application 中的原始用例，替换成 amrwbenc 用例，形成如下目录结构，并确保能编译成功。 
+
+这里提供本示例使用的工程，有兴趣可以下载使用：  
+[优化前的工程下载链接](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCRlyEVI)
+
+下载 zip 包后，可以直接导入到 nuclei studio 中运行(导入步骤：File->Import->Existing Projects into Workspace->Next->Select archive file->选择zip压缩包->next即可)
 
 ![移植amrwbenc用例](asserts/images/17/amrwbenc_demo.png)
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 
 * qemu 模拟器（不需要硬件，简单跑一下流程，测试结果不准确）
 * 上板测试 （基于定时器采集数据）
-* 基于 xl_cpumodel （也是模拟器，结果比 qemu 准确，另一篇文章介绍）
+* 基于 xl_cpumodel (Nuclei near cycle model)，参考: [通过Profiling展示Nuclei Model NICE/VNICE指令加速](18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling.md)
 
 这一篇文章只介绍 qemu 仿真与上板测试两种方式，qemu 收集的数据打印到 Console 口，上板实际运行输出到 Nuclei studio 的 Serial Terminal 口。
 
