@@ -9,7 +9,8 @@
 在[一个例子用来展示 Profiling 以及 Code coverage 功能](https://nuclei-software.github.io/nuclei-studio/17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/)中已经通过 qemu 以及上板测试两种运行方式展示了
 如何在IDE中导入特定程序进行 Profiling，此文档中的一部分将介绍如何针对 Nuclei Model 完成 Profiling。
 
-Nuclei Model Profiling 的优势：
+Nuclei Model Profiling 的优势:  
+
 - 无需使用开发板等硬件
 - model 中内建了 gprof 功能，无需 Profiling 库和 `gcc -pg` 选项就可以产生 Profiling 文件
 - 采取了指令级别的采样，可以进行指令级别的 Profiling 分析
@@ -272,7 +273,7 @@ static void aes_mix_columns_enc(
 }
 ~~~
 
-修改后的程序代码编译通过：
+修改后的程序代码编译通过：(`aes_demo_nice` 工程)
 
 ![image-compile_aes_nice_demo](asserts/images/18/compile_aes_nice_demo.png)
 
@@ -304,7 +305,8 @@ AES demo 中定义的 **NICE/VNICE** 指令实现如下图，通过指令的 `op
 
 ![image-xlmodel_nice_aes](asserts/images/18/xlmodel_nice_aes.png)
 
-以上介绍了用户如何从原始 Nuclei Model 软件包添加自定义 **NICE/VNICE** 指令，接下来需要将新编译出的 model 可执行程序导入到 Nuclei Studio 中，为了不和 Nuclei Studio 原始 model 名称混淆，可以将 model 导入到 `NucleiStudio/toolchain/nucleimodel/bin_aes/` 的创建路径下，我们提供了两种 model 可执行程序获取方式：
+以上介绍了用户如何从原始 Nuclei Model 软件包添加自定义 **NICE/VNICE** 指令，接下来需要将新编译出的 model 可执行程序导入到 Nuclei Studio 中，为了不和 Nuclei Studio 原始 model 名称混淆，可以将 model 导入到 `NucleiStudio/toolchain/nucleimodel/bin_aes/` 的创建路径下，我们提供了两种 model 可执行程序获取方式：  
+
 1. 实现 AES demo **NICE/VNICE** 指令的 Nuclei model 软件包[添加AES NICE指令model软件包](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc1wrUKu1)，编译后将 `xl_cpumodel` 可执行程序导入上述路径。
 2. 编译好的 model 的可执行程序 [xl_cpumodel](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc03skCLp)，直接导入上述路径。
 
@@ -332,7 +334,7 @@ AES demo 中定义的 **NICE/VNICE** 指令实现如下图，通过指令的 `op
 
 ![image-parse_gprof_nice](asserts/images/18/parse_gprof_nice.png)
 
-搜索 `aes_mix_columns_enc` 和 `aes_mix_columns_dec` ，CPU 占用率 `aes_mix_columns_enc` 从 8.05% 降到了 2.93%，`aes_mix_columns_dec` 从 57.87% 降到了 0.5%，函数 Time per Call 消耗 cycle 数 `aes_mix_columns_enc` 从 1141 cycle 降到了 146 cycle，`aes_mix_columns_dec` 从 8209 cycle 降到了 25 cycle，说明了 **NICE/VNICE** 指令可以大幅的提高程序算法性能。
+搜索 `aes_mix_columns_enc` 和 `aes_mix_columns_dec` ，CPU 占用率 `aes_mix_columns_enc` 从 8.05% 降到了 2.93%，`aes_mix_columns_dec` 从 57.87% 降到了 0.5%，函数 Time per Call 消耗 cycle 数 `aes_mix_columns_enc` 从 1141 cycle 降到了 146 cycle，`aes_mix_columns_dec` 从 8209 cycle 降到了 25 cycle，说明了通过 **NICE/VNICE** 指令替换热点函数可以大幅提高程序算法性能。
 
 ![image-parse_gprof_aes_enc_dec](asserts/images/18/parse_gprof_aes_enc_dec.png)
 
