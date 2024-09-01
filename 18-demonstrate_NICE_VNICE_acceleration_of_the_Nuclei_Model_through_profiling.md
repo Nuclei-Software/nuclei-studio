@@ -61,7 +61,7 @@ __RV_CSR_SET(CSR_MSTATUS, MSTATUS_XS);
 
 用户可以下载我们移植好的 AES 加解密 demo：[优化前AES工程链接下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcR7Ti53K)
 
-下载 zip 包后，可以直接导入到 nuclei studio 中运行(导入步骤：File->Import->Existing Projects into Workspace->Next->Select archive file->选择zip压缩包->next即可)
+下载 zip 包后，可以直接导入到 Nuclei Studio 中运行(导入步骤：`File->Import->Existing Projects into Workspace->Next->Select archive file->选择zip压缩包->next`即可)
 
 #### step3：model 仿真程序
 
