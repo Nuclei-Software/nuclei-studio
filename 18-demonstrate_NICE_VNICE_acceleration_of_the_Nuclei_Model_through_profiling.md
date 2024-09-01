@@ -6,7 +6,7 @@
 
 ### Nuclei Model Profiling
 
-在[一个例子用来展示 Profiling 以及 Code coverage 功能](https://nuclei-software.github.io/nuclei-studio/17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/)中已经通过 qemu 以及上板测试两种运行方式展示了
+在[Nuclei Studio使用Profiling功能进行性能调优举例](https://nuclei-software.github.io/nuclei-studio/17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/)中已经通过 qemu 以及上板测试两种运行方式展示了
 如何在IDE中导入特定程序进行 Profiling，此文档中的一部分将介绍如何针对 Nuclei Model 完成 Profiling。
 
 Nuclei Model Profiling 的优势:  
