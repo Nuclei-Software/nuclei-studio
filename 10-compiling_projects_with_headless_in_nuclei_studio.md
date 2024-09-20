@@ -1,5 +1,26 @@
 # 在Nuclei Studio下用命令行编译工程
 
+> 以下文档是在**2024.06**版本的IDE中实测，作为补充说明。
+
+因NucleiStudio 2024.06版运行在java 21的环境上，实际应用中很多用户的本地没有java 21环境，故在运行命令时发现在执行该命令时，因找不到对应的jre而报错。为解决上述问题，可以在本地机器上安装java 21的环境（如何安装用户可以自行搜索相关教程），也可以在命令行中通过 `-vm` 参数指定NucleiStudio 2024.06中自带的jre的路径。
+~~~shell
+NucleiStudio.exe -vm "<user_nucleistudio_path>/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin" --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug -Debug
+~~~
+
+提供一组批量导入工程并批量编译工程的命令
+
+创建workspace并批量导入工程
+
+~~~shell
+NucleiStudio.exe -vm "<user_nucleistudio_path>/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin"  --launcher.suppressErrors -noSplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data $CI_PROJECT_DIR -importAll $CI_PROJECT_DIR
+~~~
+
+编译这组导入的工程
+
+~~~shell
+NucleiStudio.exe -vm "<user_nucleistudio_path>/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin" --launcher.suppressErrors -noSplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data $CI_PROJECT_DIR -build ${TARGET_PHASE}_Project/Debug
+~~~
+
 > 以下文档是在**2023.10**版本的IDE中实测，其他版本可能需要做一些调整适配才可以正常工作。
 
 Nuclei Studio是图形化（GUI）的代码编写工具，但是在某些特定的场景下，用户需要通过命令行来快速编译工程，
