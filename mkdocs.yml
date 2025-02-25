@@ -28,6 +28,11 @@ theme:
    name: readthedocs
    highlightjs: true
 markdown_extensions:
+  - mkpdfs:
+      author: Nuclei
+      company: "Nuclei System Technology"
+      toc_title: Table of contents
+      output_path: pdf/nuclei_studio_supply_doc.pdf
   - toc:
       permalink: true
   - pymdownx.magiclink
