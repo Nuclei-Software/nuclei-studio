@@ -23,7 +23,11 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update -y
-          sudo apt install -y fonts-noto
+          # required for chinese pdf display works with extra.css
+          # css need to set correct css font for pdf export
+          # https://github.com/hedgedoc/container/pull/19
+          # https://github.com/comwes/mkpdfs-mkdocs-plugin/issues/19
+          sudo apt install -y fonts-noto lftp
           python3 -m pip install --upgrade pip
           # https://github.com/comwes/mkpdfs-mkdocs-plugin/issues/59
           # https://github.com/Kozea/WeasyPrint/issues/2202
