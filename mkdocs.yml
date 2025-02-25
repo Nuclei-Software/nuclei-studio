@@ -39,7 +39,7 @@ plugins:
 markdown_extensions:
   - toc:
       permalink: true
-  - callout
+  - callouts
   - pymdownx.magiclink
 # https://github.com/mkdocs/mkdocs-bootswatch/issues/65#issuecomment-1030505626
 extra_css:
