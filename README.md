@@ -4,6 +4,8 @@
 
 **Document, User Guide, Wiki, and Discussions For Nuclei Studio**
 
+**PDF Version** can be found here: https://nuclei-software.github.io/nuclei-studio/pdf/nuclei_studio_supply_doc.pdf
+
 > [!NOTE]
 > - The latest version of Nuclei Studio IDE is **2024.06**, which can be found in https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2024.06
 
