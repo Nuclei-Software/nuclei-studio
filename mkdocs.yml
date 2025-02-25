@@ -34,6 +34,7 @@ plugins:
       company: "Nuclei System Technology"
       toc_title: Table of contents
       output_path: pdf/nuclei_studio_supply.pdf
+      design: report.css
 markdown_extensions:
   - toc:
       permalink: true
