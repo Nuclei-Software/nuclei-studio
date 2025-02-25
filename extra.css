@@ -2,3 +2,10 @@ blockquote {
   border-left: 3px solid gray;
   padding-left: 0.5em;
 }
+body, input {
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+code, kbd, pre {
+    font-family: SFMono-Regular,Consolas,Menlo,monospace;
+}

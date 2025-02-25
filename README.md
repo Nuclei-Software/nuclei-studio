@@ -4,6 +4,8 @@
 
 **Document, User Guide, Wiki, and Discussions For Nuclei Studio**
 
+**PDF Version** can be found here: https://doc.nucleisys.com/nuclei_studio_supply/pdf/nuclei_studio_supply.pdf
+
 > [!NOTE]
 > - The latest version of Nuclei Studio IDE is **2024.06**, which can be found in https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2024.06
 
@@ -18,7 +20,7 @@
 
 Please create new doc based on [Doc Template](0-template.md)
 
-Click [this link](https://nuclei-software.github.io/nuclei-studio/) to see online version.
+Click [this link](https://doc.nucleisys.com/nuclei_studio_supply/) to see online version.
 
 > 如果您在文档中发现任何拼写错误或不完善之处，我们欢迎您提交Pull Request或Issue，以协助我们进行改进！
 
