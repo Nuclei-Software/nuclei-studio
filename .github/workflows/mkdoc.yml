@@ -22,6 +22,8 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo apt update -y
+          sudo apt install -y fonts-noto
           python3 -m pip install --upgrade pip
           # https://github.com/comwes/mkpdfs-mkdocs-plugin/issues/59
           # https://github.com/Kozea/WeasyPrint/issues/2202
