@@ -31,7 +31,7 @@ theme:
    locale: zh
 plugins:
   - mkpdfs:
-      author: Nuclei
+      author: "Nuclei Software"
       company: "Nuclei System Technology"
       toc_title: Table of contents
       output_path: pdf/nuclei_studio_supply.pdf
