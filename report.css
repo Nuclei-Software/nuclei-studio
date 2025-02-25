@@ -312,6 +312,13 @@ article .admonition, article details {
       margin: 0 -0.8rem;
       padding: 0 0.8rem; } }
 
+pre, code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  hyphens: auto !important; }
+
 article .codehilite, article .highlight {
   position: relative;
   margin: 1em 0;
@@ -328,7 +335,6 @@ article .codehilite, article .highlight {
     margin: 0;
     padding: 0.525rem 0.6rem;
     background-color: transparent;
-    overflow: auto;
     vertical-align: top; }
     article .codehilite pre::-webkit-scrollbar, article .highlight pre::-webkit-scrollbar,
     article .codehilite code::-webkit-scrollbar,
