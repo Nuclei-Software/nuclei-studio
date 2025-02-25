@@ -2,15 +2,14 @@
 
 [![Deploy MkDocs](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/mkdoc.yml/badge.svg)](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/mkdoc.yml) [![pages-build-deployment](https://github.com/Nuclei-Software/nuclei-studio/actions/workflows/pages/pages-build-deployment/badge.svg)](https://nuclei-software.github.io/nuclei-studio/)
 
-**Document, User Guide, Wiki, and Discussions For Nuclei Studio**
+This repository is utilized for **providing supply documents, user guides, wikis, and facilitating discussions related to Nuclei Studio**.
+
+> [!NOTE]
+> 
+> - The latest version of Nuclei Studio IDE is **2025.02**, which can be found in https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2025.02
+> - In **Ubuntu 20.04**, you must install `libncursesw5 libtinfo5 libfdt1 libpixman-1-0 libpng16-16 libasound2 libglib2.0-0` to make **riscv64-unknown-elf-gdb and qemu** able to run.
 
 **PDF Version** can be found here: https://doc.nucleisys.com/nuclei_studio_supply/pdf/nuclei_studio_supply.pdf
-
-> [!NOTE]
-> - The latest version of Nuclei Studio IDE is **2025.02**, which can be found in https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2025.02
-
-> [!NOTE]
-> - In **Ubuntu 20.04**, you must install `libncursesw5 libtinfo5 libfdt1 libpixman-1-0 libpng16-16 libasound2 libglib2.0-0` to make **riscv64-unknown-elf-gdb and qemu** able to run.
 
 
 - **Nuclei Studio IDE Documentation**: https://doc.nucleisys.com/nuclei_tools/ide/index.html
