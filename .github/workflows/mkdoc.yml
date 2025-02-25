@@ -32,13 +32,13 @@ jobs:
       - name: Prepare docs
         run: |
             bash .github/prepare_doc.sh
-            git clone https://github.com/comwes/mkpdfs-design-sample design
-            sudo apt install sass npm
-            pushd design
-            npm install
-            npm run build
-            popd
-            cp design/report.css docs/
+            #git clone https://github.com/comwes/mkpdfs-design-sample design
+            #sudo apt install sass npm
+            #pushd design
+            #npm install
+            #npm run build
+            #popd
+            #cp design/report.css docs/
 
       - name: Build MkDocs
         run: mkdocs build
