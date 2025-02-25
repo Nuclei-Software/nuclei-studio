@@ -31,7 +31,7 @@ jobs:
           python3 -m pip install --upgrade pip
           # https://github.com/comwes/mkpdfs-mkdocs-plugin/issues/59
           # https://github.com/Kozea/WeasyPrint/issues/2202
-          pip3 install mkdocs mkdocs-material pymdown-extensions twine pydyf==0.10.0 mkpdfs2-mkdocs
+          pip3 install mkdocs mkdocs-material markdown-callouts pymdown-extensions twine pydyf==0.10.0 mkpdfs2-mkdocs
 
       - name: Prepare docs
         run: |
