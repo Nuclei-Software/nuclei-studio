@@ -16,8 +16,8 @@ This repository is utilized for **providing supply documents, user guides, wikis
 - **Nuclei Tools(Toolchain/OpenOCD/Qemu/Model) Documentation**: https://doc.nucleisys.com/nuclei_tools/
 - **Nuclei Studio NPK Introduction**:
 
-  - https://github.com/Nuclei-Software/nuclei-sdk/wiki/Nuclei-Studio-NPK-Introduction
-  - https://doc.nucleisys.com/nuclei_tools/ide/npkoverview.html
+  1. https://github.com/Nuclei-Software/nuclei-sdk/wiki/Nuclei-Studio-NPK-Introduction
+  2. https://doc.nucleisys.com/nuclei_tools/ide/npkoverview.html
 
 
 Please create new doc based on [Doc Template](0-template.md)
