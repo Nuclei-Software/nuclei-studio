@@ -23,7 +23,8 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip3 install mkdocs mkdocs-material pymdown-extensions twine mkpdfs-mkdocs
+          # https://github.com/comwes/mkpdfs-mkdocs-plugin/issues/59
+          pip3 install mkdocs mkdocs-material pymdown-extensions twine mkpdfs2-mkdocs
 
       - name: Prepare docs
         run: |
