@@ -36,16 +36,27 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
         with:
           branch: gh-pages
           folder: ./site
+
+      - name: Deploy Documentation
+        if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+        env:
+            FTPUSER: ${{ secrets.FTPUSER }}
+            FTPPWD: ${{ secrets.FTPPWD }}
+            FTPSERVER: ${{ secrets.FTPSERVER }}
+
+        run: |
+          bash .github/ftp_deploy.sh $FTPUSER $FTPPWD $FTPSERVER site nuclei_studio_supply
+          echo "Click https://doc.nucleisys.com/nuclei_studio_supply to view the latest deployment!"
 
       - name: Upload Documentation
         uses: actions/upload-artifact@v4
         with:
           # Artifact name
-          name: nuclei_studio_supply_doc
+          name: nuclei_studio_supply
           # A file, directory or wildcard pattern that describes what to upload
           path: ./site
 

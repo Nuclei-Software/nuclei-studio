@@ -32,7 +32,7 @@ plugins:
       author: Nuclei
       company: "Nuclei System Technology"
       toc_title: Table of contents
-      output_path: pdf/nuclei_studio_supply_doc.pdf
+      output_path: pdf/nuclei_studio_supply.pdf
 markdown_extensions:
   - toc:
       permalink: true
