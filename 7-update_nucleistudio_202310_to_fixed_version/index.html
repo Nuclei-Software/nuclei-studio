@@ -1,164 +1,153 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+
+<html class="writer-html5" lang="zh">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>更新 Nuclei Studio 2023.10 到最新修正版本 - Nuclei Studio Supply Documents</title>
-    <link rel="stylesheet" href="../css/theme.css" />
-    <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-        <link href="../extra.css" rel="stylesheet" />
-    
-      <script>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>更新 Nuclei Studio 2023.10 到最新修正版本 - Nuclei Studio Supply Documents</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
         // Current page data
         var mkdocs_page_name = "\u66f4\u65b0 Nuclei Studio 2023.10 \u5230\u6700\u65b0\u4fee\u6b63\u7248\u672c";
         var mkdocs_page_input_path = "7-update_nucleistudio_202310_to_fixed_version.md";
         var mkdocs_page_url = null;
       </script>
-    
-    <!--[if lt IE 9]>
+<!--[if lt IE 9]>
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 </head>
-
 <body class="wy-body-for-nav" role="document">
-
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href=".." class="icon icon-home"> Nuclei Studio Supply Documents
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
-  </form>
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> Nuclei Studio Supply Documents
+        </a>
 </div>
-      </div>
-
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
-                </li>
-              </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">更新 Nuclei Studio 2023.10 到最新修正版本</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#_1">问题描述</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#nuclei-studio-202310_1">升级Nuclei Studio 2023.10 到最新版本的方法</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#20231118nuclei-studio-202310">对2023年11月18日之前下载了Nuclei Studio 2023.10进行升级</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_2">从官网下载最新的版本</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#_3">参考资料</a>
-    </li>
-    </ul>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../13-error_could_not_find_an_available_hardware_trigger/">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/">cannot find -lncrt_balanced: No such file or directory</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7/">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
-                </li>
-              </ul>
-      </div>
-    </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="..">Nuclei Studio Supply Documents</a>
-        
-      </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">更新 Nuclei Studio 2023.10 到最新修正版本</li>
-    <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/7-update_nucleistudio_202310_to_fixed_version.md" class="icon icon-github"> Edit on GitHub</a>
-    </li>
-  </ul>
-  <hr/>
+<div aria-label="导航栏" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_1">问题描述</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#nuclei-studio-202310_1">升级Nuclei Studio 2023.10 到最新版本的方法</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#20231118nuclei-studio-202310">对2023年11月18日之前下载了Nuclei Studio 2023.10进行升级</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_2">从官网下载最新的版本</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_3">参考资料</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../13-error_could_not_find_an_available_hardware_trigger/">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/">cannot find -lncrt_balanced: No such file or directory</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7/">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+</li>
+</ul>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
-              
-                <h1 id="nuclei-studio-202310">更新 Nuclei Studio 2023.10 到最新修正版本<a class="headerlink" href="#nuclei-studio-202310" title="Permanent link">&para;</a></h1>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="移动导航栏" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">Nuclei Studio Supply Documents</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">更新 Nuclei Studio 2023.10 到最新修正版本</li>
+<li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/7-update_nucleistudio_202310_to_fixed_version.md"> 在GitHub上编辑</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<div class="section" itemprop="articleBody">
+<h1 id="nuclei-studio-202310">更新 Nuclei Studio 2023.10 到最新修正版本<a class="headerlink" href="#nuclei-studio-202310" title="Permanent link">¶</a></h1>
 <blockquote>
 <p><strong>2023.11.06</strong>上传的Nuclei Studio 2023.10版本存在一些问题，我们进行了修正，并于 <strong>2023.11.17 13:30</strong>替换线上2023.10版本。</p>
 </blockquote>
-<h2 id="_1">问题描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h2 id="_1">问题描述<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
 <p><strong>2023年11月06日</strong>发布的<strong>Nuclei Studio 2023.10</strong>版本中存在一些问题,影响用户使用:</p>
 <ul>
 <li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/6">build tools的busybox存在问题导致make 带 pre- post- steps时编译出问题</a></li>
@@ -173,19 +162,19 @@
 <li>修改并发布Windows build-tools 1.2，替换了线上的Windows Build Tools 2023.10</li>
 <li>发布了新的Nuclei Studio 2023.10，替换了线上的Nuclei Studio 2023.10</li>
 </ul>
-<h2 id="nuclei-studio-202310_1">升级Nuclei Studio 2023.10 到最新版本的方法<a class="headerlink" href="#nuclei-studio-202310_1" title="Permanent link">&para;</a></h2>
+<h2 id="nuclei-studio-202310_1">升级Nuclei Studio 2023.10 到最新版本的方法<a class="headerlink" href="#nuclei-studio-202310_1" title="Permanent link">¶</a></h2>
 <p>如果您的Nuclei Studio 2023.10，是在<strong>2023年11月18日</strong>之前下载，版本中存在的上述问题可能会引响您的使用体验，
 您可以选择手动进行升级，也可以选择重官网上下载我们最新发布的版本。</p>
-<h3 id="20231118nuclei-studio-202310">对2023年11月18日之前下载了Nuclei Studio 2023.10进行升级<a class="headerlink" href="#20231118nuclei-studio-202310" title="Permanent link">&para;</a></h3>
+<h3 id="20231118nuclei-studio-202310">对2023年11月18日之前下载了Nuclei Studio 2023.10进行升级<a class="headerlink" href="#20231118nuclei-studio-202310" title="Permanent link">¶</a></h3>
 <p>如果您是在2023年11月18日之前下载了Nuclei Studio 2023.10，可以通过以下方式更新您的Nuclei Studio 2023.10 到最新版本</p>
 <p><strong>1. 升级Nuclei Studio Plugins</strong></p>
 <p>在Nuclei Studio菜单中找到<strong>Help-&gt;Install New Software</strong>, 然后在Install工具的<code>Work with</code>
 选中<code>NucleiStudio - https://ide.nucleisys.com/NucleiStudio/</code>,下面会列出所有待更新的插件。</p>
-<p><img alt="" src="../asserts/images/7/195660415249583.png" /></p>
+<p><img alt="" src="../asserts/images/7/195660415249583.png"/></p>
 <p>在弹出的插件列表中选中需要升级的插件，我们选中<code>RISC-V C/C++ Cross Development Tools</code>, 然后Next。</p>
-<p><img alt="" src="../asserts/images/7/v_20231116151002.png" /></p>
+<p><img alt="" src="../asserts/images/7/v_20231116151002.png"/></p>
 <p>在升级过程中，Nuclei Studio会询问Trust Artifacts时，操作如下图，选择Trust Selected, 然后升级完成，Nuclei Studio会重启。至此Nuclei Studio Plugins升级完成。</p>
-<p><img alt="" src="../asserts/images/7/v_18001190261409.png" /></p>
+<p><img alt="" src="../asserts/images/7/v_18001190261409.png"/></p>
 <p><strong>2. 升级build-tools</strong></p>
 <blockquote>
 <p>Linux版本不需要执行此步骤，只需要确保系统中装了<code>make</code>工具就行。</p>
@@ -196,67 +185,53 @@
 <li><a href="https://www.nucleisys.com/upload/files/toochain/build-tools/win32-buildtools-1.2.zip">build-tools-1.2下载</a></li>
 </ul>
 <p>经此两步，完成了对Nuclei Studio 2023.10的升级。</p>
-<h3 id="_2">从官网下载最新的版本<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<h3 id="_2">从官网下载最新的版本<a class="headerlink" href="#_2" title="Permanent link">¶</a></h3>
 <p>如果不想做手动升级工作，可以直接从我们的网站上下载最新的Nuclei Studio 2023.10。</p>
 <ul>
 <li><a href="https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-win64.zip">Windows版下载</a></li>
 <li><a href="https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-lin64.tgz">Linux版下载</a></li>
 </ul>
-<h2 id="_3">参考资料<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h2 id="_3">参考资料<a class="headerlink" href="#_3" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://www.rvmcu.com/nucleistudio-faq.html">Nuclei Studio FAQs</a></li>
 <li><a href="https://github.com/Nuclei-Software/nuclei-studio">Nuclei Studio/Tools 不断更新的补充文档</a></li>
 <li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues">Nuclei Studio Issues</a></li>
 </ul>
-              
-            </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/" class="btn btn-neutral float-left" title="GCC13 auto generated RVV instructions when RVV enabled"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../8-openocd_202310_flashloader_flaws/" class="btn btn-neutral float-right" title="OpenOCD在操作容量大于16M-Byte的nor-flash时的问题">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
-          
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-        <span>
-          <a href="https://github.com/Nuclei-Software/nuclei-studio" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
-        </span>
-    
-    
-      <span><a href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../8-openocd_202310_flashloader_flaws/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
 </div>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "..";</script>
-    <script src="../js/theme_extra.js"></script>
-    <script src="../js/theme.js"></script>
-      <script src="../search/main.js"></script>
-    <script>
+</div><footer>
+<div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/" title="GCC13 auto generated RVV instructions when RVV enabled"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
+<a class="btn btn-neutral float-right" href="../8-openocd_202310_flashloader_flaws/" title="OpenOCD在操作容量大于16M-Byte的nor-flash时的问题">下一章 <span class="icon icon-circle-arrow-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>All rights reserved</p>
+</div>
+
+  用<a href="https://www.mkdocs.org/">MkDocs</a>构建，使用<a href="https://readthedocs.org">Read the Docs</a>提供的<a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>。
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="版本" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a class="fa fa-github" href="https://github.com/Nuclei-Software/nuclei-studio" style="color: #fcfcfc"> GitHub</a>
+</span>
+<span><a href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/" style="color: #fcfcfc">« 上一章</a></span>
+<span><a href="../8-openocd_202310_flashloader_flaws/" style="color: #fcfcfc">下一章 »</a></span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script>
         jQuery(function () {
             SphinxRtdTheme.Navigation.enable(true);
         });
     </script>
-
 </body>
 </html>
