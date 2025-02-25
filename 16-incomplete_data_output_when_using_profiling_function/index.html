@@ -163,14 +163,14 @@
 <p>首先需要确认软件配置的内存大小与硬件实际大小相匹配（ilm/sram/flash/ddr/），否则需要适配软件链接脚本内存布局： <br/>
 比如，如果是 <code>DOWNLOAD=ilm</code> 模式下载，可以按硬件的 ilm 与 dlm 大小适配。
 对于 <code>nuclei sdk 0.6.0</code> 版本，修改的文件为<code>nuclei-sdk/SoC/evalsoc/Board/nuclei_fpga_eval/Source/GCC/gcc_evalsoc_ilm.ld</code></p>
-<pre><code class="language-c">INCLUDE evalsoc.memory
+<div class="codehilite"><pre><span></span><code><span class="n">INCLUDE</span><span class="w"> </span><span class="n">evalsoc</span><span class="p">.</span><span class="n">memory</span>
 
-MEMORY
-{
-  ilm (rxa!w) : ORIGIN = ILM_MEMORY_BASE,   LENGTH = ILM_MEMORY_SIZE
-  ram (wxa!r) : ORIGIN = DLM_MEMORY_BASE,   LENGTH = DLM_MEMORY_SIZE
-}
-</code></pre>
+<span class="n">MEMORY</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">ilm</span><span class="w"> </span><span class="p">(</span><span class="n">rxa</span><span class="o">!</span><span class="n">w</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ILM_MEMORY_BASE</span><span class="p">,</span><span class="w">   </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ILM_MEMORY_SIZE</span>
+<span class="w">  </span><span class="n">ram</span><span class="w"> </span><span class="p">(</span><span class="n">wxa</span><span class="o">!</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ORIGIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DLM_MEMORY_BASE</span><span class="p">,</span><span class="w">   </span><span class="n">LENGTH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DLM_MEMORY_SIZE</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>如果 <code>DOWNLOAD=ilm</code> 模式内存不足，可以使用内存大一点的下载方式（如 <code>DOWNLOAD=ddr</code>）。</p>
 <h2 id="2console-terminal">问题2：Console 或 Terminal 收集的数据不全导致数据解析时失败<a class="headerlink" href="#2console-terminal" title="Permanent link">¶</a></h2>
 <p>在 NucleiStudio 2024.06 中，当选择使用串口输出的方式使用 Profiling 功能时，可能使用 <code>Parse and Generate Hexdump</code> 解析数据时

@@ -134,63 +134,63 @@
 <h1 id="openocderrordevice-id-8xle2g8a6d-is-not-known-as-fespi-capable">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable<a class="headerlink" href="#openocderrordevice-id-8xle2g8a6d-is-not-known-as-fespi-capable" title="Permanent link">¶</a></h1>
 <p>Nuclei Studio 2023.10版中烧写程序时有报以下错误：</p>
 <p>参见这个 <a href="https://github.com/riscv-mcu/hbird-sdk/issues/8">https://github.com/riscv-mcu/hbird-sdk/issues/8</a></p>
-<pre><code>Info : Using libusb driver
-Info : clock speed 1000 kHz
-Info : JTAG tap: riscv.cpu tap/device found: 0x1e200a6d (mfg: 0x536 (Nuclei System Technology Co Ltd), part: 0xe200, ver: 0x1)
-Info : [riscv.cpu] Found 0 triggers
-halted at 0x200000b2 due to debug interrupt
-Info : Examined RISCV core; XLEN=32, misa=0x40001105
-[riscv.cpu] Target successfully examined.
-Info : starting gdb server for riscv.cpu on 3333
-Info : Listening on port 3333 for gdb connections
-Error: Device ID 0x1e200a6d is not known as FESPI capable
-Error: auto_probe failed
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Using</span><span class="w"> </span><span class="n">libusb</span><span class="w"> </span><span class="n">driver</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="n">kHz</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">JTAG</span><span class="w"> </span><span class="n">tap</span><span class="o">:</span><span class="w"> </span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="w"> </span><span class="n">tap</span><span class="o">/</span><span class="n">device</span><span class="w"> </span><span class="n">found</span><span class="o">:</span><span class="w"> </span><span class="mh">0x1e200a6d</span><span class="w"> </span><span class="o">(</span><span class="n">mfg</span><span class="o">:</span><span class="w"> </span><span class="mh">0x536</span><span class="w"> </span><span class="o">(</span><span class="n">Nuclei</span><span class="w"> </span><span class="n">System</span><span class="w"> </span><span class="n">Technology</span><span class="w"> </span><span class="n">Co</span><span class="w"> </span><span class="n">Ltd</span><span class="o">),</span><span class="w"> </span><span class="n">part</span><span class="o">:</span><span class="w"> </span><span class="mh">0xe200</span><span class="o">,</span><span class="w"> </span><span class="n">ver</span><span class="o">:</span><span class="w"> </span><span class="mh">0x1</span><span class="o">)</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="o">]</span><span class="w"> </span><span class="n">Found</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">triggers</span>
+<span class="n">halted</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mh">0x200000b2</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">interrupt</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Examined</span><span class="w"> </span><span class="n">RISCV</span><span class="w"> </span><span class="n">core</span><span class="o">;</span><span class="w"> </span><span class="n">XLEN</span><span class="o">=</span><span class="mi">32</span><span class="o">,</span><span class="w"> </span><span class="n">misa</span><span class="o">=</span><span class="mh">0x40001105</span>
+<span class="o">[</span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="o">]</span><span class="w"> </span><span class="n">Target</span><span class="w"> </span><span class="n">successfully</span><span class="w"> </span><span class="n">examined</span><span class="o">.</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">gdb</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="mi">3333</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Listening</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="mi">3333</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">gdb</span><span class="w"> </span><span class="n">connections</span>
+<span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Device</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="mh">0x1e200a6d</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">known</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">FESPI</span><span class="w"> </span><span class="n">capable</span>
+<span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">auto_probe</span><span class="w"> </span><span class="n">failed</span>
+</code></pre></div>
 <p>因为在openocd 2023.10中，将<code>flash bank $_FLASHNAME</code>从<code>fespi</code>修改为了<code>nuspi</code>，需要工程中的openocd配置文件中的<code>fespi</code>修改为了<code>nuspi</code>，
 以蜂鸟工程为例，将<code>hbird_sdk/SoC/hbirdv2/Board/mcu200t/openocd_hbirdv2.cfg</code>修改为如下配置，工程即可正常使用。</p>
-<pre><code>adapter_khz     1000
+<div class="codehilite"><pre><span></span><code><span class="n">adapter_khz</span><span class="w">     </span><span class="mi">1000</span>
 
-interface ftdi
-ftdi_vid_pid 0x0403 0x6010
-ftdi_oscan1_mode off
+<span class="n">interface</span><span class="w"> </span><span class="n">ftdi</span>
+<span class="n">ftdi_vid_pid</span><span class="w"> </span><span class="mh">0x0403</span><span class="w"> </span><span class="mh">0x6010</span>
+<span class="n">ftdi_oscan1_mode</span><span class="w"> </span><span class="n">off</span>
 
-transport select jtag
+<span class="n">transport</span><span class="w"> </span><span class="n">select</span><span class="w"> </span><span class="n">jtag</span>
 
-ftdi_layout_init 0x0008 0x001b
-ftdi_layout_signal nSRST -oe 0x0020 -data 0x0020
-ftdi_layout_signal TCK -data 0x0001
-ftdi_layout_signal TDI -data 0x0002
-ftdi_layout_signal TDO -input 0x0004
-ftdi_layout_signal TMS -data 0x0008
-ftdi_layout_signal JTAG_SEL -data 0x0100 -oe 0x0100
+<span class="n">ftdi_layout_init</span><span class="w"> </span><span class="mh">0x0008</span><span class="w"> </span><span class="mh">0x001b</span>
+<span class="n">ftdi_layout_signal</span><span class="w"> </span><span class="n">nSRST</span><span class="w"> </span><span class="o">-</span><span class="n">oe</span><span class="w"> </span><span class="mh">0x0020</span><span class="w"> </span><span class="o">-</span><span class="n">data</span><span class="w"> </span><span class="mh">0x0020</span>
+<span class="n">ftdi_layout_signal</span><span class="w"> </span><span class="n">TCK</span><span class="w"> </span><span class="o">-</span><span class="n">data</span><span class="w"> </span><span class="mh">0x0001</span>
+<span class="n">ftdi_layout_signal</span><span class="w"> </span><span class="n">TDI</span><span class="w"> </span><span class="o">-</span><span class="n">data</span><span class="w"> </span><span class="mh">0x0002</span>
+<span class="n">ftdi_layout_signal</span><span class="w"> </span><span class="n">TDO</span><span class="w"> </span><span class="o">-</span><span class="n">input</span><span class="w"> </span><span class="mh">0x0004</span>
+<span class="n">ftdi_layout_signal</span><span class="w"> </span><span class="n">TMS</span><span class="w"> </span><span class="o">-</span><span class="n">data</span><span class="w"> </span><span class="mh">0x0008</span>
+<span class="n">ftdi_layout_signal</span><span class="w"> </span><span class="n">JTAG_SEL</span><span class="w"> </span><span class="o">-</span><span class="n">data</span><span class="w"> </span><span class="mh">0x0100</span><span class="w"> </span><span class="o">-</span><span class="n">oe</span><span class="w"> </span><span class="mh">0x0100</span>
 
-set _CHIPNAME riscv
-jtag newtap $_CHIPNAME cpu -irlen 5
+<span class="n">set</span><span class="w"> </span><span class="n">_CHIPNAME</span><span class="w"> </span><span class="n">riscv</span>
+<span class="n">jtag</span><span class="w"> </span><span class="n">newtap</span><span class="w"> </span><span class="o">$</span><span class="n">_CHIPNAME</span><span class="w"> </span><span class="n">cpu</span><span class="w"> </span><span class="o">-</span><span class="n">irlen</span><span class="w"> </span><span class="mi">5</span>
 
-set _TARGETNAME $_CHIPNAME.cpu
-target create $_TARGETNAME riscv -chain-position $_TARGETNAME
-$_TARGETNAME configure -work-area-phys 0x80000000 -work-area-size 10000 -work-area-backup 1
+<span class="n">set</span><span class="w"> </span><span class="n">_TARGETNAME</span><span class="w"> </span><span class="o">$</span><span class="n">_CHIPNAME</span><span class="o">.</span><span class="n">cpu</span>
+<span class="n">target</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="o">$</span><span class="n">_TARGETNAME</span><span class="w"> </span><span class="n">riscv</span><span class="w"> </span><span class="o">-</span><span class="n">chain</span><span class="o">-</span><span class="n">position</span><span class="w"> </span><span class="o">$</span><span class="n">_TARGETNAME</span>
+<span class="o">$</span><span class="n">_TARGETNAME</span><span class="w"> </span><span class="n">configure</span><span class="w"> </span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="n">area</span><span class="o">-</span><span class="n">phys</span><span class="w"> </span><span class="mh">0x80000000</span><span class="w"> </span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="n">area</span><span class="o">-</span><span class="n">size</span><span class="w"> </span><span class="mi">10000</span><span class="w"> </span><span class="o">-</span><span class="n">work</span><span class="o">-</span><span class="n">area</span><span class="o">-</span><span class="n">backup</span><span class="w"> </span><span class="mi">1</span>
 
-set _FLASHNAME $_CHIPNAME.flash
-flash bank $_FLASHNAME nuspi 0x20000000 0 0 0 $_TARGETNAME
-# Set the ILM space also as flash, to make sure it can be add breakpoint with hardware trigger
-#flash bank onboard_ilm nuspi 0x80000000 0 0 0 $_TARGETNAME
+<span class="n">set</span><span class="w"> </span><span class="n">_FLASHNAME</span><span class="w"> </span><span class="o">$</span><span class="n">_CHIPNAME</span><span class="o">.</span><span class="n">flash</span>
+<span class="n">flash</span><span class="w"> </span><span class="n">bank</span><span class="w"> </span><span class="o">$</span><span class="n">_FLASHNAME</span><span class="w"> </span><span class="n">nuspi</span><span class="w"> </span><span class="mh">0x20000000</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">$</span><span class="n">_TARGETNAME</span>
+<span class="c1"># Set the ILM space also as flash, to make sure it can be add breakpoint with hardware trigger</span>
+<span class="c1">#flash bank onboard_ilm nuspi 0x80000000 0 0 0 $_TARGETNAME</span>
 
-# Expose Nuclei self-defined CSRS range 770-800,835-850,1984-2032,2064-2070
-# See https://github.com/riscv/riscv-gnu-toolchain/issues/319#issuecomment-358397306
-# Then user can view the csr register value in gdb using: info reg csr775 for CSR MTVT(0x307)
-riscv expose_csrs 770-800,835-850,1984-2032,2064-2070
+<span class="c1"># Expose Nuclei self-defined CSRS range 770-800,835-850,1984-2032,2064-2070</span>
+<span class="c1"># See https://github.com/riscv/riscv-gnu-toolchain/issues/319#issuecomment-358397306</span>
+<span class="c1"># Then user can view the csr register value in gdb using: info reg csr775 for CSR MTVT(0x307)</span>
+<span class="n">riscv</span><span class="w"> </span><span class="n">expose_csrs</span><span class="w"> </span><span class="mi">770</span><span class="o">-</span><span class="mi">800</span><span class="p">,</span><span class="mi">835</span><span class="o">-</span><span class="mi">850</span><span class="p">,</span><span class="mi">1984</span><span class="o">-</span><span class="mi">2032</span><span class="p">,</span><span class="mi">2064</span><span class="o">-</span><span class="mi">2070</span>
 
-init
-#reset
-if {[ info exists pulse_srst]} {
-  ftdi_set_signal nSRST 0
-  ftdi_set_signal nSRST z
-}
-halt
-# We must turn on this because otherwise the IDE version debug cannot download the program into flash
-flash protect 0 0 last off
-</code></pre>
+<span class="n">init</span>
+<span class="c1">#reset</span>
+<span class="k">if</span><span class="w"> </span><span class="p">{[</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="n">exists</span><span class="w"> </span><span class="n">pulse_srst</span><span class="p">]}</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">ftdi_set_signal</span><span class="w"> </span><span class="n">nSRST</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="n">ftdi_set_signal</span><span class="w"> </span><span class="n">nSRST</span><span class="w"> </span><span class="n">z</span>
+<span class="p">}</span>
+<span class="n">halt</span>
+<span class="c1"># We must turn on this because otherwise the IDE version debug cannot download the program into flash</span>
+<span class="n">flash</span><span class="w"> </span><span class="n">protect</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="n">off</span>
+</code></pre></div>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">

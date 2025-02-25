@@ -138,9 +138,9 @@
 <h1 id="error-couldnt-find-an-available-hardware-trigger-error-cant-add-breakpoint-resource-not-available">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available<a class="headerlink" href="#error-couldnt-find-an-available-hardware-trigger-error-cant-add-breakpoint-resource-not-available" title="Permanent link">¶</a></h1>
 <h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
 <p>在NucleiStudio中使用OpenOCD调试hbird/hbirdv2处理器（不支持硬件断点）或者 Nuclei 100 系列的处理器时，当程序运行在Flash/FlashXip下时，会报Error。</p>
-<pre><code>Error: Couldn't find an available hardware trigger.
-Error: can't add breakpoint: resource not available
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Couldn</span><span class="s1">'t find an available hardware trigger.</span>
+<span class="s1">Error: can'</span><span class="n">t</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">breakpoint</span><span class="o">:</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">available</span>
+</code></pre></div>
 <p><img alt="" src="../asserts/images/13/13-1.png"/></p>
 <p><img alt="" src="../asserts/images/13/13-2.png"/></p>
 <p>是因为所运行的CPU不支持硬件断点，导致程序运行在Flash上的时候，IDE调试功能无法正常工作，这个是IDE会需要打一个临时断点的缘故导致的。如果需要下载并运行程序，切换到Run运行模式可以正常运行程序。</p>

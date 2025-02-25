@@ -132,7 +132,20 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <div class="section" itemprop="articleBody">
 <h1 id="how-to-print-memory-usage-in-nuclei-studio">How to print memory usage in Nuclei Studio<a class="headerlink" href="#how-to-print-memory-usage-in-nuclei-studio" title="Permanent link">¶</a></h1>
-<p>See this issue <a href="https://github.com/Nuclei-Software/nuclei-studio/issues/4">#4</a></p>
+<p>In order to print memory usage when compile an application, you can do it like this:</p>
+<p>Click <strong>Nuclei Settings</strong> in selected project, and pass extra <code>-Wl,--print-memory-usage</code> in <strong>Extra Link Flags</strong>,
+and save settings, and then build this project, you will be able to see memory usage.</p>
+<p><img alt="Show Memory Usage" src="asserts/images/3/ide_show_memory_usage.png"/></p>
+<div class="codehilite"><pre><span></span><code>Building<span class="w"> </span>target:<span class="w"> </span>050hello.elf
+Invoking:<span class="w"> </span>GNU<span class="w"> </span>RISC-V<span class="w"> </span>Cross<span class="w"> </span>C++<span class="w"> </span>Linker
+...<span class="w"> </span>...
+Memory<span class="w"> </span>region<span class="w">         </span>Used<span class="w"> </span>Size<span class="w">  </span>Region<span class="w"> </span>Size<span class="w">  </span>%age<span class="w"> </span>Used
+<span class="w">             </span>ilm:<span class="w">        </span><span class="m">8280</span><span class="w"> </span>B<span class="w">        </span><span class="m">64</span><span class="w"> </span>KB<span class="w">     </span><span class="m">12</span>.63%
+<span class="w">             </span>ram:<span class="w">         </span><span class="m">64</span><span class="w"> </span>KB<span class="w">        </span><span class="m">64</span><span class="w"> </span>KB<span class="w">    </span><span class="m">100</span>.00%
+Finished<span class="w"> </span>building<span class="w"> </span>target:<span class="w"> </span>050hello.elf
+</code></pre></div>
+<p><strong>Why the ram usage here is 100% used?</strong></p>
+<p>For Nuclei SDK or NMSIS template linker script, the stack is placed at the bottom of ram memory, so the ram usage is 100%.</p>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">

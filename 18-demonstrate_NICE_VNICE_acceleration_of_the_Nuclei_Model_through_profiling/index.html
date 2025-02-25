@@ -198,8 +198,8 @@
 <p><img alt="image-create_aes_project" src="../asserts/images/18/create_aes_project.png"/></p>
 <h4 id="step2-demo_vnice-aes_demo">step2：基于 demo_vnice 工程移植 aes_demo 裸机用例<a class="headerlink" href="#step2-demo_vnice-aes_demo" title="Permanent link">¶</a></h4>
 <p>移植 aes_demo 时，需要保留 <code>demo_vnice</code> 中的 <code>insn.h</code> 内嵌汇编头文件框架，方便后续添加自定义的 <strong>NICE/VNICE</strong> 指令，在 <code>main.c</code> 中需要保留 <strong>NICE/VNICE</strong> 指令执行前的 CSR 使能代码：</p>
-<pre><code class="language-c">__RV_CSR_SET(CSR_MSTATUS, MSTATUS_XS);
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="n">__RV_CSR_SET</span><span class="p">(</span><span class="n">CSR_MSTATUS</span><span class="p">,</span><span class="w"> </span><span class="n">MSTATUS_XS</span><span class="p">);</span>
+</code></pre></div>
 <p>其余 <code>demo_vnice</code> 工程中 application 原始用例可删除，替换成 aes_demo 用例，形成如下目录结构，并确保能够编译通过。</p>
 <p><img alt="image-compile_aes_demo" src="../asserts/images/18/compile_aes_demo.png"/></p>
 <p>用户可以下载我们移植好的 AES 加解密 demo：<a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcR7Ti53K">优化前AES工程链接下载</a></p>
@@ -219,162 +219,162 @@
 <p><strong>注意：</strong> <code>Time/Call</code> 显示的是每个函数的函数体 text 段的 cycle 数，并不是整个函数的 cycle 数，是不计入其中子函数占用的 cycle 数的。</p>
 <p><img alt="image-parse_gprof" src="../asserts/images/18/parse_gprof.png"/></p>
 <p>从而得到 CPU 占用率最高的 <strong>TOP5</strong> 热点函数为：</p>
-<pre><code>aes_mix_columns_dec
+<div class="codehilite"><pre><span></span><code>aes_mix_columns_dec
 aes_mix_columns_enc
 aes_key_schedule
 aes_ecb_decrypt
 aes_ecb_encrypt
-</code></pre>
+</code></pre></div>
 <p><strong>注意：</strong> 此时需要备份当前的 <code>aes_demo</code> 工程，改名为 <code>aes_demo_nice</code> 工程，这样可以在 Nuclei Studio 中同时打开两个工程，方便添加 <strong>NICE/VNICE</strong> 指令优化后的工程和原 <code>aes_demo</code> 工程进行 Profiling 比较。</p>
 <h4 id="step5nicevnice">step5：NICE/VNICE 指令替换<a class="headerlink" href="#step5nicevnice" title="Permanent link">¶</a></h4>
 <p>用户需要在备份的 <code>aes_demo_nice</code> 工程下，研究热点函数算法特点，将其替换为 <strong>NICE/VNICE</strong> 指令，从而提升整体程序性能。</p>
 <p>在包含 AES 加解密的 <strong>TOP5</strong> 热点函数的 <code>aes_dec.c</code> 和 <code>aes_dec.c</code> 两个C文件中 <code>#include "insn.h"</code> 以便添加 <strong>NICE/VNICE</strong> 指令替换。</p>
 <p><strong>TOP1</strong> 热点函数为 <code>aes_mix_columns_dec</code>，实现了 AES 算法解密的逆混合列，输入一个状态矩阵，经过计算后原地址输出一个计算后的状态矩阵，实现了 Load 数据、逆混合运算以及 Store 数据，代码如下：</p>
-<pre><code class="language-c">static void aes_mix_columns_dec(
-    uint8_t     pt[16]       //!&lt; Current block state
-){
-    // Col 0
-    for(int i = 0; i &lt; 4; i ++) {
-        uint8_t b0,b1,b2,b3;
-        uint8_t s0,s1,s2,s3;
+<div class="codehilite"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">aes_mix_columns_dec</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">     </span><span class="n">pt</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w">       </span><span class="c1">//!&lt; Current block state</span>
+<span class="p">){</span>
+<span class="w">    </span><span class="c1">// Col 0</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">b0</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">b2</span><span class="p">,</span><span class="n">b3</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">s0</span><span class="p">,</span><span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">,</span><span class="n">s3</span><span class="p">;</span>
 
-        s0 = pt[4*i+0];
-        s1 = pt[4*i+1];
-        s2 = pt[4*i+2];
-        s3 = pt[4*i+3];
+<span class="w">        </span><span class="n">s0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">];</span>
 
-        b0 = XTE(s0) ^ XTB(s1) ^ XTD(s2) ^ XT9(s3);
-        b1 = XT9(s0) ^ XTE(s1) ^ XTB(s2) ^ XTD(s3);
-        b2 = XTD(s0) ^ XT9(s1) ^ XTE(s2) ^ XTB(s3);
-        b3 = XTB(s0) ^ XTD(s1) ^ XT9(s2) ^ XTE(s3);
+<span class="w">        </span><span class="n">b0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XTE</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTB</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTD</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT9</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XT9</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTE</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTB</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTD</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XTD</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT9</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTE</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTB</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XTB</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTD</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT9</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTE</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
 
-        pt[4*i+0] = b0;
-        pt[4*i+1] = b1;
-        pt[4*i+2] = b2;
-        pt[4*i+3] = b3;
-    }
-}
-</code></pre>
+<span class="w">        </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b3</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>由于输入输出地址一样，可以考虑用一条 <strong>NICE</strong> 指令替换，指令的 <code>opcode</code>、<code>funct3</code> 和 <code>funct7</code> 都可以在编码位域中自定义，该指令设置 <code>opcode</code> 为 <code>Custom-0</code>，<code>funct3</code> 设置为0，<code>funct7</code> 设置为0x10，寄存器只使用到 <code>rs1</code> 描述入参地址，不需要使用 <code>rd</code> 和 <code>rs2</code>，指令写到 <code>insn.h</code> 中，内嵌汇编如下：</p>
-<pre><code class="language-c">__STATIC_FORCEINLINE void custom_aes_mix_columns_dec(uint8_t* addr)
-{
-    int zero = 0;
-    asm volatile(".insn r 0xb, 0, 0x10, x0, %1, x0" : "=r"(zero) : "r"(addr));
-}
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="n">__STATIC_FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">custom_aes_mix_columns_dec</span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">zero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">asm</span><span class="w"> </span><span class="k">volatile</span><span class="p">(</span><span class="s">".insn r 0xb, 0, 0x10, x0, %1, x0"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">"=r"</span><span class="p">(</span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">"r"</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>用户可以在 <code>insn.h</code> 中定义一个 <code>USE_NICE</code> 的宏选择是否使用 <strong>NICE</strong> ，在 <code>aes_dec.c</code> 改写 <code>aes_mix_columns_dec</code> 如下 ：</p>
-<pre><code class="language-c">static void aes_mix_columns_dec(
-    uint8_t     pt[16]       //!&lt; Current block state
-){
+<div class="codehilite"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">aes_mix_columns_dec</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">     </span><span class="n">pt</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w">       </span><span class="c1">//!&lt; Current block state</span>
+<span class="p">){</span>
 
-#ifdef USE_NICE
-    custom_aes_mix_columns_dec(pt);
-#else
-    // Col 0
-    for(int i = 0; i &lt; 4; i ++) {
-        uint8_t b0,b1,b2,b3;
-        uint8_t s0,s1,s2,s3;
+<span class="cp">#ifdef USE_NICE</span>
+<span class="w">    </span><span class="n">custom_aes_mix_columns_dec</span><span class="p">(</span><span class="n">pt</span><span class="p">);</span>
+<span class="cp">#else</span>
+<span class="w">    </span><span class="c1">// Col 0</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">b0</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">b2</span><span class="p">,</span><span class="n">b3</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">s0</span><span class="p">,</span><span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">,</span><span class="n">s3</span><span class="p">;</span>
 
-        s0 = pt[4*i+0];
-        s1 = pt[4*i+1];
-        s2 = pt[4*i+2];
-        s3 = pt[4*i+3];
+<span class="w">        </span><span class="n">s0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">];</span>
 
-        b0 = XTE(s0) ^ XTB(s1) ^ XTD(s2) ^ XT9(s3);
-        b1 = XT9(s0) ^ XTE(s1) ^ XTB(s2) ^ XTD(s3);
-        b2 = XTD(s0) ^ XT9(s1) ^ XTE(s2) ^ XTB(s3);
-        b3 = XTB(s0) ^ XTD(s1) ^ XT9(s2) ^ XTE(s3);
+<span class="w">        </span><span class="n">b0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XTE</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTB</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTD</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT9</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XT9</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTE</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTB</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTD</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XTD</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT9</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTE</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTB</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XTB</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTD</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT9</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XTE</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
 
-        pt[4*i+0] = b0;
-        pt[4*i+1] = b1;
-        pt[4*i+2] = b2;
-        pt[4*i+3] = b3;
-    }
-#endif
-}
-</code></pre>
+<span class="w">        </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pt</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b3</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#endif</span>
+<span class="p">}</span>
+</code></pre></div>
 <p><strong>TOP2</strong> 热点函数为 <code>aes_mix_columns_enc</code>，和 TOP1 类似，实现的是 AES 加密的逆混合列，同样也是输入一个状态矩阵，经过计算后原地址输出一个计算后的状态矩阵：</p>
-<pre><code class="language-c">static void aes_mix_columns_enc(
-    uint8_t     ct [16]       //!&lt; Current block state
-){
-    for(int i = 0; i &lt; 4; i ++) {
-        uint8_t b0,b1,b2,b3;
-        uint8_t s0,s1,s2,s3;
+<div class="codehilite"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">aes_mix_columns_enc</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">     </span><span class="n">ct</span><span class="w"> </span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w">       </span><span class="c1">//!&lt; Current block state</span>
+<span class="p">){</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">b0</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">b2</span><span class="p">,</span><span class="n">b3</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">s0</span><span class="p">,</span><span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">,</span><span class="n">s3</span><span class="p">;</span>
 
-        s0 = ct[4*i+0];
-        s1 = ct[4*i+1];
-        s2 = ct[4*i+2];
-        s3 = ct[4*i+3];
+<span class="w">        </span><span class="n">s0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">];</span>
 
-        b0 = XT2(s0) ^ XT3(s1) ^    (s2) ^    (s3);
-        b1 =    (s0) ^ XT2(s1) ^ XT3(s2) ^    (s3);
-        b2 =    (s0) ^    (s1) ^ XT2(s2) ^ XT3(s3);
-        b3 = XT3(s0) ^    (s1) ^    (s2) ^ XT2(s3);
+<span class="w">        </span><span class="n">b0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XT2</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT3</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w">    </span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT2</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT3</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b2</span><span class="w"> </span><span class="o">=</span><span class="w">    </span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT2</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT3</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XT3</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT2</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
 
-        ct[4*i+0] = b0;
-        ct[4*i+1] = b1;
-        ct[4*i+2] = b2;
-        ct[4*i+3] = b3;
-    }
-}
-</code></pre>
+<span class="w">        </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b3</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>考虑到指令实现可能无法只用1条指令完成，可使用2条 <strong>VNICE</strong> 指令替换此算法，第一条 load 16 byte 数据到 Vector 寄存器，第二条再完成计算以及 store。</p>
 <p>指令的 <code>opcode</code>、<code>funct3</code> 和 <code>funct7</code> 仍然可以在编码位域中自定义，第一条指令使用 <code>rd</code> 描述 Vector 寄存器，<code>rs1</code> 描述入参地址，第二条指令使用 <code>rs1</code> 描述入参地址，<code>rs1</code> 描述入参 Vector 寄存器，两条 <strong>VNICE</strong> 指令的内嵌汇编写到 <code>insn.h</code> 中，定义如下：</p>
-<pre><code class="language-c">__STATIC_FORCEINLINE vint8m1_t __custom_vnice_load_v_i8m1 (uint8_t* addr)
-{
-    vint8m1_t rdata ;
-    asm volatile(".insn r 0xb,4,0,%0,%1,x0"
-            : "=vr"(rdata)
-            : "r"(addr)
-            );
-    return rdata;
-}
+<div class="codehilite"><pre><span></span><code><span class="n">__STATIC_FORCEINLINE</span><span class="w"> </span><span class="n">vint8m1_t</span><span class="w"> </span><span class="n">__custom_vnice_load_v_i8m1</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">vint8m1_t</span><span class="w"> </span><span class="n">rdata</span><span class="w"> </span><span class="p">;</span>
+<span class="w">    </span><span class="k">asm</span><span class="w"> </span><span class="k">volatile</span><span class="p">(</span><span class="s">".insn r 0xb,4,0,%0,%1,x0"</span>
+<span class="w">            </span><span class="o">:</span><span class="w"> </span><span class="s">"=vr"</span><span class="p">(</span><span class="n">rdata</span><span class="p">)</span>
+<span class="w">            </span><span class="o">:</span><span class="w"> </span><span class="s">"r"</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+<span class="w">            </span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">rdata</span><span class="p">;</span>
+<span class="p">}</span>
 
-__STATIC_FORCEINLINE void __custom_vnice_aes_mix_columns_enc_i8m1 (uint8_t *addr, vint8m1_t data)
-{
-    int zero = 0;
-    asm volatile(".insn r 0xb,4,1,x0,%1,%2"
-            : "=r"(zero)
-            : "r"(addr)
-            , "vr"(data)
-            );
-}
-</code></pre>
+<span class="n">__STATIC_FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">__custom_vnice_aes_mix_columns_enc_i8m1</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">vint8m1_t</span><span class="w"> </span><span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">zero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">asm</span><span class="w"> </span><span class="k">volatile</span><span class="p">(</span><span class="s">".insn r 0xb,4,1,x0,%1,%2"</span>
+<span class="w">            </span><span class="o">:</span><span class="w"> </span><span class="s">"=r"</span><span class="p">(</span><span class="n">zero</span><span class="p">)</span>
+<span class="w">            </span><span class="o">:</span><span class="w"> </span><span class="s">"r"</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+<span class="w">            </span><span class="p">,</span><span class="w"> </span><span class="s">"vr"</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="w">            </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>用户通过定义 Vector 寄存器以及使用上定义好的 VNICE 指令内嵌汇编改写 <code>aes_enc.c</code> 中的 <code>aes_mix_columns_enc</code> 如下：</p>
-<pre><code class="language-c">static void aes_mix_columns_enc(
-    uint8_t     ct [16]       //!&lt; Current block state
-){
-#ifdef USE_NICE
-    uint32_t blkCnt = 16;
-    size_t l;
-    vint8m1_t vin;
-    for (; (l = __riscv_vsetvl_e8m1(blkCnt)) &gt; 0; blkCnt -= l) {
-        vin = __custom_vnice_load_v_i8m1(ct);
-        __custom_vnice_aes_mix_columns_enc_i8m1(ct, vin);
-    }
-#else
-    for(int i = 0; i &lt; 4; i ++) {
-        uint8_t b0,b1,b2,b3;
-        uint8_t s0,s1,s2,s3;
+<div class="codehilite"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">aes_mix_columns_enc</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">     </span><span class="n">ct</span><span class="w"> </span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w">       </span><span class="c1">//!&lt; Current block state</span>
+<span class="p">){</span>
+<span class="cp">#ifdef USE_NICE</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">blkCnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">l</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vint8m1_t</span><span class="w"> </span><span class="n">vin</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(;</span><span class="w"> </span><span class="p">(</span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__riscv_vsetvl_e8m1</span><span class="p">(</span><span class="n">blkCnt</span><span class="p">))</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">blkCnt</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">vin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__custom_vnice_load_v_i8m1</span><span class="p">(</span><span class="n">ct</span><span class="p">);</span>
+<span class="w">        </span><span class="n">__custom_vnice_aes_mix_columns_enc_i8m1</span><span class="p">(</span><span class="n">ct</span><span class="p">,</span><span class="w"> </span><span class="n">vin</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#else</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">b0</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">b2</span><span class="p">,</span><span class="n">b3</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">s0</span><span class="p">,</span><span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">,</span><span class="n">s3</span><span class="p">;</span>
 
-        s0 = ct[4*i+0];
-        s1 = ct[4*i+1];
-        s2 = ct[4*i+2];
-        s3 = ct[4*i+3];
+<span class="w">        </span><span class="n">s0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">];</span>
+<span class="w">        </span><span class="n">s3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">];</span>
 
-        b0 = XT2(s0) ^ XT3(s1) ^    (s2) ^    (s3);
-        b1 =    (s0) ^ XT2(s1) ^ XT3(s2) ^    (s3);
-        b2 =    (s0) ^    (s1) ^ XT2(s2) ^ XT3(s3);
-        b3 = XT3(s0) ^    (s1) ^    (s2) ^ XT2(s3);
+<span class="w">        </span><span class="n">b0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XT2</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT3</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w">    </span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT2</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT3</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b2</span><span class="w"> </span><span class="o">=</span><span class="w">    </span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT2</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT3</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">b3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XT3</span><span class="p">(</span><span class="n">s0</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w">    </span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">XT2</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span>
 
-        ct[4*i+0] = b0;
-        ct[4*i+1] = b1;
-        ct[4*i+2] = b2;
-        ct[4*i+3] = b3;
-    }
-#endif
-}
-</code></pre>
+<span class="w">        </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ct</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b3</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#endif</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>修改后的程序代码编译通过：(<code>aes_demo_nice</code> 工程)</p>
 <p><img alt="image-compile_aes_nice_demo" src="../asserts/images/18/compile_aes_nice_demo.png"/></p>
 <h4 id="step6-nuclei-model-nicevnice">step6：在 Nuclei Model 中实现 NICE/VNICE 指令<a class="headerlink" href="#step6-nuclei-model-nicevnice" title="Permanent link">¶</a></h4>

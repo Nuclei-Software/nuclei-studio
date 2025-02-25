@@ -188,22 +188,22 @@
 <p><img alt="移植amrwbenc用例" src="../asserts/images/17/amrwbenc_demo.png"/></p>
 <p><strong>step3：在用例结尾处添加 grof 数据收集代码，并添加 -pg 编译选项，重新编译代码</strong></p>
 <p>在 main 函数的结尾处添加 gprof 数据收集代码：</p>
-<pre><code class="language-c">int main(int argc, char *argv[]) {
-    /*
-     * 代码省略
-     */
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">argv</span><span class="p">[])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/*</span>
+<span class="cm">     * 代码省略</span>
+<span class="cm">     */</span>
 
-    /*
-     * 在main函数的结尾处添加gprof数据收集代码
-     */
-    // TODO this is used for collect gprof and gcov data
-    // See Components/profiling/README.md about how to set the IDE project properities
-    extern long gprof_collect(unsigned long interface);
-    gprof_collect(2);
+<span class="w">    </span><span class="cm">/*</span>
+<span class="cm">     * 在main函数的结尾处添加gprof数据收集代码</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="c1">// TODO this is used for collect gprof and gcov data</span>
+<span class="w">    </span><span class="c1">// See Components/profiling/README.md about how to set the IDE project properities</span>
+<span class="w">    </span><span class="k">extern</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">gprof_collect</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">interface</span><span class="p">);</span>
+<span class="w">    </span><span class="n">gprof_collect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 
-    return 0;
-}
-</code></pre>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>收集 gprof data 有三种方式，通过入参不同进行区分：</p>
 <ul>
 <li>gprof_collect(0)：在缓冲区中收集 gprof 或 gcov 数据，在调试程序时可以使用 GDB 脚本转储 gcov 或 gprof 二进制文件</li>
@@ -243,12 +243,12 @@
 <p>如下图是在<strong>板子上实际运行</strong>得到的 gprof 数据：  </p>
 <p><img alt="profiling_on_fpga" src="../asserts/images/17/profiling_on_fpga.png"/></p>
 <p>从而得到 TOP5 热点函数为（实际上板测试）：</p>
-<pre><code class="language-c">cor_h_vec_012
-ACELP_4t64_fx
-voAWB_Residu
-voAWB_Convolve
-voAWB_Syn_filt
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="n">cor_h_vec_012</span>
+<span class="n">ACELP_4t64_fx</span>
+<span class="n">voAWB_Residu</span>
+<span class="n">voAWB_Convolve</span>
+<span class="n">voAWB_Syn_filt</span>
+</code></pre></div>
 <p>获得热点函数后，可以从热点函数入手开始优化，优化 TOP 函数往往可以事半功倍。</p>
 <p><strong>step6：优化热点函数</strong></p>
 <p>有如下几种方法优化热点函数：</p>
@@ -267,108 +267,107 @@ voAWB_Syn_filt
 <p>优化后的工程如下，可以与优化之前的工程做对比，只优化了<code>cor_h_vec_012</code> 算子:</p>
 <p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcpMkNUj4">优化后的工程下载链接</a></p>
 <p>使用 Nuclei N3 P 扩展指令优化的代码片段如下：</p>
-<pre><code class="language-c">void cor_h_vec_012(
-        Word16 h[],                           /* (i) scaled impulse response                 */
-        Word16 vec[],                         /* (i) scaled vector (/8) to correlate with h[] */
-        Word16 track,                         /* (i) track to use                            */
-        Word16 sign[],                        /* (i) sign vector                             */
-        Word16 rrixix[][NB_POS],              /* (i) correlation of h[x] with h[x]      */
-        Word16 cor_1[],                       /* (o) result of correlation (NB_POS elements) */
-        Word16 cor_2[]                        /* (o) result of correlation (NB_POS elements) */
-        )
-{
-    Word32 i, j, pos, corr;
-    Word16 *p0, *p1, *p2,*p3,*cor_x,*cor_y;
-    Word32 L_sum1,L_sum2;
-    cor_x = cor_1;
-    cor_y = cor_2;
-    p0 = rrixix[track];
-    p3 = rrixix[track+1];
-    pos = track;
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">cor_h_vec_012</span><span class="p">(</span>
+<span class="w">        </span><span class="n">Word16</span><span class="w"> </span><span class="n">h</span><span class="p">[],</span><span class="w">                           </span><span class="cm">/* (i) scaled impulse response                 */</span>
+<span class="w">        </span><span class="n">Word16</span><span class="w"> </span><span class="n">vec</span><span class="p">[],</span><span class="w">                         </span><span class="cm">/* (i) scaled vector (/8) to correlate with h[] */</span>
+<span class="w">        </span><span class="n">Word16</span><span class="w"> </span><span class="n">track</span><span class="p">,</span><span class="w">                         </span><span class="cm">/* (i) track to use                            */</span>
+<span class="w">        </span><span class="n">Word16</span><span class="w"> </span><span class="n">sign</span><span class="p">[],</span><span class="w">                        </span><span class="cm">/* (i) sign vector                             */</span>
+<span class="w">        </span><span class="n">Word16</span><span class="w"> </span><span class="n">rrixix</span><span class="p">[][</span><span class="n">NB_POS</span><span class="p">],</span><span class="w">              </span><span class="cm">/* (i) correlation of h[x] with h[x]      */</span>
+<span class="w">        </span><span class="n">Word16</span><span class="w"> </span><span class="n">cor_1</span><span class="p">[],</span><span class="w">                       </span><span class="cm">/* (o) result of correlation (NB_POS elements) */</span>
+<span class="w">        </span><span class="n">Word16</span><span class="w"> </span><span class="n">cor_2</span><span class="p">[]</span><span class="w">                        </span><span class="cm">/* (o) result of correlation (NB_POS elements) */</span>
+<span class="w">        </span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Word32</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="p">,</span><span class="w"> </span><span class="n">corr</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Word16</span><span class="w"> </span><span class="o">*</span><span class="n">p0</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">,</span><span class="o">*</span><span class="n">p3</span><span class="p">,</span><span class="o">*</span><span class="n">cor_x</span><span class="p">,</span><span class="o">*</span><span class="n">cor_y</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Word32</span><span class="w"> </span><span class="n">L_sum1</span><span class="p">,</span><span class="n">L_sum2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">cor_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cor_1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">cor_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cor_2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">p0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rrixix</span><span class="p">[</span><span class="n">track</span><span class="p">];</span>
+<span class="w">    </span><span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rrixix</span><span class="p">[</span><span class="n">track</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">    </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">track</span><span class="p">;</span>
 
-    for (i = 0; i &lt; NB_POS; i+=2)
-    {
-        p1 = h;
-        p2 = &amp;vec[pos];
-#if defined __riscv_xxldspn3x
-        Word32 tmp1, tmp2;
-        int64_t sum64_1, sum64_2;
-        int64_t p64_1, p64_2;
-        sum64_1 = 0;
-        sum64_2 = 0;
-        for (j=62-pos ;(j - 4) &gt;= 0; j -= 4)
-        {
-            p64_1 = *__SIMD64(p1)++;
-            tmp1 = __RV_PKBB16(*(p2 + 1), *p2);
-            tmp2 = __RV_PKBB16(*(p2 + 3), *(p2 + 2));
-            p64_2 = __RV_DPACK32(tmp2, tmp1);
-            sum64_1 = __RV_DSMALDA(sum64_1, p64_1, p64_2);
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NB_POS</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
+<span class="w">        </span><span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vec</span><span class="p">[</span><span class="n">pos</span><span class="p">];</span>
+<span class="cp">#if defined __riscv_xxldspn3x</span>
+<span class="w">        </span><span class="n">Word32</span><span class="w"> </span><span class="n">tmp1</span><span class="p">,</span><span class="w"> </span><span class="n">tmp2</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">sum64_1</span><span class="p">,</span><span class="w"> </span><span class="n">sum64_2</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">p64_1</span><span class="p">,</span><span class="w"> </span><span class="n">p64_2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sum64_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sum64_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">62</span><span class="o">-</span><span class="n">pos</span><span class="w"> </span><span class="p">;(</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">p64_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">__SIMD64</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tmp1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_PKBB16</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">);</span>
+<span class="w">            </span><span class="n">tmp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_PKBB16</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">));</span>
+<span class="w">            </span><span class="n">p64_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_DPACK32</span><span class="p">(</span><span class="n">tmp2</span><span class="p">,</span><span class="w"> </span><span class="n">tmp1</span><span class="p">);</span>
+<span class="w">            </span><span class="n">sum64_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_DSMALDA</span><span class="p">(</span><span class="n">sum64_1</span><span class="p">,</span><span class="w"> </span><span class="n">p64_1</span><span class="p">,</span><span class="w"> </span><span class="n">p64_2</span><span class="p">);</span>
 
-            tmp1 = __RV_PKBB16(*(p2 + 2), *(p2 + 1));
-            tmp2 = __RV_PKBB16(*(p2 + 4), *(p2 + 3));
-            p64_2 = __RV_DPACK32(tmp2, tmp1);
-            sum64_2 = __RV_DSMALDA(sum64_2, p64_1, p64_2);
-            p2 += 4;
-        }
-        L_sum1 = (Word32)sum64_1;
-        L_sum2 = (Word32)sum64_2;
-        for ( ;j &gt;= 0; j--)
-        {
-            L_sum1 += *p1 * *p2++;
-            L_sum2 += *p1++ * *p2;
-        }
-#endif
-        L_sum1 += *p1 * *p2;
-        L_sum1 = (L_sum1 &lt;&lt; 2);
-        L_sum2 = (L_sum2 &lt;&lt; 2);
+<span class="w">            </span><span class="n">tmp1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_PKBB16</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<span class="w">            </span><span class="n">tmp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_PKBB16</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span>
+<span class="w">            </span><span class="n">p64_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_DPACK32</span><span class="p">(</span><span class="n">tmp2</span><span class="p">,</span><span class="w"> </span><span class="n">tmp1</span><span class="p">);</span>
+<span class="w">            </span><span class="n">sum64_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_DSMALDA</span><span class="p">(</span><span class="n">sum64_2</span><span class="p">,</span><span class="w"> </span><span class="n">p64_1</span><span class="p">,</span><span class="w"> </span><span class="n">p64_2</span><span class="p">);</span>
+<span class="w">            </span><span class="n">p2</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">L_sum1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Word32</span><span class="p">)</span><span class="n">sum64_1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">L_sum2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Word32</span><span class="p">)</span><span class="n">sum64_2</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">;</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">--</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">L_sum1</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="n">L_sum2</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="o">++</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="cp">#endif</span>
+<span class="w">        </span><span class="n">L_sum1</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">L_sum1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">L_sum1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">        </span><span class="n">L_sum2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">L_sum2</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
 
-        corr = (L_sum1 + 0x8000) &gt;&gt; 16;
-        cor_x[i] = vo_mult(corr, sign[pos]) + (*p0++);
-        corr = (L_sum2 + 0x8000) &gt;&gt; 16;
-        cor_y[i] = vo_mult(corr, sign[pos + 1]) + (*p3++);
-        pos += STEP;
+<span class="w">        </span><span class="n">corr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">L_sum1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x8000</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="w">        </span><span class="n">cor_x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vo_mult</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span><span class="w"> </span><span class="n">sign</span><span class="p">[</span><span class="n">pos</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">p0</span><span class="o">++</span><span class="p">);</span>
+<span class="w">        </span><span class="n">corr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">L_sum2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x8000</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="w">        </span><span class="n">cor_y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vo_mult</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span><span class="w"> </span><span class="n">sign</span><span class="p">[</span><span class="n">pos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">p3</span><span class="o">++</span><span class="p">);</span>
+<span class="w">        </span><span class="n">pos</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">STEP</span><span class="p">;</span>
 
-        p1 = h;
-        p2 = &amp;vec[pos];
-#if defined __riscv_xxldspn3x
-        sum64_1 = 0;
-        sum64_2 = 0;
-        for (j=62-pos ;(j - 4) &gt;= 0; j -= 4)
-        {
-            p64_1 = *__SIMD64(p1)++;
-            tmp1 = __RV_PKBB16(*(p2 + 1), *p2);
-            tmp2 = __RV_PKBB16(*(p2 + 3), *(p2 + 2));
-            p64_2 = __RV_DPACK32(tmp2, tmp1);
-            sum64_1 = __RV_DSMALDA(sum64_1, p64_1, p64_2);
+<span class="w">        </span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
+<span class="w">        </span><span class="n">p2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vec</span><span class="p">[</span><span class="n">pos</span><span class="p">];</span>
+<span class="cp">#if defined __riscv_xxldspn3x</span>
+<span class="w">        </span><span class="n">sum64_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sum64_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">62</span><span class="o">-</span><span class="n">pos</span><span class="w"> </span><span class="p">;(</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">p64_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">__SIMD64</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tmp1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_PKBB16</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">);</span>
+<span class="w">            </span><span class="n">tmp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_PKBB16</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">));</span>
+<span class="w">            </span><span class="n">p64_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_DPACK32</span><span class="p">(</span><span class="n">tmp2</span><span class="p">,</span><span class="w"> </span><span class="n">tmp1</span><span class="p">);</span>
+<span class="w">            </span><span class="n">sum64_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_DSMALDA</span><span class="p">(</span><span class="n">sum64_1</span><span class="p">,</span><span class="w"> </span><span class="n">p64_1</span><span class="p">,</span><span class="w"> </span><span class="n">p64_2</span><span class="p">);</span>
 
-            tmp1 = __RV_PKBB16(*(p2 + 2), *(p2 + 1));
-            tmp2 = __RV_PKBB16(*(p2 + 4), *(p2 + 3));
-            p64_2 = __RV_DPACK32(tmp2, tmp1);
-            sum64_2 = __RV_DSMALDA(sum64_2, p64_1, p64_2);
-            p2 += 4;
-        }
-        L_sum1 = (Word32)sum64_1;
-        L_sum2 = (Word32)sum64_2;
-        for ( ;j &gt;= 0; j--)
-        {
-            L_sum1 += *p1 * *p2++;
-            L_sum2 += *p1++ * *p2;
-        }
-#endif
-        L_sum1 += *p1 * *p2;
-        L_sum1 = (L_sum1 &lt;&lt; 2);
-        L_sum2 = (L_sum2 &lt;&lt; 2);
+<span class="w">            </span><span class="n">tmp1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_PKBB16</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<span class="w">            </span><span class="n">tmp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_PKBB16</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span>
+<span class="w">            </span><span class="n">p64_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_DPACK32</span><span class="p">(</span><span class="n">tmp2</span><span class="p">,</span><span class="w"> </span><span class="n">tmp1</span><span class="p">);</span>
+<span class="w">            </span><span class="n">sum64_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__RV_DSMALDA</span><span class="p">(</span><span class="n">sum64_2</span><span class="p">,</span><span class="w"> </span><span class="n">p64_1</span><span class="p">,</span><span class="w"> </span><span class="n">p64_2</span><span class="p">);</span>
+<span class="w">            </span><span class="n">p2</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">L_sum1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Word32</span><span class="p">)</span><span class="n">sum64_1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">L_sum2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Word32</span><span class="p">)</span><span class="n">sum64_2</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">;</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">--</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">L_sum1</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="n">L_sum2</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="o">++</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="cp">#endif</span>
+<span class="w">        </span><span class="n">L_sum1</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="n">p2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">L_sum1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">L_sum1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">        </span><span class="n">L_sum2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">L_sum2</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
 
-        corr = (L_sum1 + 0x8000) &gt;&gt; 16;
-        cor_x[i+1] = vo_mult(corr, sign[pos]) + (*p0++);
-        corr = (L_sum2 + 0x8000) &gt;&gt; 16;
-        cor_y[i+1] = vo_mult(corr, sign[pos + 1]) + (*p3++);
-        pos += STEP;
-    }
-    return;
-}
-
-</code></pre>
+<span class="w">        </span><span class="n">corr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">L_sum1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x8000</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="w">        </span><span class="n">cor_x</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vo_mult</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span><span class="w"> </span><span class="n">sign</span><span class="p">[</span><span class="n">pos</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">p0</span><span class="o">++</span><span class="p">);</span>
+<span class="w">        </span><span class="n">corr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">L_sum2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x8000</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="w">        </span><span class="n">cor_y</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vo_mult</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span><span class="w"> </span><span class="n">sign</span><span class="p">[</span><span class="n">pos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">p3</span><span class="o">++</span><span class="p">);</span>
+<span class="w">        </span><span class="n">pos</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">STEP</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>这个算子进行 P 扩展优化后，<strong>编译时务必带上</strong> dsp 扩展选项进行编译，如下图所示：</p>
 <p><img alt="Alt text" src="../asserts/images/17/set_p_ext_opt.png"/></p>
 <p>CLean Project 并重新编译，重新跑一次profiling，可以看到优化效果，<code>cor_h_vec_012</code> 函数占用率有所下降，函数调用时间也有所减少。</p>
@@ -406,22 +405,22 @@ voAWB_Syn_filt
 <strong>step2：基于 Profiling demo 工程移植 amrwbenc 裸机用例</strong><br/>
 <strong>step3：添加 gcov 数据收集代码，并添加 -coverage 编译选项，重新编译代码</strong> </p>
 <p>在main函数的结尾处添加gprof数据收集代码：</p>
-<pre><code class="language-c">int main(int argc, char *argv[]) {
-    /*
-     * 代码省略
-     */
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">argv</span><span class="p">[])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/*</span>
+<span class="cm">     * 代码省略</span>
+<span class="cm">     */</span>
 
-    /*
-     * 在main函数的结尾处添加 gcov 数据收集代码
-     */
-    // TODO this is used for collect gprof and gcov data
-    // See Components/profiling/README.md about how to set the IDE project properities
-    extern long gcov_collect(unsigned long interface);
-    gcov_collect(2);
+<span class="w">    </span><span class="cm">/*</span>
+<span class="cm">     * 在main函数的结尾处添加 gcov 数据收集代码</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="c1">// TODO this is used for collect gprof and gcov data</span>
+<span class="w">    </span><span class="c1">// See Components/profiling/README.md about how to set the IDE project properities</span>
+<span class="w">    </span><span class="k">extern</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">gcov_collect</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">interface</span><span class="p">);</span>
+<span class="w">    </span><span class="n">gcov_collect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 
-    return 0;
-}
-</code></pre>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>添加<code>-coverage</code>编译选项，重新编译代码：</p>
 <p><img alt="add_coverage_compile" src="../asserts/images/17/add_coverage_compile.png"/></p>
 <p><strong>step4：运行程序</strong> </p>
@@ -433,13 +432,13 @@ voAWB_Syn_filt
 <ol>
 <li>Profiling 与 Code coverage 功能可以同时打开，只需添加一起收集 Profiling 数据与 Code coverage 数据的代码，并在编译时添加 <code>-pg -coverage</code> 编译选项。</li>
 </ol>
-<pre><code class="language-c">    // TODO this is used for collect gprof and gcov data
-    // See Components/profiling/README.md about how to set the IDE project properities
-    extern long gprof_collect(unsigned long interface);
-    extern long gcov_collect(unsigned long interface);
-    gprof_collect(2);
-    gcov_collect(2);
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="c1">// TODO this is used for collect gprof and gcov data</span>
+<span class="w">    </span><span class="c1">// See Components/profiling/README.md about how to set the IDE project properities</span>
+<span class="w">    </span><span class="k">extern</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">gprof_collect</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">interface</span><span class="p">);</span>
+<span class="w">    </span><span class="k">extern</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">gcov_collect</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">interface</span><span class="p">);</span>
+<span class="w">    </span><span class="n">gprof_collect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="n">gcov_collect</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</code></pre></div>
 <p><img alt="add_pg_coverage_compile" src="../asserts/images/17/add_pg_coverage_compile.png"/></p>
 <ol>
 <li>
