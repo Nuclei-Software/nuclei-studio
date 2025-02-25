@@ -822,7 +822,7 @@ html body article a {
   color: #2196f3;
   text-decoration: none; }
   html body article a.external-link::after {
-    content: " (" attr(href) ")";
+    content: none;
     font-style: italic; }
 
 html body article table {
