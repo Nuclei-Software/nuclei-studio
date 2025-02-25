@@ -20,7 +20,7 @@
 
 Please create new doc based on [Doc Template](0-template.md)
 
-Click [this link](https://nuclei-software.github.io/nuclei-studio/) to see online version.
+Click [this link](https://doc.nucleisys.com/nuclei_studio_supply/) to see online version.
 
 > 如果您在文档中发现任何拼写错误或不完善之处，我们欢迎您提交Pull Request或Issue，以协助我们进行改进！
 
