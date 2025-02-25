@@ -7,15 +7,17 @@
 **PDF Version** can be found here: https://doc.nucleisys.com/nuclei_studio_supply/pdf/nuclei_studio_supply.pdf
 
 > [!NOTE]
-> - The latest version of Nuclei Studio IDE is **2024.06**, which can be found in https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2024.06
+> - The latest version of Nuclei Studio IDE is **2025.02**, which can be found in https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2025.02
 
 > [!NOTE]
 > - In **Ubuntu 20.04**, you must install `libncursesw5 libtinfo5 libfdt1 libpixman-1-0 libpng16-16 libasound2 libglib2.0-0` to make **riscv64-unknown-elf-gdb and qemu** able to run.
 
 
-- **Nuclei Studio IDE Documentation**: https://nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.pdf
+- **Nuclei Studio IDE Documentation**: https://doc.nucleisys.com/nuclei_tools/ide/index.html
 - **Nuclei Tools(Toolchain/OpenOCD/Qemu/Model) Documentation**: https://doc.nucleisys.com/nuclei_tools/
-- **Nuclei Studio NPK Introduction**: https://github.com/Nuclei-Software/nuclei-sdk/wiki/Nuclei-Studio-NPK-Introduction
+- **Nuclei Studio NPK Introduction**:
+  - https://github.com/Nuclei-Software/nuclei-sdk/wiki/Nuclei-Studio-NPK-Introduction
+  - https://doc.nucleisys.com/nuclei_tools/ide/npkoverview.html
 
 
 Please create new doc based on [Doc Template](0-template.md)
