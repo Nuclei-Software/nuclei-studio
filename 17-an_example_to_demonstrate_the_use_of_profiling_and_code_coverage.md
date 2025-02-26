@@ -376,7 +376,7 @@ int main(int argc, char *argv[]) {
 ![add_pg_coverage_compile](asserts/images/17/add_pg_coverage_compile.png)
 
 2. 使用Profiling可能遇见的问题：
-  
+
 * 片上内存不足，打印日志中有错误打印，gprof/gcov data 需要占用一定大小空间
 * Console 或 Terminal 收集的数据不全导致解析数据不正确，需确认数据没有被冲掉，需要调节 Console 或 Terminal 输出大小限制
 * 手动删掉 gmon.out 文件，再次解析，弹出 No files have been generated 错误弹框

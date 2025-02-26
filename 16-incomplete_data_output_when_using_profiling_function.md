@@ -1,6 +1,6 @@
 # 使用 Profiling 功能时可能遇到的一些问题
 
-目前使用 Profiling 功能可能遇到一些问题，记录如下：  
+目前使用 Profiling 功能可能遇到一些问题，记录如下:
 
 * **问题1**：日志打印中报片上内存不足，没有充足内存来存放 gprof/gcov 数据
 * **问题2**：采用串口输出的方式收集数据，打印被冲掉，Console 或 Terminal 收集的数据不全，导致数据解析失败，弹出 `No files have been generated` 错误弹框  

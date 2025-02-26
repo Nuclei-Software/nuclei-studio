@@ -1,5 +1,7 @@
 # OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable
 
+## 问题说明
+
 Nuclei Studio 2023.10版中烧写程序时有报以下错误：
 
 参见这个 https://github.com/riscv-mcu/hbird-sdk/issues/8
@@ -17,6 +19,8 @@ Info : Listening on port 3333 for gdb connections
 Error: Device ID 0x1e200a6d is not known as FESPI capable
 Error: auto_probe failed
 ```
+
+## 解决方案
 
 因为在openocd 2023.10中，将`flash bank $_FLASHNAME`从`fespi`修改为了`nuspi`，需要工程中的openocd配置文件中的`fespi`修改为了`nuspi`，
 以蜂鸟工程为例，将`hbird_sdk/SoC/hbirdv2/Board/mcu200t/openocd_hbirdv2.cfg`修改为如下配置，工程即可正常使用。

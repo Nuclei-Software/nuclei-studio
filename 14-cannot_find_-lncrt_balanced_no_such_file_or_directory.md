@@ -3,6 +3,7 @@
 ## 问题说明
 
 在NucleiStudio中使用编译工程时有报错信息如下：
+
 ```
 G:/NucleiStudio/toolchain/gcc/bin/../lib/gcc/riscv64-unknown-elf/13.1.1/../../../../riscv64-unknown-elf/bin/ld.exe: cannot find -lncrt_balanced: No such file or directory
 G:/NucleiStudio/toolchain/gcc/bin/../lib/gcc/riscv64-unknown-elf/13.1.1/../../../../riscv64-unknown-elf/bin/ld.exe: cannot find -lheapops_basic: No such file or directory
@@ -18,4 +19,4 @@ G:/NucleiStudio/toolchain/gcc/bin/../lib/gcc/riscv64-unknown-elf/13.1.1/../../..
 
 ## 解决方案
 
-`-lncrt_balanced`、`-lfileops_uart`不支持64位处理器，在创建此类处理器工程时，避免使用此类扩展。
+`-lncrt_balanced`、`-lfileops_uart`不支持64位处理器，在创建此类处理器工程时，避免使用libncrt库。
