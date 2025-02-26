@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速 - Nuclei Studio Supply Documents</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "Nuclei Model\u7ed3\u5408Nice Wizard\u5feb\u901f\u9a8c\u8bc1NICE/VNICE\u6307\u4ee4\u52a0\u901f";
+        var mkdocs_page_input_path = "19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> Nuclei Studio Supply Documents
+        </a>
+</div>
+<div aria-label="导航栏" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../13-error_could_not_find_an_available_hardware_trigger/">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/">cannot find -lncrt_balanced: No such file or directory</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7/">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_1">背景描述</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#xlmodel_nice">xlmodel_nice</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nuclei-nice-wizard">Nuclei NICE Wizard</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#test-code">test code</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#_3">环境准备</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nuclei-model">Nuclei Model运行原始程序</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nice">NICE指令替换</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vnice">VNICE指令替换</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_4">总结</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="移动导航栏" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">Nuclei Studio Supply Documents</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</li>
+<li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard.md"> 在GitHub上编辑</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<div class="section" itemprop="articleBody">
+<h1 id="nuclei-modelnice-wizardnicevnice">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速<a class="headerlink" href="#nuclei-modelnice-wizardnicevnice" title="Permanent link">¶</a></h1>
+<blockquote>
+<p>Nuclei Model 已支持 Windows/Linux 版本，此文档测试都是基于 Nuclei Studio 的 Windows 版本 (&gt;= 2025.02) 完成的。</p>
+</blockquote>
+<h2 id="_1">背景描述<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
+<h3 id="xlmodel_nice">xlmodel_nice<a class="headerlink" href="#xlmodel_nice" title="Permanent link">¶</a></h3>
+<p>Nuclei Model 会不断更新提供用户可自定义实现 <code>NICE/VNICE</code> 的 <code>xlmodel_nice</code> 软件包，用户通过在 <code>xlmodel_nice/nice/src/nice.cc</code> 实现指令的具体行为，编译出新的 Nuclei Model 供应用程序配置调用。</p>
+<h3 id="nuclei-nice-wizard">Nuclei NICE Wizard<a class="headerlink" href="#nuclei-nice-wizard" title="Permanent link">¶</a></h3>
+<p>Nuclei NICE Wizard 是 Nuclei Studio 上提供的 <code>NICE/VNICE</code> 指令生成控件，用户配置好自定义指令后，可以自动生成两个文件：</p>
+<ol>
+<li><code>insn.h</code>: 指令内嵌汇编头文件，用户需要将此文件的指令内嵌汇编添加到应用程序头文件中</li>
+<li><code>nice.cc</code>: 指令实现文件，用户需要将此文件的指令 decode 框架添加到 <code>xlmodel_nice/nice/src/nice.cc</code> 中</li>
+</ol>
+<h3 id="test-code">test code<a class="headerlink" href="#test-code" title="Permanent link">¶</a></h3>
+<p>在 AI 与深度学习中常见的批量矩阵运算中，存在需要多次处理小矩阵块的场景，此测试将使用标量的多个 4x4 矩阵的乘法和累加操作的算法函数作为 <code>golden_case</code>，然后通过配置 NICE Wizard 生成 <code>NICE/VNICE</code> 加速指令，分别添加到测试应用程序和 <code>xlmodel_nice</code> 软件包工程中重新编译，最后通过运行 Nuclei Model 查看优化后的算法函数的指令数和 cycle 数，以查看 <code>NICE/VNICE</code> 加速效果。</p>
+<h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<h3 id="_3">环境准备<a class="headerlink" href="#_3" title="Permanent link">¶</a></h3>
+<blockquote>
+<p>Nuclei Studio IDE 集成的 NICE Wizard 相关功能，需要配合 Nuclei CPU Model - NICE Support (xlmodel_nice) 软件包使用。</p>
+</blockquote>
+<p><strong>Nuclei Studio</strong>：</p>
+<ul>
+<li><a href="https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-win64.zip">NucleiStudio 202502 Windows</a></li>
+<li><a href="https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-lin64.tgz">NucleiStudio 202502 Linux</a></li>
+</ul>
+<p><strong>xlmodel_nice</strong>：</p>
+<ul>
+<li><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcYbanf6c">原始<code>xlmodel_nice</code>软件包 Windows</a></li>
+<li><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFczrqzDI1">原始<code>xlmodel_nice</code>软件包 Linux</a></li>
+</ul>
+<h3 id="nuclei-model">Nuclei Model运行原始程序<a class="headerlink" href="#nuclei-model" title="Permanent link">¶</a></h3>
+<p><strong>step1：导入 Nuclei SDK 原始工程</strong></p>
+<p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcbbXAjde">优化前的工程下载链接</a></p>
+<p>下载 zip 包后，可以直接导入到 Nuclei Studio 中运行 (导入步骤：<code>File-&gt;Import-&gt;Existing Projects into Workspace-&gt;Select archive file-&gt;选择zip压缩包-&gt;Finish</code>即可)</p>
+<p><strong>step2：编译 Nuclei SDK 原始工程</strong></p>
+<p>编译原始工程，确保编译成功以及在 Debug 下可以找到生成的 elf 文件：</p>
+<p><img alt="image-Ori_Project_Build" src="../asserts/images/19/Ori_Project_Build.png"/></p>
+<p><strong>step3：运行 Nuclei SDK 原始工程</strong></p>
+<p>在使用 Nuclei Model 运行程序时，需要先确定工程 <code>Nuclei Settings</code> 中的 <code>Core</code> 配置和 <code>Other extensions</code> 配置，这些配置需要传递给 Model 使用。当前使用的 <code>Core</code> 是 <code>n900fd</code>，<code>Other extensions</code> 未配置。</p>
+<p><img alt="image-Ori_Project_Nuclei_Settting" src="../asserts/images/19/Ori_Project_Nuclei_Settting.png"/></p>
+<p>Model 仿真程序需要配置 Nuclei Studio 中的 <code>Nuclei Model</code> 配置项，步骤如下：</p>
+<ol>
+<li>打开 Nuclei Studio 主菜单栏的 <code>Run</code> 选项的 <code>Run Configurations</code></li>
+<li>选择 <code>Nuclei Model</code> 配置项，右键选择 <code>New Configuration</code>，会自动生成项目名的 Model 配置页面，launch bar也会同步更新</li>
+<li>在右侧 <code>Main</code> 选项卡中点击 <code>Search Project...</code> 选择编译好的 elf 文件</li>
+<li>在右侧 <code>Model</code> 选项卡中选择 <code>Browse</code> 找到 Nuclei Model 可执行程序默认路径：<code>NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel.exe</code></li>
+<li>
+<p>在右侧 <code>Model</code> 选项卡中的 <code>Config options</code> 中完成 model 运行配置： <code>--cpu=n900fd --trace=1 --logdir=Debug</code>, <code>--cpu</code> 和 <code>--ext</code> 需要保持和 <code>Nuclei Settings</code> 的 <code>Core</code> 和 <code>Other extensions</code> 配置一致，<code>--ext</code> 为空时不传递此参数，<code>--trace=1</code> 表示开启 rvtrace，<code>--logdir=Debug</code> 则表示最终生成的 <code>*.rvtrace</code> 文件存存放路径为当前工程下的 Debug 目录，然后点击 <code>Apply</code> 和 <code>Run</code>，model 就开始运行程序了</p>
+<p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/19/Ori_Project_Model_Config.png"/></p>
+</li>
+</ol>
+<p>在 Console 中会看到 <code>Total elapsed time</code> 说明 model 已经完成仿真了，程序会提取标量矩阵乘算法函数 <code>golden_case</code> 的执行指令数和 cycle 数如下：</p>
+<p><img alt="image-Ori_Project_Model_Run" src="../asserts/images/19/Ori_Project_Model_Run.png"/></p>
+<h3 id="nice">NICE指令替换<a class="headerlink" href="#nice" title="Permanent link">¶</a></h3>
+<p><strong>step1：编译 xlmodel_nice 软件包</strong></p>
+<p>下载并解压 <code>xlmodel_nice</code> zip 包后，可以直接导入到 Nuclei Studio 中运行 (导入步骤：<code>File-&gt;Import-&gt;Projects from Folder or Archive-&gt;Next-&gt;Directory-&gt;选择xlmodel_nice文件夹-&gt;Finish</code>即可)</p>
+<p><img alt="image-Import_xlmodel_nice" src="../asserts/images/19/Import_xlmodel_nice.png"/></p>
+<p>编译 <code>xlmodel_nice</code> 确保原始软件包可以成功编译生成 model 的可执行程序：</p>
+<p><img alt="image-Ori_Model_Nice_Build" src="../asserts/images/19/Ori_Model_Nice_Build.png"/></p>
+<p><strong>step2：NICE Wizard生成NICE指令替换</strong></p>
+<p>应用程序的热点函数可以先用 Nuclei Model Profiling 来定位，具体使用可以参考 <a href="https://nuclei-software.github.io/nuclei-studio/18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>，这里不再赘述了。</p>
+<p>此用例的热点函数已知是矩阵乘累加，A矩阵某行 * B矩阵某列计算如下：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="w"> </span><span class="n">kk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">kk</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="n">kk</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">pin1</span><span class="p">[</span><span class="n">ii</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">kk</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pin2</span><span class="p">[</span><span class="n">kk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">jj</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>此算法完全可以替换成一条 <code>NICE</code> 指令来完成，输入为 sum 值， pin1 地址， pin2 地址，输出为 sum。</p>
+<p>接下来用 NICE Wizard 来生成设想的 <code>NICE</code> 指令，用户可以在 Nuclei Studio 的 <code>xlmodel_nice</code> 工程根目录创建一个 <code>aicc.nice</code> 的文件，此文件创建后就会弹出 NICE Wizard 的指令生成窗口，配置生成 <code>NICE</code> 指令步骤如下：</p>
+<ol>
+<li>选择 <code>Add</code> 添加一条 <code>NICE</code> 指令，指令格式如左上角 <code>NICE instruction format</code> 所示，首先填写 <code>Instruction name</code>项为 <code>matrix_row_col_multiply_asm</code> 表示矩阵行列乘加操作</li>
+<li>依次选择填写 <code>opcode</code>、<code>funct3</code>、<code>funct7</code></li>
+<li>
+<p><code>params</code> 是指令内嵌汇编的返回值和入参配置，构想的 <code>NICE</code> 指令返回值为 <code>int32_t</code>，入参个数为3个，分别是 <code>int32_t t</code>、<code>int8_t* a</code>、<code>int8_t* b</code>，分别在 <code>params</code> 中设置好</p>
+<p><strong>注意：</strong> 在 入参的 <code>Edit Type</code> 设置界面中，是按照 a-&gt;b-&gt;t 的顺序配置的:</p>
+<p><img alt="image-NICE_Input_Para_Configure" src="../asserts/images/19/NICE_Input_Para_Configure.png"/></p>
+</li>
+<li>
+<p>在 <code>Function full preview</code> 中预览指令内嵌汇编格式是否正确，确保没有问题后点击 <code>save</code>，<code>save</code> 完成后可以在左侧指令栏中看到生成好的自定义指令了</p>
+</li>
+<li>
+<p>点击下方 <code>Save and Generate File</code>，在 <code>aicc.nice</code> 同路径下会生成 <code>insn.h</code> 和 <code>nice.cc</code></p>
+<p><img alt="image-NICE_Wizard_NICE_Config" src="../asserts/images/19/NICE_Wizard_NICE_Config.png"/></p>
+</li>
+<li>
+<p>将生成好的 <code>insn.h</code> 中的 <code>NICE</code> 指令内嵌汇编复制到应用程序的头文件中，将生成好的 <code>nice.cc</code> 直接替换 <code>xlmodel_nice/nice/src/nice.cc</code></p>
+<p><img alt="image-NICE_Wizard_Generate" src="../asserts/images/19/NICE_Wizard_Generate.png"/></p>
+<p>当然也可以将 <code>insn.h</code> 直接生成到应用程序工程路径下引用，这样可以省去每次手动的复制文件内容。</p>
+</li>
+</ol>
+<p><strong>step3：xlmodel_nice实现NICE指令</strong></p>
+<p>打开 <code>xlmodel_nice/nice/src/nice.cc</code> 文件，使用 spike 中定义的宏来实现 <code>NICE</code> 指令：<code>MMU</code> 宏表示 memory 访问，load memory 使用 <code>MMU.load_xxx&lt;n&gt;</code>，store memory 使用 <code>MMU.store_xxx&lt;n&gt;</code>，<code>RD</code>、<code>RS1</code>、<code>RS2</code>、<code>RS3</code> 宏表示其对应标量寄存器中的值, 写目标寄存器使用 <code>WRITE_RD</code>，这些宏的使用可以参考 <code>nice/inc/decode_macros.h</code>。</p>
+<p>在指令实现完后，将自定义指令额外需要的 cycle 数 n 直接标定：<code>STATE.mcycle-&gt;bump(n);</code> 即可，这里标定此条 <code>NICE</code> 指令额外需要 1 cycle，由于指令默认需要 1 cycle，因此此条 <code>NICE</code> 指令需要消耗 2 cycle。</p>
+<p>实现的 <code>NICE</code> 指令实现和 cycle 标定如下：</p>
+<p><img alt="image-NICE_Implement" src="../asserts/images/19/NICE_Implement.png"/></p>
+<p>重新编译 <code>xlmodel_nice</code> 保证编译通过。</p>
+<p><strong>step4：Nuclei Model重新运行程序</strong></p>
+<p>首先需要编写一个带 <code>NICE</code> 指令内嵌汇编的算法函数 <code>nice_case</code> 方便和 <code>golden_case</code> 对比，添加函数输出结果比对，然后重新编译应用程序工程：</p>
+<p><img alt="image-NICE_Project_Build" src="../asserts/images/19/NICE_Project_Build.png"/></p>
+<p>因为 model 已经使用 <code>xlmodel_nice</code> 重新编译出新的可执行程序了，需要重新配置 Nuclei Studio <code>Nuclei Model</code> 配置项中的 model 可执行程序路径为 <code>xlmodel_nice/build/default/xl_cpumodel.exe</code>，其余配置不变：</p>
+<p><img alt="image-NICE_Project_Model_Config" src="../asserts/images/19/NICE_Project_Model_Config.png"/></p>
+<p><code>Apply</code> 后重新 <code>Run</code> 应用程序, 可以发现 <code>nice_case</code> 和 <code>golden_case</code> 输出结果一致，<code>nice_case</code> 的指令数和 cycle 数均大幅下降了，构想的 <code>NICE</code> 指令实现正确，并优化了原标量算法。</p>
+<p><img alt="image-NICE_Project_Model_Run" src="../asserts/images/19/NICE_Project_Model_Run.png"/></p>
+<h3 id="vnice">VNICE指令替换<a class="headerlink" href="#vnice" title="Permanent link">¶</a></h3>
+<p><strong>step1：NICE Wizard生成VNICE指令替换</strong></p>
+<p>当使用 <code>NICE</code> 指令运算时，每次仅得到的是输出矩阵的一个元素，效率还不够高，如果一次指令操作可以并行处理多个矩阵元素，效率应将进一步提高，很自然会想到使用 Vector 指令来多并行度处理矩阵数据。</p>
+<p>构想将完整的 4 * 4 矩阵乘加运算浓缩为一条 Vector 指令，可以使用一条 <code>VNICE</code> 指令来实现此行为，入参为 3 个 4 * 4 的输入矩阵，返回值为 4 * 4 的输出矩阵。</p>
+<p>双击 <code>aicc.nice</code> 再次使用 NICE Wizard 配置构想指令，生成指令的步骤和以上生成 <code>NICE</code> 指令相似，不同之处为配置 <code>Instruction name</code> 项为 <code>matrix_multiply_4x4_asm</code> 表示完成的是 4*4 的两矩阵的乘法，配置 <code>funct3</code> 为 1 避免与上条 <code>NICE</code> 指令编码相同，为了匹配和 <code>golden_case</code> 标量对应的 vector 数据类型的输入输出，设置返回值为 <code>vin32m8_t</code>，入参个数为 3，分别是 <code>vin32m8_t</code>、<code>vint8m1_t</code>、<code>vint8m2_t</code>，点击 <code>save</code> 后的配置界面如下：</p>
+<p><img alt="image-NICE_Wizard_VNICE_Config" src="../asserts/images/19/NICE_Wizard_VNICE_Config.png"/></p>
+<p>点击下方 <code>Save and Generate File</code>，覆盖之前生成的 <code>insn.h</code> 和 <code>nice.cc</code>，此时在同路径下还会出现 <code>insn.h.bak</code> 和 <code>nice.cc.bak</code>, 这两个文件是上一次保存的 <code>insn.h</code> 和 <code>nice.cc</code> 备份文件不会被用到，再次将生成好的 <code>insn.h</code> 中的 <code>NICE</code> 指令内嵌汇编复制到应用程序的头文件中，将生成好的 <code>nice.cc</code> 中的新指令 decode 框架复制到 <code>xlmodel_nice/nice/src/nice.cc</code>：</p>
+<p><img alt="image-VNICE_Wizard_Generate" src="../asserts/images/19/VNICE_Wizard_Generate.png"/></p>
+<p><strong>step2：xlmodel_nice实现VNICE指令</strong></p>
+<p>在 <code>xlmodel_nice/nice/src/nice.cc</code> 中实现 <code>VNICE</code> 指令，<code>V_MATRIX_ST</code> 实现将指令输入的 vector 寄存器 store 到自定义 buffer 中，<code>V_MATRIX_LD</code> 实现将指令输出的结果 load 到 RD 寄存器，<code>V_MATRIX_CALC</code> 实现两矩阵乘加运算，<code>VNICE</code> 指令实现可以参考 spike 中的 vector 指令实现： <code>xlmodel_nice/xl_spike/include/riscv/v_ext_macros.h</code>。</p>
+<p>标定此条 <code>VNICE</code> 指令需要 2 cycle，即实际消耗 3 cycle，实现的 <code>VNICE</code> 指令实现和 cycle 标定如下：</p>
+<p><img alt="image-VNICE_Implement" src="../asserts/images/19/VNICE_Implement.png"/></p>
+<p>再重新编译 <code>xlmodel_nice</code> 保证编译通过。</p>
+<p><strong>step3：Nuclei Model重新运行程序</strong></p>
+<p>因为 <code>VNICE</code> 指令的输入输出均为 vector 寄存器，需要配置应用程序的 <code>Nuclei Settings</code>，使能对应 ARCH 的 vector 扩展，这里针对 <code>rv32imafdc</code> 添加 <code>_zve32f</code> 扩展：</p>
+<p><img alt="image-VNICE_Project_Nuclei_Settings" src="../asserts/images/19/VNICE_Project_Nuclei_Settings.png"/></p>
+<p>对应的 <code>Nuclei Model</code> 配置项也需要添加 <code>--ext=_zve32f</code>使能 model 的 vector 功能，然后 <code>Apply</code>：</p>
+<p><img alt="image-VNICE_Project_Model_Config" src="../asserts/images/19/VNICE_Project_Model_Config.png"/></p>
+<p>需要编写一个带 <code>VNICE</code> 指令内嵌汇编的算法函数 <code>vnice_case</code>，<code>VNICE</code> 内嵌汇编需要的输入输出需要写相应的 vector intrinsic API 来构造，然后添加和 <code>golden_case</code> 的结果比对，重新编译应用程序工程。</p>
+<p><strong>注意：</strong> 在应用程序头文件中需要添加 <code>#include &lt;riscv_vector.h&gt;</code> 以使能 vector intrinsic API</p>
+<p><img alt="image-VNICE_Project_Build" src="../asserts/images/19/VNICE_Project_Build.png"/></p>
+<p>重新 <code>Run</code> 应用程序, 可以发现 <code>vnice_case</code> 和 <code>golden_case</code> 输出结果一致，其指令数和 cycle 数相对 <code>nice_case</code> 进一步大幅下降了，构想的 <code>VNICE</code> 指令实现正确，并利用了 vector 的高并行度加速了矩阵乘加算法。</p>
+<p><img alt="image-VNICE_Project_Model_Run" src="../asserts/images/19/VNICE_Project_Model_Run.png"/></p>
+<h2 id="_4">总结<a class="headerlink" href="#_4" title="Permanent link">¶</a></h2>
+<p>下表是实现了 <code>NICE/VNICE</code> 指令优化算法后的 instret/cycle 数据统计，相较于 <code>golden_case</code>, <code>nice_case</code> 优化后的性能提高了约 4 倍，<code>vnice_case</code> 优化后的性能提高了超过 30 倍。</p>
+<table>
+<thead>
+<tr>
+<th>instret/cycle</th>
+<th>golden_case</th>
+<th>nice_case</th>
+<th>vnice_case</th>
+<th>golden / nice</th>
+<th>golden / vnice</th>
+<th>nice / vnice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>instret</td>
+<td>2854</td>
+<td>730</td>
+<td>88</td>
+<td>3.91</td>
+<td>32.43</td>
+<td>8.30</td>
+</tr>
+<tr>
+<td>cycle</td>
+<td>3859</td>
+<td>964</td>
+<td>121</td>
+<td>4.00</td>
+<td>31.89</td>
+<td>7.97</td>
+</tr>
+</tbody>
+</table>
+<p>用户通过研究现有算法的优化策略，就可以将构想快速通过 NICE Wizard 生成相关 <code>NICE/VNICE</code> 指令，再通过 Nuclei Studio 导入 <code>xlmodel_nice</code> 软件包实现指令，编写应用程序指令优化 case，就可以很快的利用 Nuclei Model 验证算法优化效果，整个测试过程只需使用 Nuclei Studio 就可以完成。</p>
+<p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFc0dskAJG">优化后的工程下载链接</a></p>
+<p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcZ14pFy7">优化后的<code>xlmodel_nice</code>软件包</a></p>
+</div>
+</div><footer>
+<div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/" title="通过Profiling展示Nuclei Model NICE/VNICE指令加速"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>All rights reserved</p>
+</div>
+
+  用<a href="https://www.mkdocs.org/">MkDocs</a>构建，使用<a href="https://readthedocs.org">Read the Docs</a>提供的<a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>。
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="版本" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a class="fa fa-github" href="https://github.com/Nuclei-Software/nuclei-studio" style="color: #fcfcfc"> GitHub</a>
+</span>
+<span><a href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/" style="color: #fcfcfc">« 上一章</a></span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>
