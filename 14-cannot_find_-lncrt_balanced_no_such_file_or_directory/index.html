@@ -147,7 +147,7 @@
 <p>是因为在创建工程时，我们创建了一个64位的工程，同时在Standard C Library时，选择了带<code>-lncrt_balanced</code>、<code>-lfileops_uart</code>的扩展，而此类扩展又不支持64位，导致编译不通过。</p>
 <p><img alt="" src="../asserts/images/14/14-2.png"/></p>
 <h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
-<p><code>-lncrt_balanced</code>、<code>-lfileops_uart</code>不支持64位处理器，在创建此类处理器工程时，避免使用此类扩展。</p>
+<p><code>-lncrt_balanced</code>、<code>-lfileops_uart</code>不支持64位处理器，在创建此类处理器工程时，避免使用libncrt库。</p>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">

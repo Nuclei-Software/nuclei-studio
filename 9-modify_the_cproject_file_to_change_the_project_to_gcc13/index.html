@@ -71,6 +71,8 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal current" href="#">通过修改.cproject文件，升级工程工具链到GCC 13</a>
 <ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_1">问题描述</a>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#toolchain">修改toolchain相关配置</a>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#risc-v">修改RISC-V扩展相关配置</a>
@@ -140,11 +142,12 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <div class="section" itemprop="articleBody">
 <h1 id="cprojectgcc-13">通过修改.cproject文件，升级工程工具链到GCC 13<a class="headerlink" href="#cprojectgcc-13" title="Permanent link">¶</a></h1>
+<h2 id="_1">问题描述<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
 <blockquote>
 <p>Nuclei Studio 2023.10的IDE进行了一次大版本的升级, 其中自带的工具链从gcc10升级到了gcc13, 并且工具链的前缀也发生了变化。
 参见 <a href="https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2023.10">https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2023.10</a></p>
 </blockquote>
-<p>虽然我们在2023.10的IDE中提供了右键选中工程一键升级的工具（参见IDE的手册第8章节），但是这个只能一个工程一个工程的转换，对于有大量工程需要批量转换的项目而言不太友好，因此
+<p>虽然我们在2023.10的IDE中提供了<a href="https://doc.nucleisys.com/nuclei_tools/ide/advanceusage.html#gcc-13">右键选中工程一键升级的工具（参见IDE的手册第8章节）</a>，但是这个只能一个工程一个工程的转换，对于有大量工程需要批量转换的项目而言不太友好，因此
 我们这里列出来如果写脚本进行工程的转换升级，则可以参考如下的思路进行转换。</p>
 <p>以下变更仅针对Nuclei Studio 2023.10之前版本创建的gcc10的工程，进行升级变更，如果需要批量变更，编写脚本的时候应先检查工程是否是riscv gcc10的工程。</p>
 <h2 id="toolchain">修改toolchain相关配置<a class="headerlink" href="#toolchain" title="Permanent link">¶</a></h2>

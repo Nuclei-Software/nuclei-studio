@@ -43,6 +43,10 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal current" href="#">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
 <ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -132,11 +136,14 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <div class="section" itemprop="articleBody">
 <h1 id="windows-11nuclei-studioqemu">windows 11下使用Nuclei Studio进行qemu调试程序时报错<a class="headerlink" href="#windows-11nuclei-studioqemu" title="Permanent link">¶</a></h1>
+<h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
 <p>windows 11下使用Nuclei Studio开发时，当使用qemu调试程序时,会有报错如下，是因为在windows 11下缺少相关依赖，但一般不影响qemu的正确使用，可以忽略此错误。</p>
 <div class="codehilite"><pre><span></span><code>qemu-system-riscv32.exe: warning: GLib-GIO: Unexpectedly, UWP app <span class="sb">`Microsoft.ScreenSketch_11.2309.16.0_x64__8wekyb3d8bbwe' (AUMId `</span>Microsoft.ScreenSketch_8wekyb3d8bbwe!App') supports 29 extensions but has no verbs
 qemu-system-riscv32.exe: warning: GLib-GIO: Unexpectedly, UWP app <span class="sb">`Clipchamp.Clipchamp_2.8.1.0_neutral__yxz26nhyzhsrt' (AUMId `</span>Clipchamp.Clipchamp_yxz26nhyzhsrt!App') supports 41 extensions but has no verbs
 </code></pre></div>
 <p><img alt="" src="../asserts/images/2/vx_16993400095638.png"/></p>
+<h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<p>这个是Windows 10/11上存在的系统库匹配问题，不影响Qemu正常使用，可以忽略。</p>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">

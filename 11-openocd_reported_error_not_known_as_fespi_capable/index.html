@@ -79,6 +79,10 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal current" href="#">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
 <ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -132,6 +136,7 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <div class="section" itemprop="articleBody">
 <h1 id="openocderrordevice-id-8xle2g8a6d-is-not-known-as-fespi-capable">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable<a class="headerlink" href="#openocderrordevice-id-8xle2g8a6d-is-not-known-as-fespi-capable" title="Permanent link">¶</a></h1>
+<h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
 <p>Nuclei Studio 2023.10版中烧写程序时有报以下错误：</p>
 <p>参见这个 <a href="https://github.com/riscv-mcu/hbird-sdk/issues/8">https://github.com/riscv-mcu/hbird-sdk/issues/8</a></p>
 <div class="codehilite"><pre><span></span><code><span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Using</span><span class="w"> </span><span class="n">libusb</span><span class="w"> </span><span class="n">driver</span>
@@ -146,6 +151,7 @@
 <span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Device</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="mh">0x1e200a6d</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">known</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">FESPI</span><span class="w"> </span><span class="n">capable</span>
 <span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">auto_probe</span><span class="w"> </span><span class="n">failed</span>
 </code></pre></div>
+<h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
 <p>因为在openocd 2023.10中，将<code>flash bank $_FLASHNAME</code>从<code>fespi</code>修改为了<code>nuspi</code>，需要工程中的openocd配置文件中的<code>fespi</code>修改为了<code>nuspi</code>，
 以蜂鸟工程为例，将<code>hbird_sdk/SoC/hbirdv2/Board/mcu200t/openocd_hbirdv2.cfg</code>修改为如下配置，工程即可正常使用。</p>
 <div class="codehilite"><pre><span></span><code><span class="n">adapter_khz</span><span class="w">     </span><span class="mi">1000</span>

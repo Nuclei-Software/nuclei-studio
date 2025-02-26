@@ -39,6 +39,10 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal current" href="#">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
 <ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -132,10 +136,12 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <div class="section" itemprop="articleBody">
 <h1 id="nuclei-studioqemu">因内存不足，导致在Nuclei Studio中启动qemu失败<a class="headerlink" href="#nuclei-studioqemu" title="Permanent link">¶</a></h1>
+<h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
 <p>在实际开发中发现，因电脑同时运行了很多的进程或者电脑本身的系统内存不足，致使在Nuclei Studio中，使用qemu进行程序调试时，可能出现如下报错:</p>
 <div class="codehilite"><pre><span></span><code>qemu-system-riscv64.exe: cannot set up quest memory 'riscv.evalsoc.flashxip' Invalid argument
 </code></pre></div>
 <p><img alt="" src="../asserts/images/1/cannotsetupguestmemiry.png"/></p>
+<h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
 <p>一般可以通过关闭某些应用，释放一部分内存以供qemu使用，即可解决些问题。</p>
 </div>
 </div><footer>

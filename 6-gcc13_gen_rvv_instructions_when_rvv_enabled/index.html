@@ -59,6 +59,10 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal current" href="#">GCC13 auto generated RVV instructions when RVV enabled</a>
 <ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -132,6 +136,7 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <div class="section" itemprop="articleBody">
 <h1 id="gcc13-auto-generated-rvv-instructions-when-rvv-enabled">GCC13 auto generated RVV instructions when RVV enabled<a class="headerlink" href="#gcc13-auto-generated-rvv-instructions-when-rvv-enabled" title="Permanent link">¶</a></h1>
+<h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
 <p>If you are using <code>Nuclei SDK 0.5.0</code> with Nuclei RISC-V Toolchain 2023.10, and
 when compile some examples with RVV enabled, it may generate rvv instructions
 which called auto-vectorzation.</p>
@@ -142,6 +147,7 @@ make<span class="w"> </span><span class="nv">CORE</span><span class="o">=</span>
 make<span class="w"> </span><span class="nv">CORE</span><span class="o">=</span>nx900fd<span class="w"> </span><span class="nv">ARCH_EXT</span><span class="o">=</span>v<span class="w"> </span>dasm
 </code></pre></div>
 <p>Then if you check the <code>dhrystone.dasm</code>, you will be able to see rvv instructions:</p>
+<h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
 <p>This auto generated instructions may affect your hardware performance, so if you want
 to disable it, you don't need to pass rvv extension when compile application.</p>
 <div class="codehilite"><pre><span></span><code>$<span class="w"> </span>cat<span class="w"> </span>dhrystone.dasm<span class="w"> </span><span class="p">|</span>grep<span class="w"> </span>vs
@@ -158,6 +164,8 @@ to disable it, you don't need to pass rvv extension when compile application.</p
 <span class="w">    </span>80000e28:<span class="w">   </span><span class="m">02047027</span><span class="w">                </span>vse64.v<span class="w"> </span>v0,<span class="o">(</span>s0<span class="o">)</span>
 </code></pre></div>
 <p>You can check <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=112537">https://gcc.gnu.org/bugzilla/show_bug.cgi?id=112537</a> for more details.</p>
+<p>In gcc 14.x, if you want to disable the RISC-V RVV automatic vectorization, you can use the options <code>-fno-tree-loop-vectorize -fno-tree-slp-vectorize</code>.</p>
+<p>In gcc 13.x, you need to pass <code>--param=riscv-autovec-preference=none</code></p>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
