@@ -216,7 +216,7 @@
 <p><strong>step1：编译 xlmodel_nice 软件包</strong></p>
 <p>下载并解压 <code>xlmodel_nice</code> zip 包后，可以直接导入到 Nuclei Studio 中运行 (导入步骤：<code>File-&gt;Import-&gt;Projects from Folder or Archive-&gt;Next-&gt;Directory-&gt;选择xlmodel_nice文件夹-&gt;Finish</code>即可)</p>
 <p><img alt="image-Import_xlmodel_nice" src="../asserts/images/19/Import_xlmodel_nice.png"/></p>
-<p>编译 <code>xlmodel_nice</code> 确保原始软件包可以成功编译生成 model 的可执行程序：</p>
+<p>在编译 <code>xlmodel_nice</code> 前需先配置好 xlmodel 的编译环境 (<a href="https://doc.nucleisys.com/nuclei_tools/xlmodel/intro.html#nice-build">xlmodel_nice 编译环境配置</a>)，然后编译确保原始软件包可以成功编译生成 model 的可执行程序：</p>
 <p><img alt="image-Ori_Model_Nice_Build" src="../asserts/images/19/Ori_Model_Nice_Build.png"/></p>
 <p><strong>step2：NICE Wizard生成NICE指令替换</strong></p>
 <p>应用程序的热点函数可以先用 Nuclei Model Profiling 来定位，具体使用可以参考 <a href="https://nuclei-software.github.io/nuclei-studio/18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>，这里不再赘述了。</p>
