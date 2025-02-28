@@ -77,7 +77,7 @@ Model 仿真程序需要配置 Nuclei Studio 中的 `Nuclei Model` 配置项，�
 
 ![image-Import_xlmodel_nice](asserts/images/19/Import_xlmodel_nice.png)
 
-编译 `xlmodel_nice` 确保原始软件包可以成功编译生成 model 的可执行程序：
+在编译 `xlmodel_nice` 前需先配置好 xlmodel 的编译环境 ([xlmodel_nice 编译环境配置](https://doc.nucleisys.com/nuclei_tools/xlmodel/intro.html#nice-build))，然后编译确保原始软件包可以成功编译生成 model 的可执行程序：
 
 ![image-Ori_Model_Nice_Build](asserts/images/19/Ori_Model_Nice_Build.png)
 
