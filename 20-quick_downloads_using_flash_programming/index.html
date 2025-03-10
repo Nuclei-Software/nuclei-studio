@@ -164,14 +164,10 @@
 <li><a href="https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-lin64.tgz">NucleiStudio 202502 Linux</a></li>
 </ul>
 <h3 id="flash-programming_1">Flash Programming 使用演示<a class="headerlink" href="#flash-programming_1" title="Permanent link">¶</a></h3>
-<p><strong>step1：导入 Nuclei SDK 原始工程和烧写开发板</strong></p>
-<p>优化前的工程下载链接 <a href="u900_helloworld.zip">u900_helloworld.zip</a> </p>
-<p>bit文件 <a href="..\Documents\WXWork\1688856563310943\Cache\File\2024-12\trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit">trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit</a> </p>
-<p>下载 zip 包后，可以直接导入到 Nuclei Studio 中运行 (导入步骤：<code>File-&gt;Import-&gt;Existing Projects into Workspace-&gt;Select archive file-&gt;选择zip压缩包-&gt;Finish</code>即可)。</p>
-<p>给ku060开发板烧写上面的bit文件。</p>
-<p><strong>step2：配置Flash下载模式</strong></p>
-<p>点击项目Nuclei Settings打开配置页面，选中Download模式，改为FLASH，点击Save settings保存。</p>
+<p><strong>step1：创建项目，烧写bit</strong></p>
+<p>使用0.7.1版本的sdk-nuclei_sdk创建一个u900的helloworld项目，依次选择Simple Helloworld Demo,FLASH下载模式和U900 Core，点击Finsh。</p>
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20.png"/></p>
+<p>开发板烧写对应的bit即可，这里我们使用trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit</p>
 <p><strong>step2：配置编译 Nuclei SDK 原始工程</strong></p>
 <p>编译原始工程，确保编译成功以及在 Debug 下可以找到生成的 elf 文件：</p>
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-1.png"/></p>
@@ -180,26 +176,10 @@
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-2.png"/></p>
 <p>选择 <strong>Flash Programming</strong> 选项卡，进入配置页面。</p>
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-3.png"/></p>
-<p>现在这里按照默认配置即可，点击OK。（有其他需要可自行配置）</p>
-<ul>
-<li><strong>Load Program Image</strong> </li>
-</ul>
-<p>默认情况下，<strong>Flash Programming</strong> 会加载 <code>.elf</code> 格式的文件。用户也可以选择加载其他格式的文件，包括：<code>*.bin``*.hex``*.s19``*.srec``*.symbolsrec</code></p>
-<ul>
-<li><strong>Flash Programming Options</strong>：</li>
-</ul>
-<p><strong>Flash Programming</strong>提供了以下三种选项：</p>
-<ul>
-<li><strong>Verify Image</strong>：选中此选项后，Download 命令会带上 <code>verify</code> 参数。该参数用于确认要烧录的镜像文件是否匹配当前连接的目标设备上的闪存配置。</li>
-<li><strong>Reset and Run</strong>：选中此选项后，Download 命令会带上 <code>reset</code> 参数。该参数会在执行完 <code>load</code> 后强制系统复位（SRST），并让目标设备运行。</li>
-<li>
-<p><strong>Load in Ram</strong>：选中此选项后，用户需要指定 <strong>Program Address</strong>。Download 命令会带上 <code>resume {Program Address}</code> 参数，该参数会将固件加载到内存中，而不是闪存中。</p>
-</li>
-<li>
-<p><strong>OpenOCD Flash Programming Command Line</strong></p>
-</li>
-</ul>
-<p>所有的配置参数最终会以命令行的形式通过 GDB 执行。用户也可以自定义所需的命令，只需勾选 <strong>Customize openocd flash programming command line</strong>，即可在下方输入框中输入自定义命令。</p>
+<p>具体配置项内容可参考<a href="https://download.nucleisys.com/upload/files/doc/nucleistudio/NucleiStudio_User_Guide.202502.pdf">Nuclei Development Tool Guide</a></p>
+<p>现在这里使用的Flash下载模式，Flash Programming Options就要选中Verify Image和Reset and Run。</p>
+<p>如果使用的是下载到内存里，则勾选Load in Ram，并且在Progarm Address中写入起始加载地址，Download命令会带上 resume {Progarm Address}参数。</p>
+<p>还有其他参数需要通过GDB执行时，我们将其加入到OpenOCD Flash Programming Command line，这里我们使用默认的参数。</p>
 <p><strong>step4：下载</strong></p>
 <p>鼠标右键项目，选择Flash Programming选项，下载二进制文件到硬件开发板。</p>
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-4.png"/></p>

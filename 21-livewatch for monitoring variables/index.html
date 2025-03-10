@@ -171,54 +171,30 @@
 <li>确保安装的 OpenOCD 版本 &gt;= 2025.02，并且支持 RISC-V SBA 功能。</li>
 </ul>
 <h3 id="live-watch_1">Live Watch 使用演示<a class="headerlink" href="#live-watch_1" title="Permanent link">¶</a></h3>
-<p><strong>step1：导入 Nuclei SDK 原始工程和烧写开发板</strong></p>
-<p>优化前的工程下载链接 <a href="u900_helloworld.zip">u900_helloworld.zip</a> </p>
-<p>bit文件 <a href="..\Documents\WXWork\1688856563310943\Cache\File\2024-12\trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit">trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit</a> </p>
-<p>下载 zip 包后，可以直接导入到 Nuclei Studio 中运行 (导入步骤：<code>File-&gt;Import-&gt;Existing Projects into Workspace-&gt;Select archive file-&gt;选择zip压缩包-&gt;Finish</code>即可)。</p>
-<p>给ku060开发板烧写上面的bit文件。</p>
+<p><strong>step1：创建项目，烧写bit</strong></p>
+<p>使用0.7.1版本的sdk-nuclei_sdk创建一个u900的helloworld项目，依次选择Simple Helloworld Demo和U900 Core，点击Finsh。</p>
+<p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-0.png"/></p>
+<p>开发板烧写对应的bit即可，这里我们使用trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit</p>
 <p><strong>step2：编译 Nuclei SDK 原始工程</strong></p>
 <p>编译原始工程，确保编译成功以及在 Debug 下可以找到生成的 elf 文件：</p>
 <p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21.png"/></p>
 <p><strong>step3：打开 Live Watch 视图</strong></p>
-<p>打开 Live Watch 视图，找到 Live Watch Settings 并根据需要设置相关参数（无可不设置，直接使用默认值）。</p>
-<p>通过 Nuclei Studio 菜单 <code>Window -&gt; Show View -&gt; Live Watch</code> 可以打开 Live Watch 视图。Live Watch 视图提供了一系列功能菜单，帮助用户更高效地管理和监控变量：</p>
-<ul>
-<li><strong>Remove</strong>：删除 Live Watch 视图中指定的变量行。</li>
-<li><strong>Remove All</strong>：清除 Live Watch 视图中所有添加的变量。</li>
-<li><strong>Show Live Plot</strong>：显示 Live Plot 视图，用于对采样的数据进行实时绘图。</li>
-</ul>
-<p>在隐藏的菜单栏中，有两个设置菜单用于配置全局属性：</p>
-<ul>
-<li><strong>Live Watch Settings</strong>：</li>
-<li>Live Watch Speed：设定 Live Watch 的采样频率，最快为 100 ms 每次。</li>
-<li>Live Watch Variable Limit：限制同时采样的变量数量，最多为 10 个。</li>
-<li>Live Plot Limit：设定 Live Plot 同时绘制的最大样本数，最多同时绘制 10 个样本。</li>
-<li>Save Data Path：指定 Live Watch 采样的数据自动保存路径，供后续分析使用。</li>
-<li>Save Data Speed：设定 Live Watch 数据自动保存的频率，默认为每 10 分钟保存一次。</li>
-<li><strong>Number Format</strong>：Live Watch 视图变量的值的显示方式。</li>
-</ul>
+<p>打开 Live Watch 视图，找到 Live Watch Settings 并根据需要设置相关参数，这里我们直接使用默认值。</p>
+<p>如需配置可参考下图或<a href="https://download.nucleisys.com/upload/files/doc/nucleistudio/NucleiStudio_User_Guide.202502.pdf">Nuclei Development Tool Guide</a></p>
 <p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-1.png"/></p>
 <p><strong>step4：运行Nuclei SDK原始工程</strong></p>
-<p>Debug运行程序，在Live Watch视图中添加需要查看的变量。</p>
+<p>Debug运行程序，在Live Watch视图中添加需要查看的变量seed。</p>
+<p>这里想要通过Live Plot查看变量的变化曲线，选中该条记录，并点击鼠标右键，在弹出的菜单中选中 <code>Toggle Live Plot</code> ,Live Plot工具就会弹出。</p>
 <p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-2.png"/></p>
-<p>让工程全速运行时，可以看到变量的值，以设定的Live Watch Speed变化，如果想要通过Live Plot查看变量的变化曲线，可以选中该条记录，并点击鼠标右键，在弹出的菜单中选中 <code>Toggle Live Plot</code> ,Live Plot工具就会弹出，并适应的画出变量的变化曲线。</p>
+<p>让工程全速运行时，可以看到变量的值，以设定的Live Watch Speed变化，Live Plot绘制的曲线图如下。</p>
 <p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-3.png"/></p>
-<p>Live Plot绘制的曲线图如下</p>
-<p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-4.png"/></p>
-<p>在Live Plot中点击鼠标右键弹出菜单，有 <code>Suspend</code>、<code>Continue</code> 两个功能菜单，点击 <code>Suspend</code>，Live Plot会暂停画图。</p>
+<p>当随着时间数据节点越来越多时，届时会隐藏数据节点。用户可以在Live Plot右键点击Suspend暂停，然后通过滚动鼠标放大曲线，放大到一定倍数会显示节点，鼠标移至节点可查看数据详情；点击 <code>Continue</code> Live Plot则继续绘制曲线。</p>
 <p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-5.png"/></p>
-<p>用户可以通过滚动鼠标放大曲线，放大到一定倍数会显示节点，鼠标移至节点可查看数据详情；点击 <code>Continue</code> Live Plot会继续绘制曲线。</p>
+<p>选中seed行,点击鼠标右键，将该变量的结果存为CSV格式文件，用来查阅和使用。</p>
 <p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-6.png"/></p>
-<p>如果不想查看该变量的变化曲线，可以再次点击 <code>Toggle Live Plot</code> ，将该变量从Live Plot踢除。</p>
+<p>Live Watch也会自动将查询到的数据结果保存到 <code>Save Data Path</code> 中，可以在Save Data Path对应地址找到对应的CSV格式的数据文件。</p>
 <p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-7.png"/></p>
-<p>Live Watch视图中的某个变量，点击鼠标右键，可以修改数据显示的格式。</p>
-<p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-8.png"/></p>
-<p>Live Watch视图中的某个变量，点击鼠标右键，将该变量的结果存存为CSV格式文件，方便查阅和使用。</p>
-<p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-9.png"/></p>
-<p>Live Watch也会自动将查询到的数据结果保存到 <code>Save Data Path</code> 中，用户可以在Save Data Path找到对应的CSV格式的数据文件。</p>
 <p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-10.png"/></p>
-<p>如果不想继续查看该变量的值，也可以选中该条记录，并点击鼠标右键，在弹出的菜单中选中 <code>Toggle Live Watch</code> ,Live Watch就不再适时查询该变量的值。</p>
-<p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/21/21-11.png"/></p>
 <h3 id="_4">总结<a class="headerlink" href="#_4" title="Permanent link">¶</a></h3>
 <p>Live Watch 功能为开发者提供了一个强大的实时监控工具，极大地提升了调试效率和代码优化的能力。通过合理使用 Live Watch，开发者可以更轻松地应对复杂的调试任务，提升开发效率。</p>
 </div>
