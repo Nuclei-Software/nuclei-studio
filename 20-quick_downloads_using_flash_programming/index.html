@@ -178,7 +178,10 @@
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-3.png"/></p>
 <p>具体配置项内容可参考<a href="https://download.nucleisys.com/upload/files/doc/nucleistudio/NucleiStudio_User_Guide.202502.pdf">Nuclei Development Tool Guide</a></p>
 <p>现在这里使用的Flash下载模式，Flash Programming Options就要选中Verify Image和Reset and Run。</p>
-<p>如果使用的是下载到内存里，则勾选Load in Ram，并且在Progarm Address中写入起始加载地址，Download命令会带上 resume {Progarm Address}参数。</p>
+<p>如果使用的是下载到内存里，则勾选Load in Ram，然后获取起始加载地址，并写入到Progarm Address，Download命令会带上 resume {Progarm Address}参数。</p>
+<p>获取起始加载地址的方式如下。</p>
+<p>在NulceiStudio\toolchain\gcc\bin下执行命令行riscv64-unknown-elf-readelf -h u900_helloworld.elf</p>
+<p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-6.png"/></p>
 <p>还有其他参数需要通过GDB执行时，我们将其加入到OpenOCD Flash Programming Command line，这里我们使用默认的参数。</p>
 <p><strong>step4：下载</strong></p>
 <p>鼠标右键项目，选择Flash Programming选项，下载二进制文件到硬件开发板。</p>
