@@ -93,9 +93,13 @@ FLASH、FLASHXIP模式按上面的步骤使用即可，而DDR、ILM、SRAM是下
 
 打开Flash Programming选项卡，因为是下载到内存，这里要勾选Load in Ram,此时下面的command line会增加load_image命令，
 
-再在Program Address中填入上面获取到的地址0x80000000,command line会带上 resume 0x80000000参数。点击OK。
+再在Program Address中填入上面获取到的地址0x80000000,command line会带上 resume 0x80000000参数。
+
+点击OK。
 
 ![image-Ori_Project_Build](asserts/images/20/20-9.png)
+
+
 
 选中项目，点击Flash Programming下载。结果如下。
 
@@ -118,9 +122,13 @@ shutdown command invoked
 
 ![image-Ori_Project_Build](asserts/images/20/20-11.png)
 
-值得说明的是，当勾选OpenOCD Flash Programming Command line时，上面的选择不再生效，而是自定义输入参数去通过GDB执行。
 
-![image-Ori_Project_Build](asserts/images/20/20-12.png)
+
+**step6：可能出现的问题**
+
+​	**Error: checksum mismatch , attempting binary compare **
+
+​	出现这个错误是因为flash下载和ram下载搞错了，需要在nuclei settings里面进行修改Download。
 
 ### 总结
 
