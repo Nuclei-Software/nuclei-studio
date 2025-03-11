@@ -209,7 +209,8 @@
 <p>然后打开对应的.map文件，这里是u900_helloworld.map，在里面找到起始加载地址，如下图的0x80000000</p>
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-8.png"/></p>
 <p>打开Flash Programming选项卡，因为是下载到内存，这里要勾选Load in Ram,此时下面的command line会增加load_image命令，</p>
-<p>再在Program Address中填入上面获取到的地址0x80000000,command line会带上 resume 0x80000000参数。点击OK。</p>
+<p>再在Program Address中填入上面获取到的地址0x80000000,command line会带上 resume 0x80000000参数。</p>
+<p>点击OK。</p>
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-9.png"/></p>
 <p>选中项目，点击Flash Programming下载。结果如下。</p>
 <div class="codehilite"><pre><span></span><code><span class="n">Info</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Valid</span><span class="w"> </span><span class="n">NUSPI</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="n">Nuclei</span><span class="w"> </span><span class="n">SoC</span><span class="w"> </span><span class="n">SPI</span><span class="w"> </span><span class="n">Flash</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mh">0x20000000</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">spictrl</span><span class="w"> </span><span class="n">regbase</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mh">0x10014000</span>
@@ -225,8 +226,9 @@
 </code></pre></div>
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-10.png"/></p>
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-11.png"/></p>
-<p>值得说明的是，当勾选OpenOCD Flash Programming Command line时，上面的选择不再生效，而是自定义输入参数去通过GDB执行。</p>
-<p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-12.png"/></p>
+<p><strong>step6：可能出现的问题</strong></p>
+<p>​   **Error: checksum mismatch , attempting binary compare **</p>
+<p>​   出现这个错误是因为flash下载和ram下载搞错了，需要在nuclei settings里面进行修改Download。</p>
 <h3 id="_3">总结<a class="headerlink" href="#_3" title="Permanent link">¶</a></h3>
 <p><strong>Flash Programming</strong> 功能为用户提供了一种快速、便捷的方式将编译好的二进制文件下载到硬件开发板中。通过简单的配置，用户可以轻松适配不同的硬件环境，并确保二进制文件的正确烧录。</p>
 </div>
