@@ -43,7 +43,13 @@
 
 现在这里使用的Flash下载模式，Flash Programming Options就要选中Verify Image和Reset and Run。
 
-如果使用的是下载到内存里，则勾选Load in Ram，并且在Progarm Address中写入起始加载地址，Download命令会带上 resume {Progarm Address}参数。
+如果使用的是下载到内存里，则勾选Load in Ram，然后获取起始加载地址，并写入到Progarm Address，Download命令会带上 resume {Progarm Address}参数。
+
+获取起始加载地址的方式如下。
+
+在NulceiStudio\toolchain\gcc\bin下执行命令行riscv64-unknown-elf-readelf -h u900_helloworld.elf
+
+![image-Ori_Project_Build](asserts/images/20/20-6.png)
 
 还有其他参数需要通过GDB执行时，我们将其加入到OpenOCD Flash Programming Command line，这里我们使用默认的参数。
 
