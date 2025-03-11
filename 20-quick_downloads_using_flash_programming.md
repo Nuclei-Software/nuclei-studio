@@ -37,31 +37,90 @@
 
 选择 **Flash Programming** 选项卡，进入配置页面。
 
+由于是Flash下载模式，这里默认选择的verify image和reset and run即可。
+
 ![image-Ori_Project_Build](asserts/images/20/20-3.png)
 
 具体配置项内容可参考[Nuclei Development Tool Guide](https://download.nucleisys.com/upload/files/doc/nucleistudio/NucleiStudio_User_Guide.202502.pdf)
 
-现在这里使用的Flash下载模式，Flash Programming Options就要选中Verify Image和Reset and Run。
-
-如果使用的是下载到内存里，则勾选Load in Ram，然后获取起始加载地址，并写入到Progarm Address，Download命令会带上 resume {Progarm Address}参数。
-
-获取起始加载地址的方式如下。
-
-在NulceiStudio\toolchain\gcc\bin下执行命令行riscv64-unknown-elf-readelf -h u900_helloworld.elf
-
-![image-Ori_Project_Build](asserts/images/20/20-6.png)
-
-还有其他参数需要通过GDB执行时，我们将其加入到OpenOCD Flash Programming Command line，这里我们使用默认的参数。
-
 **step4：下载**
 
-鼠标右键项目，选择Flash Programming选项，下载二进制文件到硬件开发板。
+选中项目，点击Flash Programming，下载二进制文件到硬件开发板。
 
 ![image-Ori_Project_Build](asserts/images/20/20-4.png)
 
 下载成功后，用户可以在 **Console** 中看到下载结果，确认二进制文件已成功烧录到硬件中。
 
+~~~
+** Programming Started **
+Info : Padding image section 1 at 0x200029c4 with 4 bytes
+** Programming Finished **
+** Verify Started **
+Warn : [riscv.cpu] Re-reading memory from addresses 0x20000004 and 0x20000008.
+Warn : [riscv.cpu] Re-reading memory from addresses 0x20000010 and 0x20000014.
+** Verified OK **
+** Resetting Target **
+Info : JTAG tap: riscv.cpu tap/device found: 0x10900a6d (mfg: 0x536 (Nuclei System Technology Co Ltd), part: 0x0900, ver: 0x1)
+Info : [riscv.cpu] Register fp is dirty!
+Info : [riscv.cpu] Register s1 is dirty!
+Info : [riscv.cpu] Register a0 is dirty!
+Info : [riscv.cpu] Register a1 is dirty!
+Info : [riscv.cpu] Discarding values of dirty registers.
+shutdown command invoked
+~~~
+
+
+
 ![image-Ori_Project_Build](asserts/images/20/20-5.png)
+
+![image-Ori_Project_Build](asserts/images/20/20-6.png)
+
+**step5：下载到内存的区别**
+
+Nuclei Studio有DDR、FLASH、FLASHXIP、ILM、SRAM多种下载模式。
+
+FLASH、FLASHXIP模式按上面的步骤使用即可，而DDR、ILM、SRAM是下载到内存中的与Flash有所区别，下面以ILM为例。
+
+点击Nulcei Settings打开页面，在Download中选择ILM并保存。
+
+![image-Ori_Project_Build](asserts/images/20/20-7.png)
+
+重新编译项目，clean project -> build project
+
+然后打开对应的.map文件，这里是u900_helloworld.map，在里面找到起始加载地址，如下图的0x80000000
+
+![image-Ori_Project_Build](asserts/images/20/20-8.png)
+
+打开Flash Programming选项卡，因为是下载到内存，这里要勾选Load in Ram,此时下面的command line会增加load_image命令，
+
+再在Program Address中填入上面获取到的地址0x80000000,command line会带上 resume 0x80000000参数。点击OK。
+
+![image-Ori_Project_Build](asserts/images/20/20-9.png)
+
+选中项目，点击Flash Programming下载。结果如下。
+
+~~~
+Info : Valid NUSPI on device Nuclei SoC SPI Flash at address 0x20000000 with spictrl regbase at 0x10014000
+Info : Nuclei SPI controller version 0xee010102
+Info : Found flash device 'win w25q256fv/jv' (ID 0x001940ef)
+semihosting is enabled
+Start to program Debug/u900_helloworld.elf to 0x80000000
+10680 bytes written at address 0x80000000
+1344 bytes written at address 0x90000000
+downloaded 12024 bytes in 0.263079s (44.634 KiB/s)
+verified 12024 bytes in 0.317004s (37.041 KiB/s)
+shutdown command invoked
+~~~
+
+
+
+![image-Ori_Project_Build](asserts/images/20/20-10.png)
+
+![image-Ori_Project_Build](asserts/images/20/20-11.png)
+
+值得说明的是，当勾选OpenOCD Flash Programming Command line时，上面的选择不再生效，而是自定义输入参数去通过GDB执行。
+
+![image-Ori_Project_Build](asserts/images/20/20-12.png)
 
 ### 总结
 
