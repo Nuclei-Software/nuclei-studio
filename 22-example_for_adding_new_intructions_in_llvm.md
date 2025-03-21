@@ -90,7 +90,7 @@ llvm table gen语法手册
 https://llvm.org/docs/TableGen/ProgRef.html
 
 PLCT关于在LLVM中添加RISC-V的自定义指令的示例
-https://www.bilibili.com/video/BV1JR4y1J7he/?spm_id_from=333.1387.search.video_card.click&vd_source=eff6b35e6e5a7429ef6f0e59bf0a4840
+https://www.bilibili.com/video/BV1JR4y1J7he
 
 nuclei自定义vpu指令的扩展识别及汇编实现
 https://github.com/riscv-mcu/llvm-project/commit/f5d025b9800f3cd662e93c11eb7c7b0f65ca4472
