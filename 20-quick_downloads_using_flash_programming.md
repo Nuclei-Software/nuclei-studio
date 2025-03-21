@@ -1,4 +1,4 @@
-# Flash Programming
+# Flash Programming使用案例
 
 为了满足用户将编译好的二进制文件直接下载到硬件开发板的需求，Nuclei Studio 提供了 **Flash Programming** 功能。该功能允许用户快速、便捷地将编译好的二进制文件直接下载到硬件开发板中，极大提升了开发和调试的效率。用户只需点击一次即可完成二进制文件的下载，简化了操作流程。
 
@@ -126,9 +126,9 @@ shutdown command invoked
 
 **step6：可能出现的问题**
 
-​	**Error: checksum mismatch , attempting binary compare **
+1. **Error: checksum mismatch , attempting binary compare**
 
-​	出现这个错误是因为flash下载和ram下载搞错了，需要在nuclei settings里面进行修改Download。
+出现这个错误是因为flash下载和ram下载搞错了，需要在nuclei settings里面进行修改Download模式。
 
 ### 总结
 
