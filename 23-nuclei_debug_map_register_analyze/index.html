@@ -236,7 +236,7 @@
 <li>“32”：配置了DCache 的话，记录DCache最近发出去的地址（DLM、Mem也可以被记录，暂时没有记录PPI/FIO发出去的地址），理论上DCache有很多个Oustanding，记录的是那个最先发出去还没有返回Response的地址</li>
 </ul>
 <h2 id="openocddebugmap_1">通过OpenOCD读取其他DebugMap寄存器<a class="headerlink" href="#openocddebugmap_1" title="Permanent link">¶</a></h2>
-<p>OpenOCD里有一组 <em>nuclei expose_cpu_core</em> <em>nuclei examine_cpu_core</em> 命令，可以使用这两个命令读取其他DebugMap寄存器</p>
+<p>OpenOCD里有一组 <em>nuclei expose_cpu_core</em> <em>nuclei examine_cpu_core</em> 命令，可以使用这两个命令读取其他DebugMap寄存器, 详细参见 <a href="https://doc.nucleisys.com/nuclei_tools/openocd/intro.html#debug-map-feature">https://doc.nucleisys.com/nuclei_tools/openocd/intro.html#debug-map-feature</a></p>
 <blockquote>
 <p>OpenOCD里的命令实现及使用方法 <a href="https://github.com/riscv-mcu/riscv-openocd/blob/be0e02e2f4b74fc33e7617154791570e74fde2d0/src/target/riscv/nuclei_riscv.c#L984-L999">source code</a></p>
 </blockquote>
