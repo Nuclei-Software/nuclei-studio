@@ -4,6 +4,8 @@
 
 core的顶层有一个信号叫做**dm_map_enable**，这个信号接1表示使能DebugMap功能
 
+> 详情参见 *Nuclei_CPU_Debug_Function_Specification.pdf* 文档的 *Debug Control Interface* 部分内容
+
 ## 什么是DebugMap寄存器
 
 DebugMap功能就是当Core被hang的时候可以通过OpenOCD查看core内部的状态，将若干内部状态映射到DM寄存器中，目前只实现了下面三个状态的映射：
@@ -11,6 +13,8 @@ DebugMap功能就是当Core被hang的时候可以通过OpenOCD查看core内部�
 - 00: Commit PC(i0 for dual issue)
 - 16: ICache miss address(ICache is supported)
 - 32: DCache address waiting for retire(DCache is supported)
+
+> 详情参见 *Nuclei_CPU_Debug_Function_Specification.pdf* 文档的 *CFR0 (Custom Feature Register0)* 部分内容
 
 ## OpenOCD里DebugMap的输出信息
 
@@ -78,3 +82,11 @@ Error: Abstract command ended in error 'busy' (abstractcs=0x2001104)
 - “16”：配置了ICache的话，记录ICache最近发出去的地址（暂时没有记录ILM的地址），理论上ICache有2个Oustanding，记录的是那个最先发出去还没有返回Response的地址
 - “32”：配置了DCache 的话，记录DCache最近发出去的地址（DLM、Mem也可以被记录，暂时没有记录PPI/FIO发出去的地址），理论上DCache有很多个Oustanding，记录的是那个最先发出去还没有返回Response的地址
 
+## 通过OpenOCD读取其他DebugMap寄存器
+
+OpenOCD里有一组 *nuclei expose_cpu_core* *nuclei examine_cpu_core* 命令，可以使用这两个命令读取其他DebugMap寄存器
+
+> OpenOCD里的命令实现及使用方法 [source code](https://github.com/riscv-mcu/riscv-openocd/blob/be0e02e2f4b74fc33e7617154791570e74fde2d0/src/target/riscv/nuclei_riscv.c#L984-L999)
+
+- 注意 *nuclei expose_cpu_core* 命令需要在**init**命令之前使用
+- *nuclei examine_cpu_core* 在**init**命令之后使用，也可以在gdb/telent连接上后使用，注意gdb给openocd发送命令需要使用monitor关键词 *monitor nuclei examine_cpu_core*
