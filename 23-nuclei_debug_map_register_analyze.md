@@ -84,7 +84,7 @@ Error: Abstract command ended in error 'busy' (abstractcs=0x2001104)
 
 ## 通过OpenOCD读取其他DebugMap寄存器
 
-OpenOCD里有一组 *nuclei expose_cpu_core* *nuclei examine_cpu_core* 命令，可以使用这两个命令读取其他DebugMap寄存器
+OpenOCD里有一组 *nuclei expose_cpu_core* *nuclei examine_cpu_core* 命令，可以使用这两个命令读取其他DebugMap寄存器, 详细参见 https://doc.nucleisys.com/nuclei_tools/openocd/intro.html#debug-map-feature
 
 > OpenOCD里的命令实现及使用方法 [source code](https://github.com/riscv-mcu/riscv-openocd/blob/be0e02e2f4b74fc33e7617154791570e74fde2d0/src/target/riscv/nuclei_riscv.c#L984-L999)
 
