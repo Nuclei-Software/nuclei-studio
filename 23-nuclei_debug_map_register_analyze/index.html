@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>如何使用芯来提供的DebugMap寄存器分析错误现场 - Nuclei Studio Supply Documents</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "\u5982\u4f55\u4f7f\u7528\u82af\u6765\u63d0\u4f9b\u7684DebugMap\u5bc4\u5b58\u5668\u5206\u6790\u9519\u8bef\u73b0\u573a";
+        var mkdocs_page_input_path = "23-nuclei_debug_map_register_analyze.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> Nuclei Studio Supply Documents
+        </a>
+</div>
+<div aria-label="导航栏" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../13-error_could_not_find_an_available_hardware_trigger/">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/">cannot find -lncrt_balanced: No such file or directory</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7/">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming使用案例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Live Watch 功能的使用</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_intructions_in_llvm/">在llvm中新增自定义汇编指令教程</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">如何使用芯来提供的DebugMap寄存器分析错误现场</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#debugmap_1">首先需要确定硬件支持DebugMap功能</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#debugmap_2">什么是DebugMap寄存器</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#openocddebugmap">OpenOCD里DebugMap的输出信息</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_1">可能出现的错误现场</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#debugmap_3">如何正确利用DebugMap分析错误现场</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#openocddebugmap_1">通过OpenOCD读取其他DebugMap寄存器</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="移动导航栏" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">Nuclei Studio Supply Documents</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">如何使用芯来提供的DebugMap寄存器分析错误现场</li>
+<li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/23-nuclei_debug_map_register_analyze.md"> 在GitHub上编辑</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<div class="section" itemprop="articleBody">
+<h1 id="debugmap">如何使用芯来提供的DebugMap寄存器分析错误现场<a class="headerlink" href="#debugmap" title="Permanent link">¶</a></h1>
+<h2 id="debugmap_1">首先需要确定硬件支持DebugMap功能<a class="headerlink" href="#debugmap_1" title="Permanent link">¶</a></h2>
+<p>core的顶层有一个信号叫做<strong>dm_map_enable</strong>，这个信号接1表示使能DebugMap功能</p>
+<blockquote>
+<p>详情参见 <em>Nuclei_CPU_Debug_Function_Specification.pdf</em> 文档的 <em>Debug Control Interface</em> 部分内容</p>
+</blockquote>
+<h2 id="debugmap_2">什么是DebugMap寄存器<a class="headerlink" href="#debugmap_2" title="Permanent link">¶</a></h2>
+<p>DebugMap功能就是当Core被hang的时候可以通过OpenOCD查看core内部的状态，将若干内部状态映射到DM寄存器中，目前只实现了下面三个状态的映射：</p>
+<ul>
+<li>00: Commit PC(i0 for dual issue)</li>
+<li>16: ICache miss address(ICache is supported)</li>
+<li>32: DCache address waiting for retire(DCache is supported)</li>
+</ul>
+<blockquote>
+<p>详情参见 <em>Nuclei_CPU_Debug_Function_Specification.pdf</em> 文档的 <em>CFR0 (Custom Feature Register0)</em> 部分内容</p>
+</blockquote>
+<h2 id="openocddebugmap">OpenOCD里DebugMap的输出信息<a class="headerlink" href="#openocddebugmap" title="Permanent link">¶</a></h2>
+<p>在使用OpenOCD连接FPGA/芯片时，经常会看到类似下面这样的输出信息：</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">coreid</span><span class="o">=</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="n">nuclei</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="mi">00</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa00003ac</span><span class="o">,</span><span class="w"> </span><span class="mi">16</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa0003240</span><span class="o">,</span><span class="w"> </span><span class="mi">32</span><span class="o">:</span><span class="w"> </span><span class="mh">0x10003014</span>
+</code></pre></div>
+<ul>
+<li><strong>coreid</strong> 表示当前输出的是哪个core的debug-map信息</li>
+</ul>
+<h2 id="_1">可能出现的错误现场<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
+<p>错误现场一：</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Using</span><span class="w"> </span><span class="n">libusb</span><span class="w"> </span><span class="n">driver</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="n">kHz</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">JTAG</span><span class="w"> </span><span class="n">tap</span><span class="o">:</span><span class="w"> </span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="w"> </span><span class="n">tap</span><span class="o">/</span><span class="n">device</span><span class="w"> </span><span class="n">found</span><span class="o">:</span><span class="w"> </span><span class="mh">0x10900a6d</span><span class="w"> </span><span class="o">(</span><span class="n">mfg</span><span class="o">:</span><span class="w"> </span><span class="mh">0x536</span><span class="w"> </span><span class="o">(</span><span class="n">Nuclei</span><span class="w"> </span><span class="n">System</span><span class="w"> </span><span class="n">Technology</span><span class="w"> </span><span class="n">Co</span><span class="w"> </span><span class="n">Ltd</span><span class="o">),</span><span class="w"> </span><span class="n">part</span><span class="o">:</span><span class="w"> </span><span class="mh">0x0900</span><span class="o">,</span><span class="w"> </span><span class="n">ver</span><span class="o">:</span><span class="w"> </span><span class="mh">0x1</span><span class="o">)</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="o">]</span><span class="w"> </span><span class="n">datacount</span><span class="o">=</span><span class="mi">4</span><span class="w"> </span><span class="n">progbufsize</span><span class="o">=</span><span class="mi">8</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">coreid</span><span class="o">=</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="n">nuclei</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="mi">00</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa0000496</span><span class="o">,</span><span class="w"> </span><span class="mi">16</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa0003140</span><span class="o">,</span><span class="w"> </span><span class="mi">32</span><span class="o">:</span><span class="w"> </span><span class="mh">0x10002ff8</span>
+<span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="o">]</span><span class="w"> </span><span class="n">Unable</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">halt</span><span class="w"> </span><span class="n">hart</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="w"> </span><span class="n">dmcontrol</span><span class="o">=</span><span class="mh">0x00000001</span><span class="o">,</span><span class="w"> </span><span class="n">dmstatus</span><span class="o">=</span><span class="mh">0x00400ca2</span>
+<span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="o">]</span><span class="w"> </span><span class="n">Fatal</span><span class="o">:</span><span class="w"> </span><span class="n">Hart</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">failed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">halt</span><span class="w"> </span><span class="n">during</span><span class="w"> </span><span class="n">examine</span><span class="o">()</span>
+<span class="n">Warn</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="w"> </span><span class="n">examination</span><span class="w"> </span><span class="n">failed</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="o">]</span><span class="w"> </span><span class="n">datacount</span><span class="o">=</span><span class="mi">4</span><span class="w"> </span><span class="n">progbufsize</span><span class="o">=</span><span class="mi">8</span>
+<span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Hart</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">doesn</span><span class="s1">'t exist.</span>
+<span class="s1">Error: Fatal: Failed to read s0 from hart 0.</span>
+<span class="s1">Info : [riscv.cpu] datacount=4 progbufsize=8</span>
+<span class="s1">Error: Hart 0 doesn'</span><span class="n">t</span><span class="w"> </span><span class="n">exist</span><span class="o">.</span>
+<span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Fatal</span><span class="o">:</span><span class="w"> </span><span class="n">Failed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">read</span><span class="w"> </span><span class="n">s0</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">hart</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">gdb</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="mi">22800</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Listening</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="mi">22800</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">gdb</span><span class="w"> </span><span class="n">connections</span>
+<span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Target</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">examined</span><span class="w"> </span><span class="n">yet</span>
+</code></pre></div>
+<p>错误现场二：</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">libusb_open</span><span class="o">()</span><span class="w"> </span><span class="n">failed</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">LIBUSB_ERROR_NOT_FOUND</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="n">found</span><span class="o">,</span><span class="w"> </span><span class="n">trying</span><span class="w"> </span><span class="n">D2xx</span><span class="w"> </span><span class="n">driver</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">D2xx</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="n">count</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Connecting</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="s2">"(null)"</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">D2xx</span><span class="w"> </span><span class="n">mode</span><span class="o">...</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="n">kHz</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">JTAG</span><span class="w"> </span><span class="n">tap</span><span class="o">:</span><span class="w"> </span><span class="n">riscv0</span><span class="o">.</span><span class="na">cpu</span><span class="w"> </span><span class="n">tap</span><span class="o">/</span><span class="n">device</span><span class="w"> </span><span class="n">found</span><span class="o">:</span><span class="w"> </span><span class="mh">0x10300a6d</span><span class="w"> </span><span class="o">(</span><span class="n">mfg</span><span class="o">:</span><span class="w"> </span><span class="mh">0x536</span><span class="w"> </span><span class="o">(</span><span class="n">Nuclei</span><span class="w"> </span><span class="n">System</span><span class="w"> </span><span class="n">Technology</span><span class="w"> </span><span class="n">Co</span><span class="w"> </span><span class="n">Ltd</span><span class="o">),</span><span class="w"> </span><span class="n">part</span><span class="o">:</span><span class="w"> </span><span class="mh">0x0300</span><span class="o">,</span><span class="w"> </span><span class="n">ver</span><span class="o">:</span><span class="w"> </span><span class="mh">0x1</span><span class="o">)</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="n">riscv0</span><span class="o">.</span><span class="na">cpu</span><span class="o">]</span><span class="w"> </span><span class="n">datacount</span><span class="o">=</span><span class="mi">4</span><span class="w"> </span><span class="n">progbufsize</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">coreid</span><span class="o">=</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="n">nuclei</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="mi">00</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa0000496</span><span class="o">,</span><span class="w"> </span><span class="mi">16</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa0003140</span><span class="o">,</span><span class="w"> </span><span class="mi">32</span><span class="o">:</span><span class="w"> </span><span class="mh">0x10002ff8</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Examined</span><span class="w"> </span><span class="n">RISC</span><span class="o">-</span><span class="n">V</span><span class="w"> </span><span class="n">core</span><span class="o">;</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">harts</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w">  </span><span class="n">hart</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="w"> </span><span class="n">XLEN</span><span class="o">=</span><span class="mi">32</span><span class="o">,</span><span class="w"> </span><span class="n">misa</span><span class="o">=</span><span class="mh">0x40001127</span>
+<span class="o">[</span><span class="n">riscv0</span><span class="o">.</span><span class="na">cpu</span><span class="o">]</span><span class="w"> </span><span class="n">Target</span><span class="w"> </span><span class="n">successfully</span><span class="w"> </span><span class="n">examined</span><span class="o">.</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">gdb</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">riscv0</span><span class="o">.</span><span class="na">cpu</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="mi">3333</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Listening</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="mi">3333</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">gdb</span><span class="w"> </span><span class="n">connections</span>
+<span class="n">Started</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">GNU</span><span class="w"> </span><span class="n">MCU</span><span class="w"> </span><span class="n">Eclipse</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Listening</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="mi">6666</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">tcl</span><span class="w"> </span><span class="n">connections</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Listening</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="mi">4444</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">telnet</span><span class="w"> </span><span class="n">connections</span>
+<span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">accepting</span><span class="w"> </span><span class="s1">'gdb'</span><span class="w"> </span><span class="n">connection</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">tcp</span><span class="o">/</span><span class="mi">3333</span>
+<span class="n">Warn</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Prefer</span><span class="w"> </span><span class="n">GDB</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="s2">"target extended-remote :3333"</span><span class="w"> </span><span class="n">instead</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="s2">"target remote :3333"</span>
+<span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Timed</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="mi">2</span><span class="n">s</span><span class="w"> </span><span class="n">waiting</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">busy</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">go</span><span class="w"> </span><span class="n">low</span><span class="w"> </span><span class="o">(</span><span class="n">abstractcs</span><span class="o">=</span><span class="mh">0x2001004</span><span class="o">).</span><span class="w"> </span><span class="n">Increase</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">timeout</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">riscv</span><span class="w"> </span><span class="n">set_command_timeout_sec</span><span class="o">.</span>
+<span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Abstract</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">ended</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="s1">'busy'</span><span class="w"> </span><span class="o">(</span><span class="n">abstractcs</span><span class="o">=</span><span class="mh">0x2001104</span><span class="o">)</span>
+</code></pre></div>
+<h2 id="debugmap_3">如何正确利用DebugMap分析错误现场<a class="headerlink" href="#debugmap_3" title="Permanent link">¶</a></h2>
+<ul>
+<li>在出现Core被hang的现象之后，需要在不断电、不复位的情况下再次使用OpenOCD连接FPGA/芯片，此时OpenOCD输出的DebugMap才可被用于分析错误现场</li>
+<li>“00”：当前Commit的PC——用来指示最近正在Commit的PC，通过此信息可以大概推测CPU跑到了什么PC位置</li>
+<li>“16”：配置了ICache的话，记录ICache最近发出去的地址（暂时没有记录ILM的地址），理论上ICache有2个Oustanding，记录的是那个最先发出去还没有返回Response的地址</li>
+<li>“32”：配置了DCache 的话，记录DCache最近发出去的地址（DLM、Mem也可以被记录，暂时没有记录PPI/FIO发出去的地址），理论上DCache有很多个Oustanding，记录的是那个最先发出去还没有返回Response的地址</li>
+</ul>
+<h2 id="openocddebugmap_1">通过OpenOCD读取其他DebugMap寄存器<a class="headerlink" href="#openocddebugmap_1" title="Permanent link">¶</a></h2>
+<p>OpenOCD里有一组 <em>nuclei expose_cpu_core</em> <em>nuclei examine_cpu_core</em> 命令，可以使用这两个命令读取其他DebugMap寄存器</p>
+<blockquote>
+<p>OpenOCD里的命令实现及使用方法 <a href="https://github.com/riscv-mcu/riscv-openocd/blob/be0e02e2f4b74fc33e7617154791570e74fde2d0/src/target/riscv/nuclei_riscv.c#L984-L999">source code</a></p>
+</blockquote>
+<ul>
+<li>注意 <em>nuclei expose_cpu_core</em> 命令需要在<strong>init</strong>命令之前使用</li>
+<li><em>nuclei examine_cpu_core</em> 在<strong>init</strong>命令之后使用，也可以在gdb/telent连接上后使用，注意gdb给openocd发送命令需要使用monitor关键词 <em>monitor nuclei examine_cpu_core</em></li>
+</ul>
+</div>
+</div><footer>
+<div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="../22-example_for_adding_new_intructions_in_llvm/" title="在llvm中新增自定义汇编指令教程"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>All rights reserved</p>
+</div>
+
+  用<a href="https://www.mkdocs.org/">MkDocs</a>构建，使用<a href="https://readthedocs.org">Read the Docs</a>提供的<a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>。
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="版本" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a class="fa fa-github" href="https://github.com/Nuclei-Software/nuclei-studio" style="color: #fcfcfc"> GitHub</a>
+</span>
+<span><a href="../22-example_for_adding_new_intructions_in_llvm/" style="color: #fcfcfc">« 上一章</a></span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>
