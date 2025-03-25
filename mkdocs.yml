@@ -26,8 +26,9 @@ nav:
     - 19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard.md
     - 20-quick_downloads_using_flash_programming.md
     - 21-livewatch_for_monitoring_variables.md
-    - 22-example_for_adding_new_intructions_in_llvm.md
+    - 22-example_for_adding_new_instructions_in_llvm.md
     - 23-nuclei_debug_map_register_analyze.md
+    - 24-example_for_adding_new_instructions_in_binutils.md
 exclude_docs: |
     0-*.md
 theme:
