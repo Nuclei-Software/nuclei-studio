@@ -2,7 +2,7 @@
 
 ## 功能概述
 
-为满足 AMP 多核调试中同步暂停(halt)与恢复(resume)的需求，芯来硬件实现了 cross-trigger 功能，OpenOCD 已集成以下两种同步控制功能：
+为满足 AMP 多核调试中同步暂停(halt)与恢复(resume)的需求，Nuclei RISC-V CPU实现了 cross-trigger 功能，OpenOCD 已集成以下两种同步控制功能：
 
 1. **同步暂停组 (halt_group)** - 组内任一核暂停时，其他成员自动同步暂停
 2. **同步恢复组 (resume_group)** - 组内任一核恢复运行时，其他成员自动同步恢复
@@ -121,9 +121,9 @@ foreach t [target names] {
 
 ### 1. 同步暂停组验证
 
-1. 配置文件中已添加目标到 halt-group
+1. 配置文件中已添加目标到 `halt_group`
 2. 为两个核心分别加载不同固件
-3. 仅在 core0 的 __amp_wait() 函数设置断点
+3. 仅在 core0 的 `__amp_wait()` 函数设置断点
 4. 执行流程：先恢复 core1，再恢复 core0
 5. 验证结果：当 core0 触发断点暂停时，core1 同步暂停
 
@@ -131,7 +131,7 @@ foreach t [target names] {
 
 ### 2. 同步恢复组验证
 
-1. 配置文件中已添加目标到 resume-group
+1. 配置文件中已添加目标到 `resume_group`
 2. 为两个核心加载相同 helloworld 固件
 3. 仅向 core0 发送继续运行命令：
 4. 验证结果：串口输出显示两个核心同时运行
@@ -144,9 +144,9 @@ foreach t [target names] {
 
 ### 1. 同步暂停组验证
 
-1. 配置文件中已配置 halt-group
+1. 配置文件中已配置 `halt_group`
 2. 为两个核心加载不同固件
-3. 在 core0 的 core_main.c 第 152 行设置断点
+3. 在 core0 的 `core_main.c` 第 152 行设置断点
 4. 操作顺序：
    - 先启动 core1 运行
    - 再启动 core0 运行
@@ -156,7 +156,7 @@ foreach t [target names] {
 
 ### 2. 同步恢复组验证
 
-1. 配置文件中已配置 resume-group
+1. 配置文件中已配置 `resume_group`
 2. 为两个核心加载不同固件
 3. 仅启动 core0 运行
 4. 验证结果：串口输出显示两个核心同时运行
