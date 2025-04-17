@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>OpenOCD 中 Nuclei 交叉触发功能使用指南 - Nuclei Studio Supply Documents</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "OpenOCD \u4e2d Nuclei \u4ea4\u53c9\u89e6\u53d1\u529f\u80fd\u4f7f\u7528\u6307\u5357";
+        var mkdocs_page_input_path = "25-nuclei_cross_trigger_in_openocd.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> Nuclei Studio Supply Documents
+        </a>
+</div>
+<div aria-label="导航栏" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../13-error_could_not_find_an_available_hardware_trigger/">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/">cannot find -lncrt_balanced: No such file or directory</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7/">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming使用案例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Live Watch 功能的使用</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">在llvm中新增自定义汇编指令教程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../23-nuclei_debug_map_register_analyze/">如何使用芯来提供的DebugMap寄存器分析错误现场</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">在binutils中新增自定义汇编指令教程</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">OpenOCD 中 Nuclei 交叉触发功能使用指南</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_1">功能概述</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_2">配置文件示例</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#1">1. 同步暂停组配置</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2">2. 同步恢复组配置</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_3">命令行验证步骤</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#1_1">1. 同步暂停组验证</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2_1">2. 同步恢复组验证</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ide">IDE 验证步骤</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#1_2">1. 同步暂停组验证</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2_2">2. 同步恢复组验证</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="移动导航栏" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">Nuclei Studio Supply Documents</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">OpenOCD 中 Nuclei 交叉触发功能使用指南</li>
+<li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/25-nuclei_cross_trigger_in_openocd.md"> 在GitHub上编辑</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<div class="section" itemprop="articleBody">
+<h1 id="openocd-nuclei">OpenOCD 中 Nuclei 交叉触发功能使用指南<a class="headerlink" href="#openocd-nuclei" title="Permanent link">¶</a></h1>
+<h2 id="_1">功能概述<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
+<p>为满足 AMP 多核调试中同步暂停(halt)与恢复(resume)的需求，Nuclei RISC-V CPU实现了 cross-trigger 功能，OpenOCD 已集成以下两种同步控制功能：</p>
+<ol>
+<li><strong>同步暂停组 (halt_group)</strong> - 组内任一核暂停时，其他成员自动同步暂停</li>
+<li><strong>同步恢复组 (resume_group)</strong> - 组内任一核恢复运行时，其他成员自动同步恢复</li>
+</ol>
+<p>基本命令格式：</p>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> add target to halt_group
+nuclei cti halt_group on $_TARGETNAME0 $_TARGETNAME1
+
+<span class="gh">#</span> remove target from halt_group
+nuclei cti halt_group off $_TARGETNAME0 $_TARGETNAME1
+
+<span class="gh">#</span> add target to resume_group
+nuclei cti resume_group on $_TARGETNAME0 $_TARGETNAME1
+
+<span class="gh">#</span> remove target from resume_group
+nuclei cti resume_group off $_TARGETNAME0 $_TARGETNAME1
+</code></pre></div>
+<h2 id="_2">配置文件示例<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<h3 id="1">1. 同步暂停组配置<a class="headerlink" href="#1" title="Permanent link">¶</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nv">adapter_khz</span><span class="w">     </span><span class="mi">1000</span>
+
+<span class="nv">interface</span><span class="w"> </span>ftdi
+<span class="nv">ftdi_vid_pid</span><span class="w"> </span><span class="mh">0x0403</span><span class="w"> </span><span class="mh">0x6010</span>
+<span class="nv">ftdi_oscan1_mode</span><span class="w"> </span>off
+
+<span class="nv">transport</span><span class="w"> </span>select<span class="w"> </span>jtag
+
+<span class="nv">ftdi_layout_init</span><span class="w"> </span><span class="mh">0x0008</span><span class="w"> </span><span class="mh">0x001b</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>nSRST<span class="w"> </span><span class="o">-</span>oe<span class="w"> </span><span class="mh">0x0020</span><span class="w"> </span><span class="o">-</span>data<span class="w"> </span><span class="mh">0x0020</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>TCK<span class="w"> </span><span class="o">-</span>data<span class="w"> </span><span class="mh">0x0001</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>TDI<span class="w"> </span><span class="o">-</span>data<span class="w"> </span><span class="mh">0x0002</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>TDO<span class="w"> </span><span class="o">-</span>input<span class="w"> </span><span class="mh">0x0004</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>TMS<span class="w"> </span><span class="o">-</span>data<span class="w"> </span><span class="mh">0x0008</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>JTAG_SEL<span class="w"> </span><span class="o">-</span>data<span class="w"> </span><span class="mh">0x0100</span><span class="w"> </span><span class="o">-</span>oe<span class="w"> </span><span class="mh">0x0100</span>
+
+<span class="k">set</span><span class="w"> </span>_CHIPNAME0<span class="w"> </span>riscv0
+<span class="nv">jtag</span><span class="w"> </span>newtap<span class="w"> </span><span class="nv">$_CHIPNAME0</span><span class="w"> </span>cpu<span class="w"> </span><span class="o">-</span>irlen<span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">-</span>expected-id<span class="w"> </span><span class="mh">0x10900a6d</span>
+<span class="k">set</span><span class="w"> </span>_TARGETNAME0<span class="w"> </span><span class="nv">$_CHIPNAME0.cpu</span>
+<span class="nv">target</span><span class="w"> </span>create<span class="w"> </span><span class="nv">$_TARGETNAME0</span><span class="w"> </span>riscv<span class="w"> </span><span class="o">-</span>chain-position<span class="w"> </span><span class="nv">$_TARGETNAME0</span><span class="w"> </span><span class="o">-</span>coreid<span class="w"> </span><span class="mi">0</span><span class="w"> </span>
+
+set<span class="w"> </span>_CHIPNAME1<span class="w"> </span>riscv1
+<span class="nv">jtag</span><span class="w"> </span>newtap<span class="w"> </span><span class="nv">$_CHIPNAME1</span><span class="w"> </span>cpu<span class="w"> </span><span class="o">-</span>irlen<span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">-</span>expected-id<span class="w"> </span><span class="mh">0x10900a6d</span>
+<span class="k">set</span><span class="w"> </span>_TARGETNAME1<span class="w"> </span><span class="nv">$_CHIPNAME1.cpu</span>
+<span class="nv">target</span><span class="w"> </span>create<span class="w"> </span><span class="nv">$_TARGETNAME1</span><span class="w"> </span>riscv<span class="w"> </span><span class="o">-</span>chain-position<span class="w"> </span><span class="nv">$_TARGETNAME1</span><span class="w"> </span><span class="o">-</span>coreid<span class="w"> </span><span class="mi">0</span><span class="w"> </span>
+
+init
+<span class="c">#reset</span>
+
+<span class="k">if</span><span class="w"> </span><span class="k">{[</span><span class="w"> </span><span class="nb">info</span><span class="w"> </span>exists<span class="w"> </span>pulse_srst<span class="k">]}</span><span class="w"> </span><span class="k">{</span>
+<span class="w">  </span><span class="nv">ftdi_set_signal</span><span class="w"> </span>nSRST<span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="nv">ftdi_set_signal</span><span class="w"> </span>nSRST<span class="w"> </span>z
+<span class="k">}</span>
+
+<span class="c"># 添加目标到暂停组</span>
+<span class="nv">nuclei</span><span class="w"> </span>cti<span class="w"> </span>halt_group<span class="w"> </span>on<span class="w"> </span><span class="nv">$_TARGETNAME0</span><span class="w"> </span><span class="nv">$_TARGETNAME1</span>
+
+<span class="k">foreach</span><span class="w"> </span>t<span class="w"> </span><span class="k">[</span><span class="nv">target</span><span class="w"> </span>names<span class="k">]</span><span class="w"> </span><span class="k">{</span>
+<span class="w">  </span><span class="nv">targets</span><span class="w"> </span><span class="nv">$t</span>
+<span class="w">  </span><span class="nv">halt</span>
+<span class="k">}</span>
+</code></pre></div>
+<h3 id="2">2. 同步恢复组配置<a class="headerlink" href="#2" title="Permanent link">¶</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nv">adapter_khz</span><span class="w">     </span><span class="mi">1000</span>
+
+<span class="nv">interface</span><span class="w"> </span>ftdi
+<span class="nv">ftdi_vid_pid</span><span class="w"> </span><span class="mh">0x0403</span><span class="w"> </span><span class="mh">0x6010</span>
+<span class="nv">ftdi_oscan1_mode</span><span class="w"> </span>off
+
+<span class="nv">transport</span><span class="w"> </span>select<span class="w"> </span>jtag
+
+<span class="nv">ftdi_layout_init</span><span class="w"> </span><span class="mh">0x0008</span><span class="w"> </span><span class="mh">0x001b</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>nSRST<span class="w"> </span><span class="o">-</span>oe<span class="w"> </span><span class="mh">0x0020</span><span class="w"> </span><span class="o">-</span>data<span class="w"> </span><span class="mh">0x0020</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>TCK<span class="w"> </span><span class="o">-</span>data<span class="w"> </span><span class="mh">0x0001</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>TDI<span class="w"> </span><span class="o">-</span>data<span class="w"> </span><span class="mh">0x0002</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>TDO<span class="w"> </span><span class="o">-</span>input<span class="w"> </span><span class="mh">0x0004</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>TMS<span class="w"> </span><span class="o">-</span>data<span class="w"> </span><span class="mh">0x0008</span>
+<span class="nv">ftdi_layout_signal</span><span class="w"> </span>JTAG_SEL<span class="w"> </span><span class="o">-</span>data<span class="w"> </span><span class="mh">0x0100</span><span class="w"> </span><span class="o">-</span>oe<span class="w"> </span><span class="mh">0x0100</span>
+
+<span class="k">set</span><span class="w"> </span>_CHIPNAME0<span class="w"> </span>riscv0
+<span class="nv">jtag</span><span class="w"> </span>newtap<span class="w"> </span><span class="nv">$_CHIPNAME0</span><span class="w"> </span>cpu<span class="w"> </span><span class="o">-</span>irlen<span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">-</span>expected-id<span class="w"> </span><span class="mh">0x10900a6d</span>
+<span class="k">set</span><span class="w"> </span>_TARGETNAME0<span class="w"> </span><span class="nv">$_CHIPNAME0.cpu</span>
+<span class="nv">target</span><span class="w"> </span>create<span class="w"> </span><span class="nv">$_TARGETNAME0</span><span class="w"> </span>riscv<span class="w"> </span><span class="o">-</span>chain-position<span class="w"> </span><span class="nv">$_TARGETNAME0</span><span class="w"> </span><span class="o">-</span>coreid<span class="w"> </span><span class="mi">0</span><span class="w"> </span>
+
+set<span class="w"> </span>_CHIPNAME1<span class="w"> </span>riscv1
+<span class="nv">jtag</span><span class="w"> </span>newtap<span class="w"> </span><span class="nv">$_CHIPNAME1</span><span class="w"> </span>cpu<span class="w"> </span><span class="o">-</span>irlen<span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">-</span>expected-id<span class="w"> </span><span class="mh">0x10900a6d</span>
+<span class="k">set</span><span class="w"> </span>_TARGETNAME1<span class="w"> </span><span class="nv">$_CHIPNAME1.cpu</span>
+<span class="nv">target</span><span class="w"> </span>create<span class="w"> </span><span class="nv">$_TARGETNAME1</span><span class="w"> </span>riscv<span class="w"> </span><span class="o">-</span>chain-position<span class="w"> </span><span class="nv">$_TARGETNAME1</span><span class="w"> </span><span class="o">-</span>coreid<span class="w"> </span><span class="mi">0</span><span class="w"> </span>
+
+init
+<span class="c">#reset</span>
+
+<span class="k">if</span><span class="w"> </span><span class="k">{[</span><span class="w"> </span><span class="nb">info</span><span class="w"> </span>exists<span class="w"> </span>pulse_srst<span class="k">]}</span><span class="w"> </span><span class="k">{</span>
+<span class="w">  </span><span class="nv">ftdi_set_signal</span><span class="w"> </span>nSRST<span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="nv">ftdi_set_signal</span><span class="w"> </span>nSRST<span class="w"> </span>z
+<span class="k">}</span>
+
+<span class="c"># add target to resume_group</span>
+<span class="nv">nuclei</span><span class="w"> </span>cti<span class="w"> </span>resume_group<span class="w"> </span>on<span class="w"> </span><span class="nv">$_TARGETNAME0</span><span class="w"> </span><span class="nv">$_TARGETNAME1</span>
+
+<span class="k">foreach</span><span class="w"> </span>t<span class="w"> </span><span class="k">[</span><span class="nv">target</span><span class="w"> </span>names<span class="k">]</span><span class="w"> </span><span class="k">{</span>
+<span class="w">  </span><span class="nv">targets</span><span class="w"> </span><span class="nv">$t</span>
+<span class="w">  </span><span class="nv">halt</span>
+<span class="k">}</span>
+</code></pre></div>
+<h2 id="_3">命令行验证步骤<a class="headerlink" href="#_3" title="Permanent link">¶</a></h2>
+<h3 id="1_1">1. 同步暂停组验证<a class="headerlink" href="#1_1" title="Permanent link">¶</a></h3>
+<ol>
+<li>配置文件中已添加目标到 <code>halt_group</code></li>
+<li>为两个核心分别加载不同固件</li>
+<li>仅在 core0 的 <code>__amp_wait()</code> 函数设置断点</li>
+<li>执行流程：先恢复 core1，再恢复 core0</li>
+<li>验证结果：当 core0 触发断点暂停时，core1 同步暂停</li>
+</ol>
+<p><img alt="" src="../asserts/images/25/halt-group-command-test.png"/></p>
+<h3 id="2_1">2. 同步恢复组验证<a class="headerlink" href="#2_1" title="Permanent link">¶</a></h3>
+<ol>
+<li>配置文件中已添加目标到 <code>resume_group</code></li>
+<li>为两个核心加载相同 helloworld 固件</li>
+<li>仅向 core0 发送继续运行命令：</li>
+<li>验证结果：串口输出显示两个核心同时运行</li>
+</ol>
+<p><img alt="" src="../asserts/images/25/resume-group-command-test.png"/></p>
+<p><img alt="" src="../asserts/images/25/resume-group-command-test-log.png"/></p>
+<h2 id="ide">IDE 验证步骤<a class="headerlink" href="#ide" title="Permanent link">¶</a></h2>
+<h3 id="1_2">1. 同步暂停组验证<a class="headerlink" href="#1_2" title="Permanent link">¶</a></h3>
+<ol>
+<li>配置文件中已配置 <code>halt_group</code></li>
+<li>为两个核心加载不同固件</li>
+<li>在 core0 的 <code>core_main.c</code> 第 152 行设置断点</li>
+<li>操作顺序：</li>
+<li>先启动 core1 运行</li>
+<li>再启动 core0 运行</li>
+<li>验证结果：core0 触发断点时，core1 同步暂停</li>
+</ol>
+<p><img alt="" src="../asserts/images/25/halt-group-ide-test.png"/></p>
+<h3 id="2_2">2. 同步恢复组验证<a class="headerlink" href="#2_2" title="Permanent link">¶</a></h3>
+<ol>
+<li>配置文件中已配置 <code>resume_group</code></li>
+<li>为两个核心加载不同固件</li>
+<li>仅启动 core0 运行</li>
+<li>验证结果：串口输出显示两个核心同时运行</li>
+</ol>
+<p><img alt="" src="../asserts/images/25/resume-group-ide-test.png"/></p>
+<p><img alt="" src="../asserts/images/25/resume-group-ide-test-log.png"/></p>
+</div>
+</div><footer>
+<div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="../24-example_for_adding_new_instructions_in_binutils/" title="在binutils中新增自定义汇编指令教程"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>All rights reserved</p>
+</div>
+
+  用<a href="https://www.mkdocs.org/">MkDocs</a>构建，使用<a href="https://readthedocs.org">Read the Docs</a>提供的<a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>。
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="版本" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a class="fa fa-github" href="https://github.com/Nuclei-Software/nuclei-studio" style="color: #fcfcfc"> GitHub</a>
+</span>
+<span><a href="../24-example_for_adding_new_instructions_in_binutils/" style="color: #fcfcfc">« 上一章</a></span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>
