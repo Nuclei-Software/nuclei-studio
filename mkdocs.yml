@@ -29,6 +29,7 @@ nav:
     - 22-example_for_adding_new_instructions_in_llvm.md
     - 23-nuclei_debug_map_register_analyze.md
     - 24-example_for_adding_new_instructions_in_binutils.md
+    - 25-nuclei_cross_trigger_in_openocd.md
 exclude_docs: |
     0-*.md
 theme:
