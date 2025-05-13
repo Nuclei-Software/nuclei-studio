@@ -47,7 +47,6 @@ typedef uint32_t TickType_t;
 
 ~~~
 target create $_TARGETNAME riscv -chain-position $_TARGETNAME -coreid $BOOTHART -rtos FreeRTOS
-
 ~~~
 
 ![image-20250513165933970](asserts\images\26\26-4.png)
