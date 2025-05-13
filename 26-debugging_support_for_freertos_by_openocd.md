@@ -27,8 +27,6 @@
 
 开发板烧写对应的bit即可，这里我们使用u900_best_config_ku060_50M_c1dd7f44af_915aefa97_202504141013_v4.1.0.bit
 
-
-
 **step2：修改portmacro.h内容**
 
 项目创建好，找到nuclei_sdk\OS\FreeRTOS\Source\portable\portmacro.h, 修改该文件内容如下
@@ -43,8 +41,6 @@ typedef uint32_t TickType_t;
 
 ![image-20250513165844658](asserts\images\26\26-3.png)
 
-
-
 **step3：修改openocd_evalsoc.cfg内容**
 
 找到nuclei_sdk/SoC/evalsoc/Board/nuclei_fpga_eval/openocd_evalsoc.cfg,修改第118行内容
@@ -55,8 +51,6 @@ target create $_TARGETNAME riscv -chain-position $_TARGETNAME -coreid $BOOTHART 
 ~~~
 
 ![image-20250513165933970](asserts\images\26\26-4.png)
-
-
 
 **step4：openocd调试工程**
 
