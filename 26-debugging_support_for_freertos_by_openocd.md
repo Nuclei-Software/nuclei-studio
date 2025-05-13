@@ -19,11 +19,11 @@
 
 在NucleiStudio IDE下载好0.7.1版本的sdk-nuclei_sdk。
 
-![image-20250513103947602](asserts\images\26\26-1.png)
+![image-20250513103947602](asserts/images/26/26-1.png)
 
 创建一个900的项目，如下图。
 
-![image-20250513170041690](asserts\images\26\26-2.png)
+![image-20250513170041690](asserts/images/26/26-2.png)
 
 开发板烧写对应的bit即可，这里我们使用u900_best_config_ku060_50M_c1dd7f44af_915aefa97_202504141013_v4.1.0.bit
 
@@ -39,7 +39,7 @@ typedef uint32_t TickType_t;
 //#define portMAX_DELAY           ( TickType_t )0xFFFFFFFFFFFFFFFFULL
 ~~~
 
-![image-20250513165844658](asserts\images\26\26-3.png)
+![image-20250513165844658](asserts/images/26/26-3.png)
 
 **step3：修改openocd_evalsoc.cfg内容**
 
@@ -49,7 +49,7 @@ typedef uint32_t TickType_t;
 target create $_TARGETNAME riscv -chain-position $_TARGETNAME -coreid $BOOTHART -rtos FreeRTOS
 ~~~
 
-![image-20250513165933970](asserts\images\26\26-4.png)
+![image-20250513165933970](asserts/images/26/26-4.png)
 
 **step4：openocd调试工程**
 
@@ -57,7 +57,7 @@ Debug运行程序，打开Debugger Console视图。
 
 在Debugger Console视图下输入info threads，回车。
 
-![image-20250513165625083](asserts\images\26\26-5.png)
+![image-20250513165625083](asserts/images/26/26-5.png)
 
 ### 使用说明
 
