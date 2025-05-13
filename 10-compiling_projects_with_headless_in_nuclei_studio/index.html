@@ -172,6 +172,7 @@
 <p>很多客户咨询怎么在Nuclei Studio上使用IDE的无头Headless模式来构建和编译工程。</p>
 <h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
 <blockquote>
+<p>所有以 <code>NucleiStudio.exe</code> 开头的命令行执行时，会有一个弹框显示执行日志，如果需屏蔽弹框，可以将命令改为 <code>eclipsec.exe</code></p>
 <p>以下文档是在<strong>2024.06</strong>版本的IDE中实测，作为补充说明。</p>
 </blockquote>
 <p>因NucleiStudio 2024.06版运行在java 21的环境上，实际应用中很多用户的本地没有java 21环境，故在运行命令时发现在执行该命令时，因找不到对应的jre而报错。为解决上述问题，可以在本地机器上安装java 21的环境（如何安装用户可以自行搜索相关教程），也可以在命令行中通过 <code>-vm</code> 参数指定NucleiStudio 2024.06中自带的jre的路径。</p>

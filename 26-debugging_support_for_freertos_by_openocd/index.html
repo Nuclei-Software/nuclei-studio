@@ -184,9 +184,9 @@
 <h3 id="_2">使用步骤<a class="headerlink" href="#_2" title="Permanent link">¶</a></h3>
 <p><strong>step1：创建原始工程</strong></p>
 <p>在NucleiStudio IDE下载好0.7.1版本的sdk-nuclei_sdk。</p>
-<p><img alt="image-20250513103947602" src="asserts\images\26\26-1.png"/></p>
+<p><img alt="image-20250513103947602" src="../asserts/images/26/26-1.png"/></p>
 <p>创建一个900的项目，如下图。</p>
-<p><img alt="image-20250513170041690" src="asserts\images\26\26-2.png"/></p>
+<p><img alt="image-20250513170041690" src="../asserts/images/26/26-2.png"/></p>
 <p>开发板烧写对应的bit即可，这里我们使用u900_best_config_ku060_50M_c1dd7f44af_915aefa97_202504141013_v4.1.0.bit</p>
 <p><strong>step2：修改portmacro.h内容</strong></p>
 <p>项目创建好，找到nuclei_sdk\OS\FreeRTOS\Source\portable\portmacro.h, 修改该文件内容如下</p>
@@ -196,16 +196,16 @@
 <span class="c1">//typedef uint64_t TickType_t;</span>
 <span class="c1">//#define portMAX_DELAY           ( TickType_t )0xFFFFFFFFFFFFFFFFULL</span>
 </code></pre></div>
-<p><img alt="image-20250513165844658" src="asserts\images\26\26-3.png"/></p>
+<p><img alt="image-20250513165844658" src="../asserts/images/26/26-3.png"/></p>
 <p><strong>step3：修改openocd_evalsoc.cfg内容</strong></p>
 <p>找到nuclei_sdk/SoC/evalsoc/Board/nuclei_fpga_eval/openocd_evalsoc.cfg,修改第118行内容</p>
 <div class="codehilite"><pre><span></span><code>target create $_TARGETNAME riscv -chain-position $_TARGETNAME -coreid $BOOTHART -rtos FreeRTOS
 </code></pre></div>
-<p><img alt="image-20250513165933970" src="asserts\images\26\26-4.png"/></p>
+<p><img alt="image-20250513165933970" src="../asserts/images/26/26-4.png"/></p>
 <p><strong>step4：openocd调试工程</strong></p>
 <p>Debug运行程序，打开Debugger Console视图。</p>
 <p>在Debugger Console视图下输入info threads，回车。</p>
-<p><img alt="image-20250513165625083" src="asserts\images\26\26-5.png"/></p>
+<p><img alt="image-20250513165625083" src="../asserts/images/26/26-5.png"/></p>
 <h3 id="_3">使用说明<a class="headerlink" href="#_3" title="Permanent link">¶</a></h3>
 <p>目前支持<strong>FreeRTOS</strong>,不支持<strong>Zephyr</strong>、<strong>ThreadX</strong>、<strong>UCOSII</strong>。</p>
 </div>
