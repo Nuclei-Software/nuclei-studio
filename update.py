@@ -23,7 +23,7 @@ mkdoc_entries = "\n"
 
 for file in files:
     mkdoc_entries += f"    - {file}\n"
-    with open(file, 'r') as f:
+    with open(file, 'r', encoding="utf-8") as f:
         lines = f.readlines()
         if lines:
             name = file.replace('.md', '')
@@ -36,7 +36,7 @@ def find_and_replace(fpath, start, end, replace):
         print("{fpath} file not exist!")
         return
     # Read the existing fpath content
-    with open(fpath, 'r') as handle_file:
+    with open(fpath, 'r', encoding="utf-8") as handle_file:
         orig_handle = handle_file.read()
 
     # Update content below ## Documents
@@ -46,7 +46,7 @@ def find_and_replace(fpath, start, end, replace):
 
 
     # Write the updated content back to fpath
-    with open(fpath, 'w') as handle_file:
+    with open(fpath, 'w', encoding="utf-8") as handle_file:
         handle_file.write(updated_handle)
 
     print(f"Updated in {fpath}")
