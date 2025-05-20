@@ -31,6 +31,7 @@ nav:
     - 24-example_for_adding_new_instructions_in_binutils.md
     - 25-nuclei_cross_trigger_in_openocd.md
     - 26-debugging_support_for_freertos_by_openocd.md
+    - 27-debug_with_multiple_ftdi_devices.md
 exclude_docs: |
     0-*.md
 theme:
