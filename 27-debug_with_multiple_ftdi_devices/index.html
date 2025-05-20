@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>如何同时使用多个蜂鸟调试器进行调试 - Nuclei Studio Supply Documents</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "\u5982\u4f55\u540c\u65f6\u4f7f\u7528\u591a\u4e2a\u8702\u9e1f\u8c03\u8bd5\u5668\u8fdb\u884c\u8c03\u8bd5";
+        var mkdocs_page_input_path = "27-debug_with_multiple_ftdi_devices.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> Nuclei Studio Supply Documents
+        </a>
+</div>
+<div aria-label="导航栏" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../13-error_could_not_find_an_available_hardware_trigger/">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/">cannot find -lncrt_balanced: No such file or directory</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7/">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming使用案例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Live Watch 功能的使用</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">在llvm中新增自定义汇编指令教程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../23-nuclei_debug_map_register_analyze/">如何使用芯来提供的DebugMap寄存器分析错误现场</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">在binutils中新增自定义汇编指令教程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">OpenOCD 中 Nuclei 交叉触发功能使用指南</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">OpenOCD对FreeRTOS的调试支持使用指南</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">如何同时使用多个蜂鸟调试器进行调试</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_2">问题说明</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_3">解决方案</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#ft_prog">下载FT_PROG</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_4">查看串号</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_5">修改串号</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#openocd">更新OpenOCD配置</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#linux">Linux</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#windows">Windows</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_6">参考资料</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="移动导航栏" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">Nuclei Studio Supply Documents</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">如何同时使用多个蜂鸟调试器进行调试</li>
+<li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/27-debug_with_multiple_ftdi_devices.md"> 在GitHub上编辑</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<div class="section" itemprop="articleBody">
+<h1 id="_1">如何同时使用多个蜂鸟调试器进行调试<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
+<h2 id="_2">问题说明<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<p>芯来科技的蜂鸟调试器采用<a href="https://ftdichip.cn/Products/ICs/FT2232H.html">FTDI-FT2232H</a>作为USB接口转换芯片。
+在同时连接多个蜂鸟调试器的情况下，如何区分不同的调试器？如何配置OpenOCD识别指定的蜂鸟调试器？</p>
+<h2 id="_3">解决方案<a class="headerlink" href="#_3" title="Permanent link">¶</a></h2>
+<p>FT2322H提供了一个可配置的串号（Serial Number），可用于区分不同的调试器。</p>
+<h3 id="ft_prog">下载FT_PROG<a class="headerlink" href="#ft_prog" title="Permanent link">¶</a></h3>
+<p>FT_PROG是一个用于烧写FT2322H片内的EEPROM的工具。可用于查看和修改FT2322H的串号。</p>
+<p>FT_PROG下载地址：<a href="https://ftdichip.com/utilities/">https://ftdichip.com/utilities/</a></p>
+<p>从这个页面中可以找到下载链接，如下图所示：</p>
+<p><img alt="ft_prog" src="../asserts/images/27/27-1.png"/></p>
+<p>下载并安装后，会在桌面生成FT_Prog工具的图标。</p>
+<h3 id="_4">查看串号<a class="headerlink" href="#_4" title="Permanent link">¶</a></h3>
+<p>使用FT_PROG工具，可以查看FT2322H的串号。</p>
+<ol>
+<li><strong>连接蜂鸟调试器</strong> 建议在无法区分多个蜂鸟调试器的情况下，先只连接一个蜂鸟调试器。</li>
+<li><strong>打开FT_PROG工具</strong> 点击FT_PROG图标打开工具。</li>
+<li><strong>扫描设备</strong> 点击菜单栏<code>DEVICES</code>中的<code>Scan and Parse</code>，扫描已连接的蜂鸟调试器。</li>
+</ol>
+<p><img alt="scan_device" src="../asserts/images/27/27-2.png"/></p>
+<ol>
+<li><strong>查看串号</strong> 通过<code>USB String Descriptors</code>中的<code>Serial Number</code>可以查看蜂鸟调试器的串号。</li>
+</ol>
+<p><img alt="serial_number" src="../asserts/images/27/27-3.png"/></p>
+<h3 id="_5">修改串号<a class="headerlink" href="#_5" title="Permanent link">¶</a></h3>
+<p>在查看串号的页面可以修改蜂鸟调试器的串号。</p>
+<p>比如下图中，我将原来的串号<code>FT7DI6ZK</code>改成了<code>FT7DI6ZB</code></p>
+<p><img alt="modify_serial_number" src="../asserts/images/27/27-4.png"/></p>
+<p>再通过菜单栏<code>DEVICES</code>中的<code>Program</code>选项，可以将修改后的串号写入到FT2322H的EEPROM中。</p>
+<p><img alt="program" src="../asserts/images/27/27-5.png"/></p>
+<p><strong>注意</strong>：多个蜂鸟调试器需要分别设置不同的串号来进行区分。</p>
+<h3 id="openocd">更新OpenOCD配置<a class="headerlink" href="#openocd" title="Permanent link">¶</a></h3>
+<p>在使用Nuclei FPGA Evaluation Board时，打开Nuclei Studio中的工程OpenOCD配置文件，可以看到如下内容：</p>
+<p><img alt="openocd_config" src="../asserts/images/27/27-6.png"/></p>
+<h4 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">¶</a></h4>
+<p>修改<code>openocd_evalsoc.cfg</code>文件，即根据图中红框中的说明进行修改：</p>
+<div class="codehilite"><pre><span></span><code>adapter serial "&lt;Serial Number&gt;"
+</code></pre></div>
+<p>其中的<code>&lt;Serial Number&gt;</code>需要替换成实际的串号。</p>
+<p>修改后的工程即可使用指定串号的蜂鸟调试器进行调试。</p>
+<h4 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">¶</a></h4>
+<p><strong>注意</strong>：在Windows系统下，需要在实际的串号后加上<code>A</code>才是有效的设置。</p>
+<p>例如实际的串号是<code>FT7DI6ZB</code>，那么OpenOCD的配置文件需要添加如下设置：</p>
+<div class="codehilite"><pre><span></span><code>adapter serial "FT7DI6ZBA"
+</code></pre></div>
+<h2 id="_6">参考资料<a class="headerlink" href="#_6" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="https://doc.nucleisys.com/nuclei_sdk/faq.html#how-to-select-correct-fdti-debugger">Nuclei Studio FAQs —— How to select correct FTDI debugger?</a></li>
+<li><a href="https://ftdichip.com/utilities/">FTDI Utilities</a></li>
+<li><a href="https://www.ftdichip.com/Support/Documents/AppNotes/AN_124_User_Guide_For_FT_PROG.pdf">User Guide for FTDI FT_PROG Utility</a></li>
+</ul>
+</div>
+</div><footer>
+<div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="../26-debugging_support_for_freertos_by_openocd/" title="OpenOCD对FreeRTOS的调试支持使用指南"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>All rights reserved</p>
+</div>
+
+  用<a href="https://www.mkdocs.org/">MkDocs</a>构建，使用<a href="https://readthedocs.org">Read the Docs</a>提供的<a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>。
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="版本" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a class="fa fa-github" href="https://github.com/Nuclei-Software/nuclei-studio" style="color: #fcfcfc"> GitHub</a>
+</span>
+<span><a href="../26-debugging_support_for_freertos_by_openocd/" style="color: #fcfcfc">« 上一章</a></span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>
