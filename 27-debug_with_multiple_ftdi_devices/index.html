@@ -229,7 +229,8 @@
 <p><img alt="openocd_config" src="../asserts/images/27/27-6.png"/></p>
 <h4 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">¶</a></h4>
 <p>修改<code>openocd_evalsoc.cfg</code>文件，即根据图中红框中的说明进行修改：</p>
-<div class="codehilite"><pre><span></span><code>adapter serial "&lt;Serial Number&gt;"
+<div class="codehilite"><pre><span></span><code># 注意要去掉adapter serial前面的注释符号 #
+adapter serial "&lt;Serial Number&gt;"
 </code></pre></div>
 <p>其中的<code>&lt;Serial Number&gt;</code>需要替换成实际的串号。</p>
 <p>修改后的工程即可使用指定串号的蜂鸟调试器进行调试。</p>
