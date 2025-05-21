@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>Nuclei SDK基于evalsoc快速适配customsoc - Nuclei Studio Supply Documents</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "Nuclei SDK\u57fa\u4e8eevalsoc\u5feb\u901f\u9002\u914dcustomsoc";
+        var mkdocs_page_input_path = "28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> Nuclei Studio Supply Documents
+        </a>
+</div>
+<div aria-label="导航栏" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../13-error_could_not_find_an_available_hardware_trigger/">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/">cannot find -lncrt_balanced: No such file or directory</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7/">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming使用案例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Live Watch 功能的使用</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">在llvm中新增自定义汇编指令教程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../23-nuclei_debug_map_register_analyze/">如何使用芯来提供的DebugMap寄存器分析错误现场</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">在binutils中新增自定义汇编指令教程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">OpenOCD 中 Nuclei 交叉触发功能使用指南</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">OpenOCD对FreeRTOS的调试支持使用指南</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../27-debug_with_multiple_ftdi_devices/">如何同时使用多个蜂鸟调试器进行调试</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">Nuclei SDK基于evalsoc快速适配customsoc</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_1">方案说明</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#_3">环境准备</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_4">适配修改</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#1-cpu">1 修改cpu特性描述宏文件</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#2-cpuisa">2 修改cpu特性isa配置</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#3-memory-map">3 修改链接地址的memory map</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#4-openocd">4 修改openocd配置文件</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#5-systimer">5 修改Systimer频率</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#6-cpu">6 修改CPU主频</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#7">7 修改串口驱动</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#8">8 修改串口波特率</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#9-_premain_init">9 修改_premain_init</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#10-nuclei">10 删除Nuclei内部使用的代码</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#11">11 检查外设地址</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="移动导航栏" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">Nuclei Studio Supply Documents</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">Nuclei SDK基于evalsoc快速适配customsoc</li>
+<li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK.md"> 在GitHub上编辑</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<div class="section" itemprop="articleBody">
+<h1 id="nuclei-sdkevalsoccustomsoc">Nuclei SDK基于evalsoc快速适配customsoc<a class="headerlink" href="#nuclei-sdkevalsoccustomsoc" title="Permanent link">¶</a></h1>
+<h2 id="_1">方案说明<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
+<p>Nuclei Eval SoC(简称evalsoc)是芯来科技提供的一款用于评估芯来CPU的SoC，具有On-Chip SRAMs，UART, SPI等；
+Nuclei SDK提供基于evalsoc的软件开发平台。客户通过evalsoc评估完芯来CPU后，希望在Nuclei SDK中快速适配为自己的SoC(本文称为customsoc)。</p>
+<h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<p>拉取最新的<a href="https://github.com/Nuclei-Software/nuclei-sdk/tree/master">nuclei-sdk</a>仓库或者直接使用cpu交付包中的nuclei-sdk</p>
+<h3 id="_3">环境准备<a class="headerlink" href="#_3" title="Permanent link">¶</a></h3>
+<h3 id="_4">适配修改<a class="headerlink" href="#_4" title="Permanent link">¶</a></h3>
+<blockquote>
+<p>如果通过nuclei_gen工具生成了配套的文件，则直接替换同名文件即可，这样比较简单不出错；如果手动修改，则注意下文提到的文件和修改点</p>
+</blockquote>
+<p><strong>先不要改任何目录名，文件名</strong>，按步骤修改如下文件。</p>
+<h4 id="1-cpu">1 修改cpu特性描述宏文件<a class="headerlink" href="#1-cpu" title="Permanent link">¶</a></h4>
+<p><strong>SoC/evalsoc/Common/Include/cpufeature.h</strong>文件定义了customsoc支持的特性、参数相关的#define宏。CPU交付包中的nuclei_gen工具会自动生成该文件，直接替换即可。</p>
+<h4 id="2-cpuisa">2 修改cpu特性isa配置<a class="headerlink" href="#2-cpuisa" title="Permanent link">¶</a></h4>
+<p><strong>SoC/evalsoc/cpufeature.mk</strong>文件定义了customsoc的CORE(是否支持单/双精度浮点)ARCH_EXT(是否支持b和v扩展等)。CPU交付包中的nuclei_gen工具会自动生成该文件，直接替换即可。</p>
+<h4 id="3-memory-map">3  修改链接地址的memory map<a class="headerlink" href="#3-memory-map" title="Permanent link">¶</a></h4>
+<p><strong>SoC/evalsoc/Board/nuclei_fpga_eval/Source/GCC/evalsoc.memory</strong>描述了ILM/DLM/FLASH/SRAM/DDR 的BASE address和SIZE以及代码段的大小。CPU交付包中的nuclei_gen工具会自动生成该文件，直接替换即可。</p>
+<h4 id="4-openocd">4 修改openocd配置文件<a class="headerlink" href="#4-openocd" title="Permanent link">¶</a></h4>
+<blockquote>
+<p>openocd会通过jtag与cpu建立gdb server port，供gdb debug和load使用</p>
+</blockquote>
+<p><strong>SoC/evalsoc/Board/nuclei_fpga_eval/openocd_evalsoc.cfg</strong>是openocd的配置描述文件。CPU交付包中的nuclei_gen工具会自动生成该文件，直接替换即可。关键参数如下：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># TODO: variables should be replaced by nuclei_gen</span>
+<span class="n">set</span><span class="w"> </span><span class="n">workmem_base</span><span class="w">    </span><span class="mh">0x80000000</span>
+<span class="n">set</span><span class="w"> </span><span class="n">workmem_size</span><span class="w">    </span><span class="mh">0x10000</span>
+<span class="n">set</span><span class="w"> </span><span class="n">flashxip_base</span><span class="w">   </span><span class="mh">0x20000000</span>
+<span class="n">set</span><span class="w"> </span><span class="n">xipnuspi_base</span><span class="w">   </span><span class="mh">0x10014000</span>
+</code></pre></div>
+<h4 id="5-systimer">5 修改Systimer频率<a class="headerlink" href="#5-systimer" title="Permanent link">¶</a></h4>
+<p><strong>SoC/evalsoc/Common/Include/evalsoc.h</strong>中修改SOC_TIMER_FREQ为customsoc的Systimer的频率</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 单位是hz 比如32768hz，这里填32768</span>
+#<span class="n">define</span><span class="w"> </span><span class="n">SOC_TIMER_FREQ</span><span class="w">              </span><span class="n">customsoc_systimer_freq</span>
+</code></pre></div>
+<h4 id="6-cpu">6 修改CPU主频<a class="headerlink" href="#6-cpu" title="Permanent link">¶</a></h4>
+<p><strong>SoC/evalsoc/Common/Source/system_evalsoc.c</strong>中，SystemCoreClock = get_cpu_freq()自动计算cpu主频(依赖Systimer)，可以直接修改为customsoc的主频</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 单位是hz 比如50Mhz，这里填50000000</span>
+<span class="n">SystemCoreClock</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">customsoc_cpu_freq</span><span class="p">;</span>
+</code></pre></div>
+<h4 id="7">7 修改串口驱动<a class="headerlink" href="#7" title="Permanent link">¶</a></h4>
+<blockquote>
+<p>evalsoc的uart IP是评估版本</p>
+<p>evalsoc_uart.c和evalsoc_uart.h里面的uart_xxx 名称不要修改，因为SoC/evalsoc/Common/Source/Stubs下的一些桩函数使用了uart的api</p>
+</blockquote>
+<p>串口驱动位于<strong>SoC/evalsoc/Common/Source/Drivers/evalsoc_uart.c</strong>，<strong>SoC/evalsoc/Common/Include/evalsoc_uart.h</strong>，如果使用其它串口IP，根据实际的串口寄存器定义适配。</p>
+<h4 id="8">8 修改串口波特率<a class="headerlink" href="#8" title="Permanent link">¶</a></h4>
+<p><strong>SoC/evalsoc/Common/Source/system_evalsoc.c: uart_init(SOC_DEBUG_UART, 115200)</strong>; 一般波特率为115200</p>
+<h4 id="9-_premain_init">9 修改_premain_init<a class="headerlink" href="#9-_premain_init" title="Permanent link">¶</a></h4>
+<blockquote>
+<p>一些在main函数之前执行的初始化可以放在这个函数</p>
+</blockquote>
+<p>如果有 IOMUX 和 PLL 等其他相关的配置，可以在<strong>SoC/evalsoc/Common/Source/system_evalsoc.c: _premain_init</strong> 函数里面实现；如果没有，可以跳过</p>
+<h4 id="10-nuclei">10 删除Nuclei内部使用的代码<a class="headerlink" href="#10-nuclei" title="Permanent link">¶</a></h4>
+<p><strong>SoC/evalsoc/Common/Source/system_evalsoc.c</strong>: SIMULATION_EXIT是用于Nuclei内部仿真标记，可以定义为空</p>
+<div class="codehilite"><pre><span></span><code>define SIMULATION_EXIT(ret)    {}
+</code></pre></div>
+<h4 id="11">11 检查外设地址<a class="headerlink" href="#11" title="Permanent link">¶</a></h4>
+<blockquote>
+<p>建议CPU配置时不要修改，保持与evalsoc一致</p>
+<p>串口使用的SOC_DEBUG_UAR定义为UART0</p>
+</blockquote>
+<ul>
+<li>
+<p>外设的Base address由EVALSOC_PERIPS_BASE决定，EVALSOC_PERIPS_BASE在<strong>SoC/evalsoc/Common/Include/cpufeature.h</strong>(由nuclei_gen工具生成，拷贝覆盖即可)中定义，一般无需再修改</p>
+</li>
+<li>
+<p>外设的offset address在<strong>SoC/evalsoc/Common/Include/evalsoc.h</strong>中定义，搜索Peripheral memory map, 一般无需修改</p>
+<p>``````</p>
+<h1 id="define-uart0_base-evalsoc_periph_base-0x13000-uart0-base-address">define UART0_BASE              (EVALSOC_PERIPH_BASE + 0x13000)          /<em>!&lt; (UART0) Base Address </em>/<a class="headerlink" href="#define-uart0_base-evalsoc_periph_base-0x13000-uart0-base-address" title="Permanent link">¶</a></h1>
+<h1 id="define-qspi0_base-evalsoc_periph_base-0x14000-qspi0-base-address">define QSPI0_BASE              (EVALSOC_PERIPH_BASE + 0x14000)          /<em>!&lt; (QSPI0) Base Address </em>/<a class="headerlink" href="#define-qspi0_base-evalsoc_periph_base-0x14000-qspi0-base-address" title="Permanent link">¶</a></h1>
+<h1 id="define-uart0-uart_typedef-uart0_base">define UART0                   ((UART_TypeDef *) UART0_BASE)<a class="headerlink" href="#define-uart0-uart_typedef-uart0_base" title="Permanent link">¶</a></h1>
+<p>``````</p>
+</li>
+</ul>
+<h3 id="_5">测试运行<a class="headerlink" href="#_5" title="Permanent link">¶</a></h3>
+<p>如果以上修改完毕，就可以测试SoC能否正常工作了</p>
+<blockquote>
+<p>这里因为是在evalsoc的基础上改的，还没有修改相关地方的名称为customsoc</p>
+<p>所以仍然SOC=evalsoc BOARD=nuclei_fpga_eval</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Test helloworld application</span>
+<span class="c1">## cd to helloworld application directory</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">application</span><span class="o">/</span><span class="n">baremetal</span><span class="o">/</span><span class="n">helloworld</span>
+<span class="c1">## clean and build helloworld application for ncstar_eval board</span>
+<span class="n">make</span><span class="w"> </span><span class="n">SOC</span><span class="o">=</span><span class="n">evalsoc</span><span class="w"> </span><span class="n">BOARD</span><span class="o">=</span><span class="n">nuclei_fpga_eval</span><span class="w"> </span><span class="n">clean</span><span class="w"> </span><span class="n">all</span>
+<span class="c1">## connect your board to PC and install jtag driver, open UART terminal</span>
+<span class="c1">## set baudrate to 115200bps and then upload the built application</span>
+<span class="c1">## to the fpga board using openocd, and you can check the</span>
+<span class="c1">## run messsage in UART terminal</span>
+<span class="n">make</span><span class="w"> </span><span class="n">SOC</span><span class="o">=</span><span class="n">evalsoc</span><span class="w"> </span><span class="n">BOARD</span><span class="o">=</span><span class="n">nuclei_fpga_eval</span><span class="w"> </span><span class="n">upload</span>
+</code></pre></div>
+<p>如果可以正常运行打印Hello World From Nuclei RISC-V Processor，那基本没有问题了。如果还需要运行更多case，请参考<a href="https://doc.nucleisys.com/nuclei_sdk/design/app.html#overview">Nuclei SDK Application</a>确认是否运行成功。</p>
+<h3 id="_6">调整名称<a class="headerlink" href="#_6" title="Permanent link">¶</a></h3>
+<blockquote>
+<p>重命名的地方有点多，这里就不列举了，最终保证编译通过就可以。</p>
+</blockquote>
+<p>测试通过后，就可以把涉及evalsoc的文件名和目录名修改为customsoc，以及eval/EVAL开头的宏名/文件名替换成custom</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 修改完后，再次测试运行</span>
+<span class="n">make</span><span class="w"> </span><span class="n">SOC</span><span class="o">=</span><span class="n">customsoc</span><span class="w"> </span><span class="n">BOARD</span><span class="o">=</span><span class="n">nuclei_fpga_custom</span><span class="w"> </span><span class="n">upload</span>
+</code></pre></div>
+<p>至此，<strong>Nuclei SDK就去掉了eval的logo，成为SDK for custom了。</strong></p>
+<h3 id="_7">精简代码<a class="headerlink" href="#_7" title="Permanent link">¶</a></h3>
+<p>因为Nuclei SDK支持Nuclei多款CPU系列的评估和内部测试，需要考虑非常多的场景，因此存在一些冗余代码，建议在阅读<a href="https://doc.nucleisys.com/nuclei_sdk/index.html">Nuclei-SDK documentation</a>并且熟悉代码框架后，再进行精简删除。</p>
+<h3 id="iar">IAR工程<a class="headerlink" href="#iar" title="Permanent link">¶</a></h3>
+<ul>
+<li>
+<p>IAR的工程有专门的链接脚本，位于SoC/evalsoc/Board/nuclei_fpga_eval/Source/IAR/*.icf
+IAR的链接脚本当前没有通过nuclei_gen工具生成，所以需要手动检查调整ROM_region32/ILM_region32/RAM_region32的base address和size, 这里的from就是代表base address，size 表示该region的大小</p>
+<p><code>define region ROM_region32 = mem:[from 0x20000000 size 0x800000];
+define region ILM_region32 = mem:[from 0x80000000 size 0x10000];
+define region RAM_region32 = mem:[from 0x90000000 size 0x10000];</code></p>
+</li>
+<li>
+<p>IAR的工程位于ideprojects/iar，也是prebuilt for evalsoc，在未调整名称之前是可以直接运行的
+如果经过了调整名称，路径和文件名都变化了，也需要重新新建工程，建议文本打开ewp文件，搜索“eval”关键词替换</p>
+<p><code>diff
+diff --git a/ideprojects/iar/baremetal/coremark.ewp b/ideprojects/iar/baremetal/coremark.ewp
+index 3eed66a8..17443eae 100644
+--- a/ideprojects/iar/baremetal/coremark.ewp
++++ b/ideprojects/iar/baremetal/coremark.ewp
+@@ -434,8 +434,8 @@
+                &lt;option&gt;
+                    &lt;name&gt;CCIncludePath2&lt;/name&gt;
+                    &lt;state&gt;$PROJ_DIR$\..\..\..\NMSIS\Core\Include&lt;/state&gt;
+-                    &lt;state&gt;$PROJ_DIR$\..\..\..\SoC\evalsoc\Board\nuclei_fpga_eval\Include&lt;/state&gt;
+-                    &lt;state&gt;$PROJ_DIR$\..\..\..\SoC\evalsoc\Common\Include&lt;/state&gt;
++                    &lt;state&gt;$PROJ_DIR$\..\..\..\SoC\customsoc\Board\nuclei_fpga_custom\Include&lt;/state&gt;
++                    &lt;state&gt;$PROJ_DIR$\..\..\..\SoC\customsoc\Common\Include&lt;/state&gt;
+                    &lt;state&gt;$PROJ_DIR$\..\..\..\application\baremetal\benchmark\coremark&lt;/state&gt;
+                &lt;/option&gt;</code></p>
+</li>
+</ul>
+<h3 id="ide">IDE工程支持<a class="headerlink" href="#ide" title="Permanent link">¶</a></h3>
+<p>如果希望Nuclei Studion IDE能支持custom soc，需要修改以下文件中涉及eval的名字，npk.yml的语法格式见<a href="https://doc.nucleisys.com/nuclei_tools/ide/npkoverview.html">2.4. Nuclei Studio NPK 介绍</a></p>
+<div class="codehilite"><pre><span></span><code>evalsoc/Common/npk.yml
+evalsoc/Board/nuclei_fpga_eval/npk.yml
+</code></pre></div>
+<h2 id="_8">参考资料<a class="headerlink" href="#_8" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="https://doc.nucleisys.com/nuclei_sdk/design/soc/evalsoc.html">Nuclei Eval SoC</a></li>
+<li><a href="https://doc.nucleisys.com/nuclei_sdk/contribute.html#port-your-nuclei-soc-into-nuclei-sdk">port-your-nuclei-soc-into-nuclei-sdk</a></li>
+</ul>
+</div>
+</div><footer>
+<div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="../27-debug_with_multiple_ftdi_devices/" title="如何同时使用多个蜂鸟调试器进行调试"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>All rights reserved</p>
+</div>
+
+  用<a href="https://www.mkdocs.org/">MkDocs</a>构建，使用<a href="https://readthedocs.org">Read the Docs</a>提供的<a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>。
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="版本" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a class="fa fa-github" href="https://github.com/Nuclei-Software/nuclei-studio" style="color: #fcfcfc"> GitHub</a>
+</span>
+<span><a href="../27-debug_with_multiple_ftdi_devices/" style="color: #fcfcfc">« 上一章</a></span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>
