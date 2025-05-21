@@ -60,6 +60,7 @@ FT_PROG下载地址：[https://ftdichip.com/utilities/](https://ftdichip.com/uti
 修改`openocd_evalsoc.cfg`文件，即根据图中红框中的说明进行修改：
 
 ```
+# 注意要去掉adapter serial前面的注释符号 #
 adapter serial "<Serial Number>"
 ```
 
