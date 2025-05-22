@@ -80,6 +80,6 @@ adapter serial "FT7DI6ZBA"
 
 ## 参考资料
 
-- [Nuclei Studio FAQs —— How to select correct FTDI debugger?](https://doc.nucleisys.com/nuclei_sdk/faq.html#how-to-select-correct-fdti-debugger)
+- [Nuclei Studio FAQs —— How to select correct FTDI debugger?](https://doc.nucleisys.com/nuclei_sdk/faq.html#how-to-select-correct-ftdi-debugger)
 - [FTDI Utilities](https://ftdichip.com/utilities/)
 - [User Guide for FTDI FT_PROG Utility](https://www.ftdichip.com/Support/Documents/AppNotes/AN_124_User_Guide_For_FT_PROG.pdf)
