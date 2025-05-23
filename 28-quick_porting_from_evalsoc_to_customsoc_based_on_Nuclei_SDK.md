@@ -3,12 +3,15 @@
 ## 方案说明
 
 Nuclei Eval SoC(简称evalsoc)是芯来科技提供的一款用于评估芯来CPU的SoC，具有On-Chip SRAMs，UART, SPI等；
-Nuclei SDK提供基于evalsoc的软件开发平台。客户通过evalsoc评估完芯来CPU后，希望在Nuclei SDK中快速适配为自己的SoC(本文称为customsoc)。
 
+[Nuclei SDK][1]和[Nuclei N100 SDK][2]提供基于evalsoc的软件开发平台。客户通过evalsoc评估完芯来CPU后，希望在对应的SDK中快速适配为自己的SoC(本文称为customsoc)。
+
+- **Nuclei SDK** 主要支持Nuclei 200/300/600/900/1000 series RISC-V CPU, 用于基于这些系列CPU的EvalSoC快速软件评估和开发
+- **Nuclei N100 SDK** 主要支持Nuclei 100 series RISC-V CPU, 用于基于这些系列CPU的EvalSoC快速软件评估和开发
 
 ## 解决方案
 
-拉取最新的 [nuclei-sdk](https://github.com/Nuclei-Software/nuclei-sdk/tree/master) 仓库或者直接使用cpu交付包中的nuclei-sdk
+根据需要移植适配的CPU系列，拉取最新的对应的SDK仓库或者直接使用cpu交付包中的SDK。
 
 ### 环境准备
 
@@ -136,8 +139,10 @@ make SOC=evalsoc BOARD=nuclei_fpga_eval clean all
 make SOC=evalsoc BOARD=nuclei_fpga_eval upload
 ```
 
-如果可以正常运行打印Hello World From Nuclei RISC-V Processor，那基本没有问题了。如果还需要运行更多case，请参考[Nuclei SDK Application](https://doc.nucleisys.com/nuclei_sdk/design/app.html#overview)确认是否运行成功。
+如果可以正常运行打印Hello World From Nuclei RISC-V Processor，那基本没有问题了。如果还需要运行更多case，请参考如下应用示例文档确认是否运行成功。
 
+- Nuclei SDK: https://doc.nucleisys.com/nuclei_sdk/design/app.html
+- Nuclei N100 SDK: https://doc.nucleisys.com/nuclei_n100_sdk/design/app.html
 
 ### 调整名称
 
@@ -150,12 +155,12 @@ make SOC=evalsoc BOARD=nuclei_fpga_eval upload
 make SOC=customsoc BOARD=nuclei_fpga_custom upload
 ```
 
-至此，**Nuclei SDK就去掉了eval的logo,成为SDK for custom了。**
+至此，**SDK就去掉了eval的logo,成为SDK for custom了。**
 
 
 ### 精简代码
 
-因为Nuclei SDK支持Nuclei多款CPU系列的评估和内部测试，需要考虑非常多的场景，因此存在一些冗余代码，建议在阅读[Nuclei-SDK documentation](https://doc.nucleisys.com/nuclei_sdk/index.html)并且熟悉代码框架后，再进行精简删除。
+因为Nuclei SDK/N100 SDK支持Nuclei多款CPU系列的评估和内部测试，需要考虑非常多的场景，因此存在一些冗余代码，建议在阅读SDK文档并且熟悉代码框架后，再进行精简删除。
 
 
 ### IAR工程
@@ -191,7 +196,7 @@ index 3eed66a8..17443eae 100644
 
 ### IDE工程支持
 
-如果希望Nuclei Studion IDE能支持custom soc，需要修改以下文件中涉及eval的名字，npk.yml的语法格式见 [2.4. Nuclei Studio NPK 介绍](https://doc.nucleisys.com/nuclei_tools/ide/npkoverview.html)
+如果希望Nuclei Studio IDE能支持custom soc，需要修改以下文件中涉及eval的名字，npk.yml的语法格式见 [2.4. Nuclei Studio NPK 介绍](https://doc.nucleisys.com/nuclei_tools/ide/npkoverview.html)
 
 ```c
 evalsoc/Common/npk.yml
@@ -200,5 +205,12 @@ evalsoc/Board/nuclei_fpga_eval/npk.yml
 
 ## 参考资料
 
-- [Nuclei Eval SoC](https://doc.nucleisys.com/nuclei_sdk/design/soc/evalsoc.html)
-- [Port your Nuclei SoC into Nuclei SDK](https://doc.nucleisys.com/nuclei_sdk/contribute.html#port-your-nuclei-soc-into-nuclei-sdk)
+- [Nuclei 200/300/600/900/1000 Eval SoC](https://doc.nucleisys.com/nuclei_sdk/design/soc/evalsoc.html)
+- [Port your SoC into Nuclei SDK](https://doc.nucleisys.com/nuclei_sdk/contribute.html#port-your-nuclei-soc-into-nuclei-sdk)
+
+- [Nuclei 100 Eval SoC](https://doc.nucleisys.com/nuclei_n100_sdk/design/soc/evalsoc.html)
+- [Port your SoC into Nuclei N100 SDK](https://doc.nucleisys.com/nuclei_n100_sdk/contribute.html#port-your-nuclei-soc-into-nuclei-sdk)
+
+
+[1]: https://github.com/Nuclei-Software/nuclei-sdk/tree/master
+[2]: https://github.com/Nuclei-Software/nuclei-sdk/tree/master_n100
