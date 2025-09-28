@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>在链接脚本中使用OVERLAY命令 - Nuclei Studio Supply Documents</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "\u5728\u94fe\u63a5\u811a\u672c\u4e2d\u4f7f\u7528OVERLAY\u547d\u4ee4";
+        var mkdocs_page_input_path = "29-using_overlay_command_in_linker_scripts.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> Nuclei Studio Supply Documents
+        </a>
+</div>
+<div aria-label="导航栏" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../3-print_memor_usage_in_ide/">How to print memory usage in Nuclei Studio</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/">GCC13 auto generated RVV instructions when RVV enabled</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../13-error_could_not_find_an_available_hardware_trigger/">Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../14-cannot_find_-lncrt_balanced_no_such_file_or_directory/">cannot find -lncrt_balanced: No such file or directory</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../15-unsatisfiedLinkError_of_swt-win32-4965r8_dll_on_windows7/">UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming使用案例</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Live Watch 功能的使用</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">在llvm中新增自定义汇编指令教程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../23-nuclei_debug_map_register_analyze/">如何使用芯来提供的DebugMap寄存器分析错误现场</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">在binutils中新增自定义汇编指令教程</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">OpenOCD 中 Nuclei 交叉触发功能使用指南</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">OpenOCD对FreeRTOS的调试支持使用指南</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../27-debug_with_multiple_ftdi_devices/">如何同时使用多个蜂鸟调试器进行调试</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/">Nuclei SDK基于evalsoc快速适配customsoc</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">在链接脚本中使用OVERLAY命令</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#_3">示例程序</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#overlay_1">Overlay布局</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_4">编写链接脚本</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_5">测试结果</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_6">注意事项</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_7">参考资料</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="移动导航栏" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">Nuclei Studio Supply Documents</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">在链接脚本中使用OVERLAY命令</li>
+<li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/29-using_overlay_command_in_linker_scripts.md"> 在GitHub上编辑</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<div class="section" itemprop="articleBody">
+<h1 id="overlay">在链接脚本中使用<code>OVERLAY</code>命令<a class="headerlink" href="#overlay" title="Permanent link">¶</a></h1>
+<h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
+<p>CPU Core内的SRAM具有速度快，容量小，面积大的特点。在嵌入式系统中，这部分Core内的RAM很可能无法放下所有的函数。
+为了解决这个问题，有一种方案是在链接脚本中使用<code>OVERLAY</code> 命令。<br/>
+GNU <code>ld</code> 提供的<code>OVERLAY</code>命令，可以在同一块内存区域上“叠放”多个段（Section）。若干个段可以共享运行时的
+VMA（Virtual Memory Address），只是在运行时需要手动管理这些Overlay的段的加载和卸载。</p>
+<p>那么如何在Nuclei Studio IDE中使用<code>OVERLAY</code>命令呢？本文将提供一个示例程序演示如何使用<code>OVERLAY</code>命令。</p>
+<h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<h3 id="_3">示例程序<a class="headerlink" href="#_3" title="Permanent link">¶</a></h3>
+<p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcp7C3O2T">demo_overlay</a>是基于
+<a href="https://www.nucleisys.com/download.php">Nuclei Studio IDE 2025.02</a>
+创建的示例工程，支持Linux和Windows两种平台，演示了如何在链接脚本中使用<code>OVERLAY</code>命令。</p>
+<p>示例工程中的代码与<a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Overlay-Sample-Program.html">Overlay Sample Program</a>
+中提供的代码基本一致，主要区别是在main函数中增加了测试结果的打印，另外根据evalsoc的地址映射关系
+对链接脚本做了修改。</p>
+<div class="codehilite"><pre><span></span><code>├── bar.c
+├── baz.c
+├── foo.c
+├── grbx.c
+├── overlays.c
+├── ovlymgr.c
+└── ovlymgr.h
+</code></pre></div>
+<p>原始代码可以从<a href="https://github.com/bminor/binutils-gdb/tree/master/gdb/testsuite/gdb.base">bminor/binutils-gdb/gdb/testsuite/gdb.base</a>获取。</p>
+<h3 id="overlay_1">Overlay布局<a class="headerlink" href="#overlay_1" title="Permanent link">¶</a></h3>
+<p><img alt="ovly" src="../asserts/images/29/overlay.png"/></p>
+<p>在我们的evalsoc上，如果程序无法完全放在Core内的ILM/DLM上，就可以采取上图中的方法
+将部分Section以Overlay的形式动态加载到ILM/DLM中运行。<br/>
+<code>.ovlyx</code>和<code>.data0x</code> 共8个Section的LMA（Load Memory Address）都位于Core外的SRAM上，
+但它们的VMA都在Core内，并且有部分重叠。</p>
+<h3 id="_4">编写链接脚本<a class="headerlink" href="#_4" title="Permanent link">¶</a></h3>
+<p>在<code>MEMORY</code>命令中先划分出需要用到的Memory区域，比如这里4个Core内的区域<code>ovrom0</code>, <code>ovrom1</code>,
+<code>ovram0</code>, <code>ovram1</code>和Core外的<code>ovstorage</code>区域。这些Memory区域的大小都可以根据实际的代码和数据的大小进行调整。</p>
+<div class="codehilite"><pre><span></span><code>MEMORY
+{
+  rom (rxa!w) : ORIGIN = SRAM_MEMORY_BASE,                           LENGTH = SRAM_MEMORY_ROM_SIZE
+  ovstorage (rwa) : ORIGIN = SRAM_MEMORY_BASE + SRAM_MEMORY_ROM_SIZE, LENGTH = SRAM_OVLY_STORAGE_SIZE
+  ram (wxa!r) : ORIGIN = SRAM_MEMORY_BASE + SRAM_MEMORY_ROM_SIZE + SRAM_OVLY_STORAGE_SIZE,    LENGTH = SRAM_MEMORY_SIZE - SRAM_MEMORY_ROM_SIZE - SRAM_OVLY_STORAGE_SIZE
+  ovrom0 (rwx) : ORIGIN = ILM_MEMORY_BASE,   LENGTH = ILM_OVLY_SIZE0
+  ovrom1 (rwx) : ORIGIN = ILM_MEMORY_BASE + ILM_OVLY_SIZE0,   LENGTH = ILM_OVLY_SIZE1
+  ovram0 (rwx) : ORIGIN = DLM_MEMORY_BASE,   LENGTH = DLM_OVLY_SIZE0
+  ovram1 (rwx) : ORIGIN = DLM_MEMORY_BASE + DLM_OVLY_SIZE0,   LENGTH = DLM_OVLY_SIZE1
+}
+</code></pre></div>
+<p><code>OVERLAY</code>需要放在<code>SECTION</code>命令中实现。例如下方的代码就是将<code>.ovly0</code>和<code>.ovly1</code>两个段放到<code>ovrom0</code>所
+表示的同一个VMA地址区间中，同时它们的LMA则是连续地位于<code>ovstorage</code>所表示的地址区间中。</p>
+<div class="codehilite"><pre><span></span><code>OVERLAY :
+{
+  .ovly0 { <span class="gs">*foo.o(.text .text.*</span>) }
+  .ovly1 { <span class="gs">*bar.o(.text .text.*</span>) }
+} &gt;ovrom0 AT&gt;ovstorage
+</code></pre></div>
+<p>参考<a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Automatic-Overlay-Debugging.html#Automatic-Overlay-Debugging">Automatic Overlay Debugging</a>，
+链接脚本中的以下代码则是将Overlay的段的VMA, LMA和数量以<code>_ovly_table</code>和<code>_novlys</code>变量的形式供C代码访问；
+在<code>ovlymgr.c</code>中进一步实现动态加载和卸载Section的功能。</p>
+<div class="codehilite"><pre><span></span><code><span class="o">/*</span><span class="w"> </span><span class="n">_ovly_table</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">gdb</span><span class="w"> </span><span class="nb">debug</span><span class="w"> </span><span class="n">overlay</span><span class="w"> </span><span class="n">sections</span><span class="w"> </span><span class="o">*/</span>
+<span class="n">_ovly_table</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.;</span><span class="w"> </span>
+<span class="w">  </span><span class="n">_ovly0_entry</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.;</span>
+<span class="n">LONG</span><span class="p">(</span><span class="n">ABSOLUTE</span><span class="p">(</span><span class="n">ADDR</span><span class="p">(.</span><span class="n">ovly0</span><span class="p">)));</span>
+<span class="n">LONG</span><span class="p">(</span><span class="n">SIZEOF</span><span class="p">(.</span><span class="n">ovly0</span><span class="p">));</span>
+<span class="n">LONG</span><span class="p">(</span><span class="n">LOADADDR</span><span class="p">(.</span><span class="n">ovly0</span><span class="p">));</span>
+<span class="n">LONG</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="n">_novlys</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.;</span>
+<span class="n">LONG</span><span class="p">((</span><span class="n">_novlys</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_ovly_table</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">16</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="_5">测试结果<a class="headerlink" href="#_5" title="Permanent link">¶</a></h3>
+<p>观察编译后生成的map文件，可以看到相应的代码段和数据段都按照预期的VMA和LMA进行了分配。<br/>
+例如<code>.ovly0</code>和<code>.ovly1</code>具有相同的VMA <code>0x80000000</code>，同时它们的LMA分别为<code>0xa0008000</code>和<code>0xa0008028</code>。</p>
+<div class="codehilite"><pre><span></span><code><span class="o">.</span><span class="n">ovly0</span><span class="w">          </span><span class="mh">0x80000000</span><span class="w">       </span><span class="mh">0x28</span><span class="w"> </span><span class="nb">load</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mh">0xa0008000</span>
+<span class="w"> </span><span class="o">*</span><span class="n">foo</span><span class="o">.</span><span class="n">o</span><span class="p">(</span><span class="o">.</span><span class="n">text</span><span class="w"> </span><span class="o">.</span><span class="n">text</span><span class="o">.*</span><span class="p">)</span>
+<span class="w"> </span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">foo</span><span class="w">      </span><span class="mh">0x80000000</span><span class="w">       </span><span class="mh">0x28</span><span class="w"> </span><span class="o">./</span><span class="n">application</span><span class="o">/</span><span class="n">foo</span><span class="o">.</span><span class="n">o</span>
+<span class="w">                </span><span class="mh">0x80000000</span><span class="w">                </span><span class="n">foo</span>
+<span class="w">                </span><span class="p">[</span><span class="o">!</span><span class="n">provide</span><span class="p">]</span><span class="w">                        </span><span class="n">PROVIDE</span><span class="w"> </span><span class="p">(</span><span class="n">__load_start_ovly0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LOADADDR</span><span class="w"> </span><span class="p">(</span><span class="o">.</span><span class="n">ovly0</span><span class="p">))</span>
+<span class="w">                </span><span class="p">[</span><span class="o">!</span><span class="n">provide</span><span class="p">]</span><span class="w">                        </span><span class="n">PROVIDE</span><span class="w"> </span><span class="p">(</span><span class="n">__load_stop_ovly0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">LOADADDR</span><span class="w"> </span><span class="p">(</span><span class="o">.</span><span class="n">ovly0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SIZEOF</span><span class="w"> </span><span class="p">(</span><span class="o">.</span><span class="n">ovly0</span><span class="p">)))</span>
+
+<span class="o">.</span><span class="n">ovly1</span><span class="w">          </span><span class="mh">0x80000000</span><span class="w">       </span><span class="mh">0x28</span><span class="w"> </span><span class="nb">load</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="mh">0xa0008028</span>
+<span class="w"> </span><span class="o">*</span><span class="n">bar</span><span class="o">.</span><span class="n">o</span><span class="p">(</span><span class="o">.</span><span class="n">text</span><span class="w"> </span><span class="o">.</span><span class="n">text</span><span class="o">.*</span><span class="p">)</span>
+<span class="w"> </span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">bar</span><span class="w">      </span><span class="mh">0x80000000</span><span class="w">       </span><span class="mh">0x28</span><span class="w"> </span><span class="o">./</span><span class="n">application</span><span class="o">/</span><span class="n">bar</span><span class="o">.</span><span class="n">o</span>
+<span class="w">                </span><span class="mh">0x80000000</span><span class="w">                </span><span class="n">bar</span>
+<span class="w">                </span><span class="p">[</span><span class="o">!</span><span class="n">provide</span><span class="p">]</span><span class="w">                        </span><span class="n">PROVIDE</span><span class="w"> </span><span class="p">(</span><span class="n">__load_start_ovly1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LOADADDR</span><span class="w"> </span><span class="p">(</span><span class="o">.</span><span class="n">ovly1</span><span class="p">))</span>
+<span class="w">                </span><span class="p">[</span><span class="o">!</span><span class="n">provide</span><span class="p">]</span><span class="w">                        </span><span class="n">PROVIDE</span><span class="w"> </span><span class="p">(</span><span class="n">__load_stop_ovly1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">LOADADDR</span><span class="w"> </span><span class="p">(</span><span class="o">.</span><span class="n">ovly1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SIZEOF</span><span class="w"> </span><span class="p">(</span><span class="o">.</span><span class="n">ovly1</span><span class="p">)))</span>
+</code></pre></div>
+<p><code>main</code>函数中通过<code>OverlayLoad</code>切换调用不同的函数，并在最后将每个函数的返回值累加，校验累加后的结果。</p>
+<div class="codehilite"><pre><span></span><code><span class="cm">/* load .text and .data for `foo` */</span>
+<span class="n">OverlayLoad</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">OverlayLoad</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">foo</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="cm">/* load .text and .data for `bar` */</span>
+<span class="n">OverlayLoad</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">OverlayLoad</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bar</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="cm">/* load .text and .data for `baz` */</span>
+<span class="n">OverlayLoad</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">OverlayLoad</span><span class="w"> </span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+<span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">baz</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="cm">/* load .text and .data for `grbx` */</span>
+<span class="n">OverlayLoad</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">OverlayLoad</span><span class="w"> </span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+<span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grbx</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">d</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="p">(</span><span class="sc">'f'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">'o'</span><span class="w"> </span><span class="o">+</span><span class="sc">'o'</span>
+<span class="w">  </span><span class="o">+</span><span class="w"> </span><span class="sc">'b'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">'a'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">'r'</span>
+<span class="w">  </span><span class="o">+</span><span class="w"> </span><span class="sc">'b'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">'a'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">'z'</span>
+<span class="w">  </span><span class="o">+</span><span class="w"> </span><span class="sc">'g'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">'r'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">'b'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">'x'</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">printf</span><span class="w"> </span><span class="p">(</span><span class="s">"Overlay Test FAIL</span><span class="se">\r\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">printf</span><span class="w"> </span><span class="p">(</span><span class="s">"Overlay Test PASS</span><span class="se">\r\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>通过QEMU仿真或者利用FPGA开发板进行测试，可以看到如下的结果。其中<code>Overlay Test PASS</code>表明结果符合预期。</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Nuclei</span><span class="w"> </span><span class="n">SDK</span><span class="w"> </span><span class="n">Build</span><span class="w"> </span><span class="n">Time</span><span class="p">:</span><span class="w"> </span><span class="n">Sep</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="mi">2025</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="p">:</span><span class="mi">02</span><span class="p">:</span><span class="mi">19</span>
+<span class="n">Download</span><span class="w"> </span><span class="n">Mode</span><span class="p">:</span><span class="w"> </span><span class="n">SRAM</span>
+<span class="n">CPU</span><span class="w"> </span><span class="n">Frequency</span><span class="w"> </span><span class="mi">16003235</span><span class="w"> </span><span class="n">Hz</span>
+<span class="n">CPU</span><span class="w"> </span><span class="n">HartID</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Overlay</span><span class="w"> </span><span class="n">Test</span><span class="w"> </span><span class="n">PASS</span>
+</code></pre></div>
+<h3 id="_6">注意事项<a class="headerlink" href="#_6" title="Permanent link">¶</a></h3>
+<ol>
+<li>数据段Overlay在要替换Section时，需要保存数据，也就是需要“卸载”的操作，将数据保存到外部SRAM中；而
+代码段是只读的，所以不需要Unload。</li>
+<li>在示例工程中，ILM/DLM都不会经过Cache，所以不需要考虑Cache一致性的问题。但如果Overlay的Section所在
+的VMA是Cacheable的区域，则一般都需要考虑Cache一致性的问题，除非ICache和DCache之间有硬件支持的Snoop。
+更多细节可以参考示例工程中<code>ovlymgr.c</code>的实现。</li>
+</ol>
+<h2 id="_7">参考资料<a class="headerlink" href="#_7" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/How-Overlays-Work.html#How-Overlays-Work">How Overlays Work</a></li>
+<li><a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Overlay-Commands.html#Overlay-Commands">Overlay Commands</a></li>
+<li><a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Automatic-Overlay-Debugging.html#Automatic-Overlay-Debugging">Automatic Overlay Debugging</a></li>
+<li><a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Overlay-Sample-Program.html">Overlay Sample Program</a></li>
+</ul>
+</div>
+</div><footer>
+<div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/" title="Nuclei SDK基于evalsoc快速适配customsoc"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>All rights reserved</p>
+</div>
+
+  用<a href="https://www.mkdocs.org/">MkDocs</a>构建，使用<a href="https://readthedocs.org">Read the Docs</a>提供的<a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>。
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="版本" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a class="fa fa-github" href="https://github.com/Nuclei-Software/nuclei-studio" style="color: #fcfcfc"> GitHub</a>
+</span>
+<span><a href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/" style="color: #fcfcfc">« 上一章</a></span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>
