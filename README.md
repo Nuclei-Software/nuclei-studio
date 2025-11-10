@@ -6,7 +6,7 @@ This repository is utilized for **providing supply documents, user guides, wikis
 
 > [!NOTE]
 > 
-> - The latest version of Nuclei Studio IDE is **2025.02**, which can be found in https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2025.02
+> - The latest version of Nuclei Studio IDE is **2025.10**, which can be found in https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2025.10
 > - In **Ubuntu 20.04**, you must install `libncursesw5 libtinfo5 libfdt1 libpixman-1-0 libpng16-16 libasound2 libglib2.0-0` to make **riscv64-unknown-elf-gdb and qemu** able to run.
 
 **PDF Version** can be found here: https://doc.nucleisys.com/nuclei_studio_supply/pdf/nuclei_studio_supply.pdf
