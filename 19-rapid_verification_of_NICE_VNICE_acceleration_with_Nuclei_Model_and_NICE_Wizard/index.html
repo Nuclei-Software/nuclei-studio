@@ -201,7 +201,7 @@
 <div class="section" itemprop="articleBody">
 <h1 id="nuclei-modelnice-wizardnicevnice">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速<a class="headerlink" href="#nuclei-modelnice-wizardnicevnice" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>Nuclei Model 已支持 Windows/Linux 版本，此文档测试都是基于 Nuclei Studio 的 Windows 版本 (&gt;= 2025.02) 完成的。</p>
+<p>Nuclei Model 已支持 Windows/Linux 版本，此文档测试都是基于 Nuclei Studio 的 Windows 版本 (&gt;= 2025.10) 完成的。</p>
 </blockquote>
 <h2 id="_1">背景描述<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
 <h3 id="xlmodel_nice">xlmodel_nice<a class="headerlink" href="#xlmodel_nice" title="Permanent link">¶</a></h3>
@@ -221,13 +221,13 @@
 </blockquote>
 <p><strong>Nuclei Studio</strong>：</p>
 <ul>
-<li><a href="https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-win64.zip">NucleiStudio 202502 Windows</a></li>
-<li><a href="https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-lin64.tgz">NucleiStudio 202502 Linux</a></li>
+<li><a href="https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202510-win64.zip">NucleiStudio 202510 Windows</a></li>
+<li><a href="https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202510-lin64.tgz">NucleiStudio 202510 Linux</a></li>
 </ul>
 <p><strong>xlmodel_nice</strong>：</p>
 <ul>
-<li><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcYbanf6c">原始<code>xlmodel_nice</code>软件包 Windows</a></li>
-<li><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFczrqzDI1">原始<code>xlmodel_nice</code>软件包 Linux</a></li>
+<li><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCirwEWY">原始<code>xlmodel_nice</code>软件包 Windows</a></li>
+<li><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcTgr1Dbv">原始<code>xlmodel_nice</code>软件包 Linux</a></li>
 </ul>
 <h3 id="nuclei-model">Nuclei Model运行原始程序<a class="headerlink" href="#nuclei-model" title="Permanent link">¶</a></h3>
 <p><strong>step1：导入 Nuclei SDK 原始工程</strong></p>
@@ -239,24 +239,30 @@
 <p><strong>step3：运行 Nuclei SDK 原始工程</strong></p>
 <p>在使用 Nuclei Model 运行程序时，需要先确定工程 <code>Nuclei Settings</code> 中的 <code>Core</code> 配置和 <code>Other extensions</code> 配置，这些配置需要传递给 Model 使用。当前使用的 <code>Core</code> 是 <code>n900fd</code>，<code>Other extensions</code> 未配置。</p>
 <p><img alt="image-Ori_Project_Nuclei_Settting" src="../asserts/images/19/Ori_Project_Nuclei_Settting.png"/></p>
-<p>Model 仿真程序需要配置 Nuclei Studio 中的 <code>Nuclei Model</code> 配置项，步骤如下：</p>
+<p>Model 仿真程序需要配置 Nuclei Studio 中的 <code>GDB Nuclei Model riscv Debugging</code> 配置项，步骤如下：</p>
 <ol>
 <li>打开 Nuclei Studio 主菜单栏的 <code>Run</code> 选项的 <code>Run Configurations</code></li>
-<li>选择 <code>Nuclei Model</code> 配置项，右键选择 <code>New Configuration</code>，会自动生成项目名的 Model 配置页面，launch bar也会同步更新</li>
+<li>选择 <code>GDB Nuclei Model riscv Debugging</code> 配置项，右键选择 <code>New Configuration</code>，会自动生成项目名的 Model 配置页面，launch bar也会同步更新</li>
 <li>在右侧 <code>Main</code> 选项卡中点击 <code>Search Project...</code> 选择编译好的 elf 文件</li>
-<li>在右侧 <code>Model</code> 选项卡中选择 <code>Browse</code> 找到 Nuclei Model 可执行程序默认路径：<code>NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel.exe</code></li>
+<li>在右侧 <code>Debugger</code> 选项卡中选择 <code>Browse</code> 找到 Nuclei Model 可执行程序默认路径：<code>NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel.exe</code></li>
 <li>
-<p>在右侧 <code>Model</code> 选项卡中的 <code>Config options</code> 中完成 model 运行配置： <code>--cpu=n900fd --trace=1 --logdir=Debug</code>, <code>--cpu</code> 和 <code>--ext</code> 需要保持和 <code>Nuclei Settings</code> 的 <code>Core</code> 和 <code>Other extensions</code> 配置一致，<code>--ext</code> 为空时不传递此参数，<code>--trace=1</code> 表示开启 rvtrace，<code>--logdir=Debug</code> 则表示最终生成的 <code>*.rvtrace</code> 文件存存放路径为当前工程下的 Debug 目录，然后点击 <code>Apply</code> 和 <code>Run</code>，model 就开始运行程序了</p>
+<p>在右侧 <code>Debugger</code> 选项卡中的 <code>Nuclei Setup</code> 中完成 model 运行配置, 选择 <code>Nuclei RISC-V Core</code> 和 <code>Other Extensions</code> 需要保持和 <code>Nuclei Settings</code> 的 <code>Core</code> 和 <code>Other extensions</code> 配置一致，<code>Other Extensions</code> 为空时不传递此参数， <code>Enable Nuclei Model RVTrace</code> 表示运行时生成 rvtrace，然后点击 <code>Apply</code> 和 <code>Run</code>，model 就开始运行程序了</p>
 <p><img alt="image-Ori_Project_Model_Config" src="../asserts/images/19/Ori_Project_Model_Config.png"/></p>
 </li>
 </ol>
-<p>在 Console 中会看到 <code>Total elapsed time</code> 说明 model 已经完成仿真了，程序会提取标量矩阵乘算法函数 <code>golden_case</code> 的执行指令数和 cycle 数如下：</p>
+<blockquote>
+<p>Nuclei Studio (&lt; 2025.10) 只能使用 <code>Run Configurations</code> 中的 <code>Nuclei Model</code> 来配置 model，Nuclei Studio (&gt;= 2025.10) 建议切换到使用 <code>GDB Nuclei Model riscv Debugging</code> 来配置</p>
+</blockquote>
+<p>在 Console 中会看到 <code>Total elapsed real time</code> 说明 model 已经完成仿真了，程序会提取标量矩阵乘算法函数 <code>golden_case</code> 的执行指令数和 cycle 数如下：</p>
 <p><img alt="image-Ori_Project_Model_Run" src="../asserts/images/19/Ori_Project_Model_Run.png"/></p>
 <h3 id="nice">NICE指令替换<a class="headerlink" href="#nice" title="Permanent link">¶</a></h3>
 <p><strong>step1：编译 xlmodel_nice 软件包</strong></p>
 <p>下载并解压 <code>xlmodel_nice</code> zip 包后，可以直接导入到 Nuclei Studio 中运行 (导入步骤：<code>File-&gt;Import-&gt;Projects from Folder or Archive-&gt;Next-&gt;Directory-&gt;选择xlmodel_nice文件夹-&gt;Finish</code>即可)</p>
 <p><img alt="image-Import_xlmodel_nice" src="../asserts/images/19/Import_xlmodel_nice.png"/></p>
 <p>在编译 <code>xlmodel_nice</code> 前需先配置好 xlmodel 的编译环境 (<a href="https://doc.nucleisys.com/nuclei_tools/xlmodel/intro.html#nice-build">xlmodel_nice 编译环境配置</a>)，然后编译确保原始软件包可以成功编译生成 model 的可执行程序：</p>
+<blockquote>
+<p>Nuclei Studio (&lt; 2025.10) 生成的 elf 文件所在路径为 <code>build/default/xl_cpumodel</code></p>
+</blockquote>
 <p><img alt="image-Ori_Model_Nice_Build" src="../asserts/images/19/Ori_Model_Nice_Build.png"/></p>
 <p><strong>step2：NICE Wizard生成NICE指令替换</strong></p>
 <p>应用程序的热点函数可以先用 Nuclei Model Profiling 来定位，具体使用可以参考 <a href="https://nuclei-software.github.io/nuclei-studio/18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>，这里不再赘述了。</p>
@@ -351,18 +357,18 @@
 </tr>
 <tr>
 <td>cycle</td>
-<td>3859</td>
+<td>3844</td>
 <td>964</td>
-<td>121</td>
-<td>4.00</td>
-<td>31.89</td>
-<td>7.97</td>
+<td>122</td>
+<td>3.99</td>
+<td>31.51</td>
+<td>7.90</td>
 </tr>
 </tbody>
 </table>
 <p>用户通过研究现有算法的优化策略，就可以将构想快速通过 NICE Wizard 生成相关 <code>NICE/VNICE</code> 指令，再通过 Nuclei Studio 导入 <code>xlmodel_nice</code> 软件包实现指令，编写应用程序指令优化 case，就可以很快的利用 Nuclei Model 验证算法优化效果，整个测试过程只需使用 Nuclei Studio 就可以完成。</p>
 <p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFc0dskAJG">优化后的工程下载链接</a></p>
-<p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcZ14pFy7">优化后的<code>xlmodel_nice</code>软件包</a></p>
+<p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcbA9mEgt">优化后的<code>xlmodel_nice</code>软件包</a></p>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
