@@ -1,6 +1,6 @@
 # 通过Profiling展示Nuclei Model NICE/VNICE指令加速
 
-> 由于 Nuclei Model 仅支持Linux版本，所以此文档的测试都是基于 Nuclei Studio 的 Linux版本 (>= 2024.06) 完成的。
+> Nuclei Model 已支持 Windows/Linux 版本，此文档测试都是基于 Nuclei Studio 的 Windows 版本 (>= 2025.10) 完成的。
 
 ## 背景描述
 
@@ -15,7 +15,7 @@ Nuclei Model Profiling 的优势:
 - model 中内建了 gprof 功能，无需 Profiling 库和 `gcc -pg` 选项就可以产生 Profiling 文件
 - 采取了指令级别的采样，可以进行指令级别的 Profiling 分析
 
-在[NucleiStudio_User_Guide.pdf](https://download.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202406.pdf)相关章节对 Nuclei Model 如何仿真性能分析配置已经有较详细的描述，此文档以一个例子来展示其实际应用。
+在[NucleiStudio_User_Guide.pdf](https://download.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202510.pdf)相关章节对 Nuclei Model 如何仿真性能分析配置已经有较详细的描述，此文档以一个例子来展示其实际应用。
 
 ### NICE/VNICE 自定义指令加速
 
@@ -28,7 +28,7 @@ Nuclei Model Profiling 的优势:
 
 ### 环境准备
 
-Nuclei Studio：[NucleiStudio 2024.06 Linux](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202406-lin64.tgz)
+Nuclei Studio：[NucleiStudio 2025.10 Windows](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202510-win64.zip)
 
 ### Model Profiling
 
@@ -67,18 +67,23 @@ __RV_CSR_SET(CSR_MSTATUS, MSTATUS_XS);
 
 首先将 `aes_debug.h` 中的 `LOCAL_DEBUG` 打开，准备测试 AES 算法的整体 cycle 数。
 
-Nuclei Model 仿真程序需要配置 Nuclei Studio 中的 RVProf 运行配置，打开 Nuclei Studio 主菜单栏的 `Run` 选项的 `Run Configurations` 后，先在 `Main` 选项卡中选择编译好的 elf 文件路径，然后在 `RVProf` 选项卡
-的 `Config options` 中完成 model 运行配置 `--trace=1 --gprof=1 --logdir=Debug`，`--trace=1` 表示开启 rvtrace，`--gprof=1` 表示开启 gprof 功能生成 `*.gmon` 文件，`--logdir=Debug` 则表示最终生成的 `*.rvtrace` 文件、`*.gmon` 文件存存放的路径为当前工程下的 Debug 目录，取消勾选 `Start RVProf locally`，然后点击 `Apply` 和 `Run`，model 就开始运行程序了。
+Model 仿真程序需要配置 Nuclei Studio 中的 `GDB Nuclei Model riscv Debugging` 配置项，步骤如下：
 
-![image-Main_configuration](asserts/images/18/Main_configuration.png)
+1. 打开 Nuclei Studio 主菜单栏的 `Run` 选项的 `Run Configurations`
+2. 选择 `GDB Nuclei Model riscv Debugging` 配置项，右键选择 `New Configuration`，会自动生成项目名的 Model 配置页面，launch bar也会同步更新
+3. 在右侧 `Main` 选项卡中点击 `Search Project...` 选择编译好的 elf 文件
+4. 在右侧 `Debugger` 选项卡中选择 `Browse` 找到 Nuclei Model 可执行程序默认路径：`NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel.exe`
+5. 在右侧 `Debugger` 选项卡中的 `Nuclei Setup` 中完成 model 运行配置, 选择 `Nuclei RISC-V Core` 和 `Other Extensions` 需要保持和 `Nuclei Settings` 的 `Core` 和 `Other extensions` 配置一致，`Other Extensions` 为空时不传递此参数， `Enable Nuclei Model RVTrace` 表示运行时生成 rvtrace，`More options` 加上 `--gprof=1` 开启 Profiling 功能， 然后点击 `Apply` 和 `Run`，model 就开始运行程序了
 
-![image-RVProf_configuration](asserts/images/18/RVProf_configuration.png)
+    ![image-Ori_Project_Model_Config](asserts/images/18/Ori_Project_Model_Config.png)
 
-在 Console 中会看到 `Total elapsed time` 说明 model 已经完成仿真了，得到 AES 算法整体消耗 154988 cycle。
+> Nuclei Studio (< 2025.10) 只能使用 `Run Configurations` 中的 `Nuclei Model` 来配置 model，Nuclei Studio (>= 2025.10) 建议切换到使用 `GDB Nuclei Model riscv Debugging` 来配置
+
+在 Console 中会看到 `Total elapsed real time` 说明 model 已经完成仿真了，得到 AES 算法整体消耗 161108 cycle。
 
 ![image-ase_demo_cycle](asserts/images/18/aes_demo_cycle.png)
 
-将 `aes_debug.h` 中的 `LOCAL_DEBUG` 关掉去掉程序打印，为了准确测试 Profiling 数据，确保 Nuclei Studio 的 launch bar 为 `aes_demo Debug`, 重新 Run model：
+将 `aes_debug.h` 中的 `LOCAL_DEBUG` 关掉去掉程序打印，为了准确测试 Profiling 数据，确保 Nuclei Studio 的 launch bar 为 `aes_demo Debug`, 重新 Run model，运行结束后会生成 Profiling 文件：
 
 ![image-aes_demo_profiling](asserts/images/18/aes_demo_profiling.png)
 
@@ -279,12 +284,14 @@ static void aes_mix_columns_enc(
 
 #### step6：在 Nuclei Model 中实现 NICE/VNICE 指令
 
-首先需要下载支持用户配置自定义 **NICE/VNICE** 指令的原始 Nuclei Model 软件包[原始model软件包下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFccHEiAsM)，解压软件包为 `xlmodel_nice`，然后将其导入 Nuclei Studio。
+首先需要下载支持用户配置自定义 **NICE/VNICE** 指令的原始 Nuclei Model 软件包[原始model软件包下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCirwEWY)，解压软件包为 `xlmodel_nice`，然后将其导入 Nuclei Studio。
 
 导入步骤：File->Import->Projects from Folder or Archive->Next->Directory->选择 `xlmodel_nice`->Finish即可
 
 如何使用 Nuclei Model 以及查看 `xlmodel_nice` 软件包的目录结构可以参考[Nuclei Model介绍](https://doc.nucleisys.com/nuclei_tools/xlmodel/)，`xlmodel_nice` 是由CMake构建的，用户无需修改即可编译，在
-编译前选择 Nuclei Studio 的 launch bar 的 `xlmodel_nice`，然后点击编译，确保软件包本身编译通过，编译生成的 elf 文件所在路径为 `build/default/xl_cpumodel`：
+编译前选择 Nuclei Studio 的 launch bar 的 `xlmodel_nice`，然后点击编译，确保软件包本身编译通过：
+
+> Nuclei Studio (< 2025.10) 生成的 elf 文件所在路径为 `build/default/xl_cpumodel`
 
 ![image-xlmodel_nice_build](asserts/images/18/xlmodel_nice_build.png)
 
@@ -307,26 +314,22 @@ AES demo 中定义的 **NICE/VNICE** 指令实现如下图，通过指令的 `op
 
 以上介绍了用户如何从原始 Nuclei Model 软件包添加自定义 **NICE/VNICE** 指令，接下来需要将新编译出的 model 可执行程序导入到 Nuclei Studio 中，为了不和 Nuclei Studio 原始 model 名称混淆，可以将 model 导入到 `NucleiStudio/toolchain/nucleimodel/bin_aes/` 的创建路径下，我们提供了两种 model 可执行程序获取方式：  
 
-1. 实现 AES demo **NICE/VNICE** 指令的 Nuclei model 软件包[添加AES NICE指令model软件包](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc1wrUKu1)，编译后将 `xl_cpumodel` 可执行程序导入上述路径。
-2. 编译好的 model 的可执行程序 [xl_cpumodel](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc03skCLp)，直接导入上述路径。
+1. 实现 AES demo **NICE/VNICE** 指令的 Nuclei model 软件包[添加AES NICE指令model软件包](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcrcrb4T6)，编译后将 `xl_cpumodel` 可执行程序导入上述路径。
+2. 编译好的 model 的可执行程序 [xl_cpumodel](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcB1NbrL1)，直接导入上述路径。
 
 #### step7：热点函数再分析
 
 **注意：** 请务必完成 step6 中介绍的实现了 **NICE/VNICE** 指令的 model 导入 Nuclei Studio 中才能用 model Run `aes_demo_nice` 工程。
 
-首先打开 Nuclei Studio 主菜单栏的 `Run` 选项的 `Run Configurations`，model 配置需要重新添加一份 Nuclei Studio 中的 RVProf 运行配置 `aes_demo_nice Debug`：
+首先打开 Nuclei Studio 主菜单栏的 `Run` 选项的 `Run Configurations`，model 配置需要重新添加新的 `GDB Nuclei Model riscv Debugging` 运行配置 `aes_demo_nice Debug`，在 `Main` 选项卡中选择 `aes_demo_nice.elf`：
 
-![image-new_rvprof_configuration](asserts/images/18/new_rvprof_configuration.png)
+![image-aes_demo_nice_model_config_main](asserts/images/18/aes_demo_nice_model_config_main.png)
 
-将 `Main` 选项卡的 `Project` 通过 `Browse` 改为 `aes_demo_nice`，`C/C++ Application` 通过 `Search Project` 改为 `aes_demo_nice.elf`:
+然后在 `Debugger` 选项卡中的 model 执行路径 `Executable path` 改为 step6 中新修改 model 的执行路径： `.../NucleiStudio/toolchain/nucleimodel/bin_aes/xl_cpumodel`:
 
-![image-aes_main_configuration](asserts/images/18/aes_main_configuration.png)
+![image-aes_demo_nice_model_config_debugger](asserts/images/18/aes_demo_nice_model_config_debugger.png)
 
-然后将 `RVProf` 选项卡中的 model 执行路径 `Executable path` 改为 step6 中新修改 model 的执行路径： `.../NucleiStudio/toolchain/nucleimodel/bin_aes/xl_cpumodel`:
-
-![image-aes_rvprof_configuration](asserts/images/18/aes_rvprof_configuration.png)
-
-运行前将 `aes_debug.h` 中的 `LOCAL_DEBUG` 打开，测试优化后 AES 算法的整体 cycle 数，选择 Nuclei Studio 的 launch bar 的 `aes_demo_nice Debug`后 Run model，得到 AES 算法优化后整体消耗 cycle 数从优化前的 154988 降到了 35619 cycle。
+运行前将 `aes_debug.h` 中的 `LOCAL_DEBUG` 打开，测试优化后 AES 算法的整体 cycle 数，选择 Nuclei Studio 的 launch bar 的 `aes_demo_nice Debug`后 Run model，得到 AES 算法优化后整体消耗 cycle 数从优化前的 161108 降到了 42066 cycle。
 
 ![image-aes_demo_nice_cycle](asserts/images/18/aes_demo_nice_cycle.png)
 
@@ -349,7 +352,7 @@ AES demo 中定义的 **NICE/VNICE** 指令实现如下图，通过指令的 `op
 
 | AES Program Total           | Before Optimization | NICE/VNICE Optimization  |
 |-----------------------------|---------------------|--------------------------|
-| Cycles                      | 154,988             | 35,619                   |
+| Cycles                      | 161,108             | 42,066                   |
 
 AES加解密 NICE/VNICE demo：[优化后AES工程链接下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc5f6zPQW)
 
