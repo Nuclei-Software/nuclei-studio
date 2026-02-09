@@ -1,6 +1,6 @@
 # Nuclei Studio使用Profiling功能进行性能调优举例
 
-> 文档是基于 Nuclei Studio 的 **2024.06** Windows 版本实测。
+> 文档是基于 Nuclei Studio 的 **2024.06** Windows/Linux 版本实测。
 
 ## 问题说明
 
@@ -49,11 +49,13 @@ Nuclei studio 中 Profiling 功能基于 binutils gprof 工具。编译时需带
 删掉 Profiling demo 工程中 application 中的原始用例，替换成 amrwbenc 用例，形成如下目录结构，并确保能编译成功。 
 
 这里提供本示例使用的工程，有兴趣可以下载使用：  
-[优化前的工程下载链接](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCRlyEVI)
+[优化前的工程下载链接](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcaVG02T9)
 
 下载 zip 包后，可以直接导入到 Nuclei Studio 中运行(导入步骤：`File->Import->Existing Projects into Workspace->Next->Select archive file->选择zip压缩包->next`即可)
 
 ![移植amrwbenc用例](asserts/images/17/amrwbenc_demo.png)
+
+**注意：** 在Linux环境中使用 nuclei studio 导入旧的用例包可能会出现报错（找不到 evalsoc.memory），这是因为Linux环境混入Windows路径分隔符导致的，2026-02-09日修复了这个问题，此文档用例链接已经更新，可以重新下载新用例包，或者直接修改错误路径，具体可参考 [Profiling与 Code coverage 功能可能遇到的问题](16-incomplete_data_output_when_using_profiling_function.md) 问题4
 
 **step3：在用例结尾处添加 grof 数据收集代码，并添加 -pg 编译选项，重新编译代码**
 
@@ -165,7 +167,7 @@ TOP1 热点函数为 `cor_h_vec_012`，分析函数，尝试使用 RVP 扩展优
 
 优化后的工程如下，可以与优化之前的工程做对比，只优化了`cor_h_vec_012` 算子:
 
-[优化后的工程下载链接](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcpMkNUj4)
+[优化后的工程下载链接](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc0ussmf0)
 
 使用 Nuclei N3 P 扩展指令优化的代码片段如下：
 
