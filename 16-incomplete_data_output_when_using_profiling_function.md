@@ -74,3 +74,23 @@ MEMORY
 手动删掉 gmon.out 文件后，需要手动刷新一下工程。  
 
 ![refresh_project](asserts/images/16/refresh_project.png)
+
+
+
+
+
+## 问题4：Linux 环境中使用 Nuclei studio导入amrwb_profiling_demo.zip 编译报错
+
+文档《[使用 Profiling 功能时可能遇到的一些问题](https://doc.nucleisys.com/nuclei_studio_supply/16-incomplete_data_output_when_using_profiling_function/) 》中制作的用例有问题，导致使用Linux Nuclei studio导入amrwb_profiling_demo.zip 编译时报错   
+具体错误如下：evalsoc.memory: 没有那个文件或目录    
+
+![](asserts/images/16/cannot_find_evalsoc_memory.png)
+
+**原因：** 是因为Linux环境中混入了Windows路径分隔符    
+
+**解决方法： **    
+可采取如下两种方法：       
+方法1. 文档中的zip包已经修复这个问题，下载新的用例包即可      
+方法2. 按照下图示意，将路径中的``\`` 改为``/``    
+
+![](asserts/images/16/correct_link_path.png)
