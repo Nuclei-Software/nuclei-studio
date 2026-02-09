@@ -193,7 +193,7 @@
 <div class="section" itemprop="articleBody">
 <h1 id="nuclei-studioprofiling">Nuclei Studio使用Profiling功能进行性能调优举例<a class="headerlink" href="#nuclei-studioprofiling" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>文档是基于 Nuclei Studio 的 <strong>2024.06</strong> Windows 版本实测。</p>
+<p>文档是基于 Nuclei Studio 的 <strong>2024.06</strong> Windows/Linux 版本实测。</p>
 </blockquote>
 <h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
 <p>Nuclei Studio 2024.06 提供 Profiling 功能、Call Graph 功能 以及 Code coverage 功能，方便用户使用。 简单描述如下：  </p>
@@ -227,9 +227,10 @@
 <p><strong>step2：基于 Profiling demo 工程移植 amrwbenc 裸机用例</strong></p>
 <p>删掉 Profiling demo 工程中 application 中的原始用例，替换成 amrwbenc 用例，形成如下目录结构，并确保能编译成功。 </p>
 <p>这里提供本示例使用的工程，有兴趣可以下载使用：<br/>
-<a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCRlyEVI">优化前的工程下载链接</a></p>
+<a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcaVG02T9">优化前的工程下载链接</a></p>
 <p>下载 zip 包后，可以直接导入到 Nuclei Studio 中运行(导入步骤：<code>File-&gt;Import-&gt;Existing Projects into Workspace-&gt;Next-&gt;Select archive file-&gt;选择zip压缩包-&gt;next</code>即可)</p>
 <p><img alt="移植amrwbenc用例" src="../asserts/images/17/amrwbenc_demo.png"/></p>
+<p><strong>注意：</strong> 在Linux环境中使用 nuclei studio 导入旧的用例包可能会出现报错（找不到 evalsoc.memory），这是因为Linux环境混入Windows路径分隔符导致的，2026-02-09日修复了这个问题，此文档用例链接已经更新，可以重新下载新用例包，或者直接修改错误路径，具体可参考 <a href="../16-incomplete_data_output_when_using_profiling_function/">Profiling与 Code coverage 功能可能遇到的问题</a> 问题4</p>
 <p><strong>step3：在用例结尾处添加 grof 数据收集代码，并添加 -pg 编译选项，重新编译代码</strong></p>
 <p>在 main 函数的结尾处添加 gprof 数据收集代码：</p>
 <div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">argv</span><span class="p">[])</span><span class="w"> </span><span class="p">{</span>
@@ -309,7 +310,7 @@
 <p>这些指令Intrinsic API可参考 <a href="https://github.com/Nuclei-Software/nuclei-sdk/blob/master/NMSIS/Core/Include/core_feature_dsp.h">Nuclei P 扩展指令Intrinsic API</a></p>
 <p>具体的RVP指令手册，请联系芯来科技获取。</p>
 <p>优化后的工程如下，可以与优化之前的工程做对比，只优化了<code>cor_h_vec_012</code> 算子:</p>
-<p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFcpMkNUj4">优化后的工程下载链接</a></p>
+<p><a href="https://drive.weixin.qq.com/s?k=ABcAKgdSAFc0ussmf0">优化后的工程下载链接</a></p>
 <p>使用 Nuclei N3 P 扩展指令优化的代码片段如下：</p>
 <div class="codehilite"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">cor_h_vec_012</span><span class="p">(</span>
 <span class="w">        </span><span class="n">Word16</span><span class="w"> </span><span class="n">h</span><span class="p">[],</span><span class="w">                           </span><span class="cm">/* (i) scaled impulse response                 */</span>

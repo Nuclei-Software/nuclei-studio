@@ -117,6 +117,8 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#4linux-nuclei-studioamrwb_profiling_demozip">问题4：Linux 环境中使用 Nuclei studio导入amrwb_profiling_demo.zip 编译报错</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -242,6 +244,16 @@
 <h3 id="_3">解决方案<a class="headerlink" href="#_3" title="Permanent link">¶</a></h3>
 <p>手动删掉 gmon.out 文件后，需要手动刷新一下工程。  </p>
 <p><img alt="refresh_project" src="../asserts/images/16/refresh_project.png"/></p>
+<h2 id="4linux-nuclei-studioamrwb_profiling_demozip">问题4：Linux 环境中使用 Nuclei studio导入amrwb_profiling_demo.zip 编译报错<a class="headerlink" href="#4linux-nuclei-studioamrwb_profiling_demozip" title="Permanent link">¶</a></h2>
+<p>文档《<a href="https://doc.nucleisys.com/nuclei_studio_supply/16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a> 》中制作的用例有问题，导致使用Linux Nuclei studio导入amrwb_profiling_demo.zip 编译时报错 <br/>
+具体错误如下：evalsoc.memory: 没有那个文件或目录    </p>
+<p><img alt="" src="../asserts/images/16/cannot_find_evalsoc_memory.png"/></p>
+<p><strong>原因：</strong> 是因为Linux环境中混入了Windows路径分隔符    </p>
+<p>**解决方法： **  <br/>
+可采取如下两种方法：     <br/>
+方法1. 文档中的zip包已经修复这个问题，下载新的用例包即可    <br/>
+方法2. 按照下图示意，将路径中的<code>\</code> 改为<code>/</code> </p>
+<p><img alt="" src="../asserts/images/16/correct_link_path.png"/></p>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
