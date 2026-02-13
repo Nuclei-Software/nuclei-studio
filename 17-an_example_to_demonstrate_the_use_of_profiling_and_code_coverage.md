@@ -42,6 +42,15 @@ Nuclei studio 中 Profiling 功能基于 binutils gprof 工具。编译时需带
 
 **注意：** Nuclei SDK 需选择 0.6.0 及以后版本才支持 Profiling 与 Code coverage 功能
 
+可以根据需求选择不同的工具链：
+
+1. `RISC-V GCC/Newlib(riscv-unknown-elf-gcc)`
+2. `RISC-V Clang/Newlib(riscv-unknown-elf-clang)`
+3. `Terapines ZCC(zcc)`
+
+**注意：**Nuclei SDK 需选择 0.7.1及以后版本才支持`Terapines ZCC(zcc)`工具链，若选择`Terapines ZCC(zcc)`工具链使用profiling功能请同步修改`Standard C  Library(STDCLIB=)`选项为`newlib_small`
+**注意：**对于`RISC-V Clang`和`Terapines ZCC`工具链当前最新SDK（0.8.1）及之前版本仅支持profiling功能，未支持`Code coverage`功能
+
 ![建立Profiling demo](asserts/images/17/build_profiling_demo.png)
 
 **step2：基于 Profiling demo 工程移植 amrwbenc 裸机用例**
