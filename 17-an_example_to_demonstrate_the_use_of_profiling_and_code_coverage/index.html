@@ -223,6 +223,14 @@
 <p><strong>step1：新建 Profiling demo 工程</strong></p>
 <p><code>File-&gt;New-&gt;New Nuclei RISC-V C/C++ Project</code>，选择 <code>Nuclei FPGA Evalution Board-&gt;sdk-nuclei_sdk @0.6.0</code></p>
 <p><strong>注意：</strong> Nuclei SDK 需选择 0.6.0 及以后版本才支持 Profiling 与 Code coverage 功能</p>
+<p>可以根据需求选择不同的工具链：</p>
+<ol>
+<li><code>RISC-V GCC/Newlib(riscv-unknown-elf-gcc)</code></li>
+<li><code>RISC-V Clang/Newlib(riscv-unknown-elf-clang)</code></li>
+<li><code>Terapines ZCC(zcc)</code></li>
+</ol>
+<p><strong>注意：</strong>Nuclei SDK 需选择 0.7.1及以后版本才支持<code>Terapines ZCC(zcc)</code>工具链，若选择<code>Terapines ZCC(zcc)</code>工具链使用profiling功能请同步修改<code>Standard C  Library(STDCLIB=)</code>选项为<code>newlib_small</code>
+<strong>注意：</strong>对于<code>RISC-V Clang</code>和<code>Terapines ZCC</code>工具链当前最新SDK（0.8.1）及之前版本仅支持profiling功能，未支持<code>Code coverage</code>功能</p>
 <p><img alt="建立Profiling demo" src="../asserts/images/17/build_profiling_demo.png"/></p>
 <p><strong>step2：基于 Profiling demo 工程移植 amrwbenc 裸机用例</strong></p>
 <p>删掉 Profiling demo 工程中 application 中的原始用例，替换成 amrwbenc 用例，形成如下目录结构，并确保能编译成功。 </p>
