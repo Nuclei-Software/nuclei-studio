@@ -1,68 +1,68 @@
-# 更新 Nuclei Studio 2023.10 到最新修正版本
+# Updating Nuclei Studio 2023.10 to the Latest Fixed Version
 
-> **2023.11.06**上传的Nuclei Studio 2023.10版本存在一些问题，我们进行了修正，并于 **2023.11.17 13:30**替换线上2023.10版本。
+> The Nuclei Studio 2023.10 version uploaded on **2023.11.06** had some issues. We have fixed them and replaced the online 2023.10 version at **2023.11.17 13:30**.
 
-## 问题描述
+## Problem Description
 
-**2023年11月06日**发布的**Nuclei Studio 2023.10**版本中存在一些问题,影响用户使用:
+The **Nuclei Studio 2023.10** version released on **November 6, 2023** contained some issues that affected the user experience:
 
-* [build tools的busybox存在问题导致make 带 pre- post- steps时编译出问题](https://github.com/Nuclei-Software/nuclei-studio/issues/6)
-* [Nuclei Settings中corner cases在特定场景下会出错](https://github.com/Nuclei-Software/nuclei-studio/issues/3)
-* [Nuclei Settings的打开方式影响工程中其他文件的打开方式](https://github.com/Nuclei-Software/nuclei-studio/issues/11)
-* [在QEMU中使用V扩展时，没有传入RVV length](https://github.com/Nuclei-Software/nuclei-studio/issues/12)
-* [修复打开一个全新的workspace，创建新的工程的时候，能够创建同名项目的问题，重开workspace即可解决这个问题](https://github.com/Nuclei-Software/nuclei-studio/issues/13)
+* [The busybox in build tools had a problem, causing compilation failures when make is used with pre- and post-build steps](https://github.com/Nuclei-Software/nuclei-studio/issues/6)
+* [Corner cases in Nuclei Settings may fail in certain scenarios](https://github.com/Nuclei-Software/nuclei-studio/issues/3)
+* [The way Nuclei Settings is opened affects how other files in the project are opened](https://github.com/Nuclei-Software/nuclei-studio/issues/11)
+* [When using the V extension in QEMU, the RVV length was not passed in](https://github.com/Nuclei-Software/nuclei-studio/issues/12)
+* [Fixed an issue where a project with the same name could be created when opening a brand-new workspace and creating a new project; reopening the workspace resolves this problem](https://github.com/Nuclei-Software/nuclei-studio/issues/13)
 
-**我们重新做了一些变更，以修复以上问题**：
+**We made the following changes to fix the issues above:**
 
-* 修改并发布Nuclei Studio Plugins 2.1.0， 上传到插件更新网站
-* 修改并发布Windows build-tools 1.2，替换了线上的Windows Build Tools 2023.10
-* 发布了新的Nuclei Studio 2023.10，替换了线上的Nuclei Studio 2023.10
+* Modified and released Nuclei Studio Plugins 2.1.0, uploaded to the plugin update site
+* Modified and released Windows build-tools 1.2, replacing the online Windows Build Tools 2023.10
+* Released a new Nuclei Studio 2023.10, replacing the online Nuclei Studio 2023.10
 
-## 升级Nuclei Studio 2023.10 到最新版本的方法
+## How to Upgrade Nuclei Studio 2023.10 to the Latest Version
 
-如果您的Nuclei Studio 2023.10，是在**2023年11月18日**之前下载，版本中存在的上述问题可能会引响您的使用体验，
-您可以选择手动进行升级，也可以选择重官网上下载我们最新发布的版本。
+If your Nuclei Studio 2023.10 was downloaded before **November 18, 2023**, the issues described above may affect your user experience.
+You can either upgrade manually or download our latest release from the official website.
 
-### 对2023年11月18日之前下载了Nuclei Studio 2023.10进行升级
+### Upgrading Nuclei Studio 2023.10 Downloaded Before November 18, 2023
 
-如果您是在2023年11月18日之前下载了Nuclei Studio 2023.10，可以通过以下方式更新您的Nuclei Studio 2023.10 到最新版本
+If you downloaded Nuclei Studio 2023.10 before November 18, 2023, you can update your Nuclei Studio 2023.10 to the latest version in the following ways.
 
-**1. 升级Nuclei Studio Plugins**
+**1. Upgrade Nuclei Studio Plugins**
 
-在Nuclei Studio菜单中找到**Help->Install New Software**, 然后在Install工具的`Work with`
-选中`NucleiStudio - https://ide.nucleisys.com/NucleiStudio/`,下面会列出所有待更新的插件。
+In the Nuclei Studio menu, go to **Help->Install New Software**, then in the Install dialog's `Work with`
+field, select `NucleiStudio - https://ide.nucleisys.com/NucleiStudio/`. All plugins pending update will be listed below.
 
 ![](asserts/images/7/195660415249583.png)
 
-在弹出的插件列表中选中需要升级的插件，我们选中`RISC-V C/C++ Cross Development Tools`, 然后Next。
+In the plugin list that pops up, select the plugins to upgrade. We select `RISC-V C/C++ Cross Development Tools`, then click Next.
 
 ![](asserts/images/7/v_20231116151002.png)
 
-在升级过程中，Nuclei Studio会询问Trust Artifacts时，操作如下图，选择Trust Selected, 然后升级完成，Nuclei Studio会重启。至此Nuclei Studio Plugins升级完成。
+During the upgrade, when Nuclei Studio asks about Trust Artifacts, proceed as shown in the figure below: select Trust Selected. Once the upgrade is complete, Nuclei Studio will restart. At this point, the Nuclei Studio Plugins upgrade is finished.
 
 ![](asserts/images/7/v_18001190261409.png)
     
-**2. 升级build-tools**
+**2. Upgrade build-tools**
 
-> Linux版本不需要执行此步骤，只需要确保系统中装了`make`工具就行。
+> The Linux version does not require this step; you only need to make sure the `make` tool is installed on your system.
 
-下载`build-tools-1.2`，并替换Nuclei Studio 2023.10中的`NucleiStudio\toolchain\build-tools`中内容。
+Download `build-tools-1.2` and replace the contents of `NucleiStudio\toolchain\build-tools` in Nuclei Studio 2023.10.
 
-关于这部分，可以查阅[编译工程时，使用了Pre-build Command/Post-build Command时报错](https://github.com/Nuclei-Software/nuclei-studio/blob/main/4-use_pre_build_or_post_build.md)中的详细说明。
+For details on this part, refer to [Errors when using Pre-build Command/Post-build Command during project compilation](https://github.com/Nuclei-Software/nuclei-studio/blob/main/4-use_pre_build_or_post_build.md).
 
-- [build-tools-1.2下载](https://www.nucleisys.com/upload/files/toochain/build-tools/win32-buildtools-1.2.zip)
+- [Download build-tools-1.2](https://www.nucleisys.com/upload/files/toochain/build-tools/win32-buildtools-1.2.zip)
 
-经此两步，完成了对Nuclei Studio 2023.10的升级。
+With these two steps, the upgrade of Nuclei Studio 2023.10 is complete.
     
-### 从官网下载最新的版本
+### Downloading the Latest Version from the Official Website
 
-如果不想做手动升级工作，可以直接从我们的网站上下载最新的Nuclei Studio 2023.10。
+If you do not want to perform a manual upgrade, you can download the latest Nuclei Studio 2023.10 directly from our website.
 
-- [Windows版下载](https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-win64.zip)
-- [Linux版下载](https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-lin64.tgz)
+- [Download Windows version](https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-win64.zip)
+- [Download Linux version](https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-lin64.tgz)
 
-## 参考资料
+## References
 
 - [Nuclei Studio FAQs](https://www.rvmcu.com/nucleistudio-faq.html)
-- [Nuclei Studio/Tools 不断更新的补充文档](https://github.com/Nuclei-Software/nuclei-studio)
+- [Continuously updated supplementary documentation for Nuclei Studio/Tools](https://github.com/Nuclei-Software/nuclei-studio)
 - [Nuclei Studio Issues](https://github.com/Nuclei-Software/nuclei-studio/issues)

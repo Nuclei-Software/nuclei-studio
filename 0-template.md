@@ -1,15 +1,15 @@
-# 20字以内标题描述问题或者描述方案
+# Title (within 20 characters) describing the problem or the solution
 
-## 问题说明/方案说明
+## Problem Description / Solution Description
 
-在这里详细的描述问题是什么样，如果有issue描述本问题，请将issue的链接加进去一起进行描述，如果issue本身很详细，这里就简要描述即可。
+Describe the problem in detail here. If there is an issue describing this problem, please include the issue link and describe it together; if the issue itself is already detailed, a brief description here is sufficient.
 
-## 解决方案
+## Solution
 
-在这里列出来问题详细的解决方案，如果后续有版本解决这个问题，也需要列出来具体哪个版本可以解决这个问题。
+List the detailed solution to the problem here. If a future version resolves this problem, also specify which version resolves it.
 
-## 参考资料
+## References
 
 - [Nuclei Studio FAQs](https://www.rvmcu.com/nucleistudio-faq.html)
-- [Nuclei Studio/Tools 不断更新的补充文档](https://github.com/Nuclei-Software/nuclei-studio)
+- [Nuclei Studio/Tools Continuously Updated Supplementary Documentation](https://github.com/Nuclei-Software/nuclei-studio)
 - [Nuclei Studio Issues](https://github.com/Nuclei-Software/nuclei-studio/issues)

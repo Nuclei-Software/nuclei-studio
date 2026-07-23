@@ -1,25 +1,25 @@
-# 在链接脚本中使用`OVERLAY`命令
+# Using the `OVERLAY` Command in Linker Scripts
 
-## 问题说明
+## Problem Description
 
-CPU Core内的SRAM具有速度快，容量小，面积大的特点。在嵌入式系统中，这部分Core内的RAM很可能无法放下所有的函数。
-为了解决这个问题，有一种方案是在链接脚本中使用`OVERLAY` 命令。  
-GNU `ld` 提供的`OVERLAY`命令，可以在同一块内存区域上“叠放”多个段（Section）。若干个段可以共享运行时的
-VMA（Virtual Memory Address），只是在运行时需要手动管理这些Overlay的段的加载和卸载。
+The SRAM inside a CPU Core is fast, small in capacity, and large in area. In embedded systems, this on-Core RAM is very likely unable to hold all functions.
+To solve this problem, one approach is to use the `OVERLAY` command in the linker script.
+The `OVERLAY` command provided by GNU `ld` allows multiple sections to be "overlaid" on the same memory region. Several sections can share the same runtime
+VMA (Virtual Memory Address); at runtime, the loading and unloading of these overlay sections must be managed manually.
 
-那么如何在Nuclei Studio IDE中使用`OVERLAY`命令呢？本文将提供一个示例程序演示如何使用`OVERLAY`命令。
+So how do you use the `OVERLAY` command in Nuclei Studio IDE? This article provides a sample program demonstrating how to use the `OVERLAY` command.
 
-## 解决方案
+## Solution
 
-### 示例程序
+### Sample Program
 
-[demo_overlay](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcp7C3O2T)是基于
-[Nuclei Studio IDE 2025.02](https://www.nucleisys.com/download.php)
-创建的示例工程，支持Linux和Windows两种平台，演示了如何在链接脚本中使用`OVERLAY`命令。
+[demo_overlay](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcp7C3O2T) is a sample project created with
+[Nuclei Studio IDE 2025.02](https://www.nucleisys.com/download.php).
+It supports both Linux and Windows platforms and demonstrates how to use the `OVERLAY` command in a linker script.
 
-示例工程中的代码与[Overlay Sample Program](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Overlay-Sample-Program.html)
-中提供的代码基本一致，主要区别是在main函数中增加了测试结果的打印，另外根据evalsoc的地址映射关系
-对链接脚本做了修改。
+The code in the sample project is essentially the same as the code provided in [Overlay Sample Program](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Overlay-Sample-Program.html).
+The main differences are that the test results are printed in the main function, and that the linker script has been modified
+according to the address mapping of evalsoc.
 
 ``` txt
 ├── bar.c
@@ -31,21 +31,21 @@ VMA（Virtual Memory Address），只是在运行时需要手动管理这些Over
 └── ovlymgr.h
 ```
 
-原始代码可以从[bminor/binutils-gdb/gdb/testsuite/gdb.base](https://github.com/bminor/binutils-gdb/tree/master/gdb/testsuite/gdb.base)获取。
+The original code can be obtained from [bminor/binutils-gdb/gdb/testsuite/gdb.base](https://github.com/bminor/binutils-gdb/tree/master/gdb/testsuite/gdb.base).
 
-### Overlay布局
+### Overlay Layout
 
 ![ovly](asserts/images/29/overlay.png)
 
-在我们的evalsoc上，如果程序无法完全放在Core内的ILM/DLM上，就可以采取上图中的方法
-将部分Section以Overlay的形式动态加载到ILM/DLM中运行。  
-`.ovlyx`和`.data0x` 共8个Section的LMA（Load Memory Address）都位于Core外的SRAM上，
-但它们的VMA都在Core内，并且有部分重叠。
+On our evalsoc, if a program cannot fit entirely into the Core's ILM/DLM, the approach shown in the figure above can be adopted:
+some sections are dynamically loaded into the ILM/DLM in the form of overlays and executed there.
+The LMA (Load Memory Address) of all eight sections `.ovlyx` and `.data0x` is located in the SRAM outside the Core,
+but their VMAs are inside the Core, and some of them overlap.
 
-### 编写链接脚本
+### Writing the Linker Script
 
-在`MEMORY`命令中先划分出需要用到的Memory区域，比如这里4个Core内的区域`ovrom0`, `ovrom1`,
-`ovram0`, `ovram1`和Core外的`ovstorage`区域。这些Memory区域的大小都可以根据实际的代码和数据的大小进行调整。
+In the `MEMORY` command, first define the memory regions you need — for example, the four Core-internal regions `ovrom0`, `ovrom1`,
+`ovram0`, `ovram1`, and the Core-external region `ovstorage`. The size of each memory region can be adjusted according to the actual size of the code and data.
 
 ``` ld
 MEMORY
@@ -60,8 +60,8 @@ MEMORY
 }
 ```
 
-`OVERLAY`需要放在`SECTION`命令中实现。例如下方的代码就是将`.ovly0`和`.ovly1`两个段放到`ovrom0`所
-表示的同一个VMA地址区间中，同时它们的LMA则是连续地位于`ovstorage`所表示的地址区间中。
+The `OVERLAY` command must be placed inside the `SECTIONS` command. For example, the code below places the two sections `.ovly0` and `.ovly1`
+into the same VMA address range represented by `ovrom0`, while their LMAs are contiguously located in the address range represented by `ovstorage`.
 
 ``` ld
 OVERLAY :
@@ -71,9 +71,9 @@ OVERLAY :
 } >ovrom0 AT>ovstorage
 ```
 
-参考[Automatic Overlay Debugging](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Automatic-Overlay-Debugging.html#Automatic-Overlay-Debugging)，
-链接脚本中的以下代码则是将Overlay的段的VMA, LMA和数量以`_ovly_table`和`_novlys`变量的形式供C代码访问；
-在`ovlymgr.c`中进一步实现动态加载和卸载Section的功能。
+Referring to [Automatic Overlay Debugging](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Automatic-Overlay-Debugging.html#Automatic-Overlay-Debugging),
+the following code in the linker script exposes the VMAs, LMAs, and count of the overlay sections to C code through the `_ovly_table` and `_novlys` variables;
+the dynamic loading and unloading of sections is then further implemented in `ovlymgr.c`.
 
 ``` ld
 /* _ovly_table used for gdb debug overlay sections */
@@ -88,10 +88,10 @@ _novlys = .;
 LONG((_novlys - _ovly_table) / 16);
 ```
 
-### 测试结果
+### Test Results
 
-观察编译后生成的map文件，可以看到相应的代码段和数据段都按照预期的VMA和LMA进行了分配。  
-例如`.ovly0`和`.ovly1`具有相同的VMA `0x80000000`，同时它们的LMA分别为`0xa0008000`和`0xa0008028`。
+Examining the map file generated after compilation, you can see that the corresponding code sections and data sections are all allocated with the expected VMAs and LMAs.
+For example, `.ovly0` and `.ovly1` share the same VMA `0x80000000`, while their LMAs are `0xa0008000` and `0xa0008028` respectively.
 
 ```txt
 .ovly0          0x80000000       0x28 load address 0xa0008000
@@ -109,7 +109,7 @@ LONG((_novlys - _ovly_table) / 16);
                 [!provide]                        PROVIDE (__load_stop_ovly1 = (LOADADDR (.ovly1) + SIZEOF (.ovly1)))
 ```
 
-`main`函数中通过`OverlayLoad`切换调用不同的函数，并在最后将每个函数的返回值累加，校验累加后的结果。
+In the `main` function, `OverlayLoad` is used to switch between different functions, and finally the return values of each function are accumulated to verify the accumulated result.
 
 ```c
 /* load .text and .data for `foo` */
@@ -140,7 +140,7 @@ if (e != ('f' + 'o' +'o'
 }
 ```
 
-通过QEMU仿真或者利用FPGA开发板进行测试，可以看到如下的结果。其中`Overlay Test PASS`表明结果符合预期。
+Testing through QEMU simulation or on an FPGA development board yields the following result, where `Overlay Test PASS` indicates that the result meets expectations.
 
 ```txt
 Nuclei SDK Build Time: Sep 25 2025, 17:02:19
@@ -150,15 +150,15 @@ CPU HartID: 0
 Overlay Test PASS
 ```
 
-### 注意事项
+### Notes
 
-1. 数据段Overlay在要替换Section时，需要保存数据，也就是需要“卸载”的操作，将数据保存到外部SRAM中；而
-代码段是只读的，所以不需要Unload。
-2. 在示例工程中，ILM/DLM都不会经过Cache，所以不需要考虑Cache一致性的问题。但如果Overlay的Section所在
-的VMA是Cacheable的区域，则一般都需要考虑Cache一致性的问题，除非ICache和DCache之间有硬件支持的Snoop。
-更多细节可以参考示例工程中`ovlymgr.c`的实现。
+1. When a data section overlay is about to replace a section, its data must be saved — that is, an "unload" operation is required to save the data into external SRAM;
+a code section, on the other hand, is read-only and therefore does not need to be unloaded.
+2. In the sample project, neither the ILM nor the DLM goes through the cache, so cache coherency does not need to be considered. However, if the VMA of an overlay section
+is located in a cacheable region, cache coherency generally must be taken into account, unless there is hardware-supported snooping between the ICache and DCache.
+For more details, refer to the implementation of `ovlymgr.c` in the sample project.
 
-## 参考资料
+## References
 
 - [How Overlays Work](https://sourceware.org/gdb/current/onlinedocs/gdb.html/How-Overlays-Work.html#How-Overlays-Work)
 - [Overlay Commands](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Overlay-Commands.html#Overlay-Commands)

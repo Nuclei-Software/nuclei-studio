@@ -1,95 +1,95 @@
-# Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速
+# Rapid Verification of NICE/VNICE Instruction Acceleration with Nuclei Model and NICE Wizard
 
-> Nuclei Model 已支持 Windows/Linux 版本，此文档测试都是基于 Nuclei Studio 的 Windows 版本 (>= 2025.10) 完成的。
+> Nuclei Model is available for both Windows and Linux. All tests in this document were performed on the Windows version of Nuclei Studio (>= 2025.10).
 
-## 背景描述
+## Background
 
 ### xlmodel_nice
 
-Nuclei Model 会不断更新提供用户可自定义实现 `NICE/VNICE` 的 `xlmodel_nice` 软件包，用户通过在 `xlmodel_nice/nice/src/nice.cc` 实现指令的具体行为，编译出新的 Nuclei Model 供应用程序配置调用。
+Nuclei Model continuously updates the `xlmodel_nice` software package, which allows users to customize their own `NICE/VNICE` implementations. Users implement the specific instruction behavior in `xlmodel_nice/nice/src/nice.cc` and build a new Nuclei Model that applications can be configured to call.
 
 ### Nuclei NICE Wizard
 
-Nuclei NICE Wizard 是 Nuclei Studio 上提供的 `NICE/VNICE` 指令生成控件，用户配置好自定义指令后，可以自动生成两个文件：
+Nuclei NICE Wizard is a `NICE/VNICE` instruction generation tool provided in Nuclei Studio. After configuring custom instructions, the user can automatically generate two files:
 
-1. `insn.h`: 指令内嵌汇编头文件，用户需要将此文件的指令内嵌汇编添加到应用程序头文件中
-2. `nice.cc`: 指令实现文件，用户需要将此文件的指令 decode 框架添加到 `xlmodel_nice/nice/src/nice.cc` 中
+1. `insn.h`: the instruction inline assembly header file. The user needs to add the instruction inline assembly from this file into the application header file.
+2. `nice.cc`: the instruction implementation file. The user needs to add the instruction decode framework from this file into `xlmodel_nice/nice/src/nice.cc`.
 
 ### test code
 
-在 AI 与深度学习中常见的批量矩阵运算中，存在需要多次处理小矩阵块的场景，此测试将使用标量的多个 4x4 矩阵的乘法和累加操作的算法函数作为 `golden_case`，然后通过配置 NICE Wizard 生成 `NICE/VNICE` 加速指令，分别添加到测试应用程序和 `xlmodel_nice` 软件包工程中重新编译，最后通过运行 Nuclei Model 查看优化后的算法函数的指令数和 cycle 数，以查看 `NICE/VNICE` 加速效果。
+In batch matrix operations common in AI and deep learning, there are scenarios where small matrix blocks need to be processed repeatedly. In this test, an algorithm function that performs multiplication and accumulation on multiple scalar 4x4 matrices is used as the `golden_case`. Then NICE Wizard is used to generate `NICE/VNICE` acceleration instructions, which are added to the test application and the `xlmodel_nice` software package project respectively and recompiled. Finally, Nuclei Model is run to observe the instruction count and cycle count of the optimized algorithm function, so as to evaluate the `NICE/VNICE` acceleration effect.
 
-## 解决方案
+## Solution
 
-### 环境准备
+### Environment Preparation
 
-> Nuclei Studio IDE 集成的 NICE Wizard 相关功能，需要配合 Nuclei CPU Model - NICE Support (xlmodel_nice) 软件包使用。
+> The NICE Wizard related features integrated in Nuclei Studio IDE must be used together with the Nuclei CPU Model - NICE Support (xlmodel_nice) software package.
 
-**Nuclei Studio**：
+**Nuclei Studio**:
 
 - [NucleiStudio 202510 Windows](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202510-win64.zip)
 - [NucleiStudio 202510 Linux](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202510-lin64.tgz)
 
-**xlmodel_nice**：
+**xlmodel_nice**:
 
-- [原始`xlmodel_nice`软件包 Windows](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCirwEWY)
-- [原始`xlmodel_nice`软件包 Linux](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcTgr1Dbv)
+- [Original `xlmodel_nice` package Windows](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCirwEWY)
+- [Original `xlmodel_nice` package Linux](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcTgr1Dbv)
 
-### Nuclei Model运行原始程序
+### Running the Original Program on Nuclei Model
 
-**step1：导入 Nuclei SDK 原始工程**
+**Step 1: Import the original Nuclei SDK project**
 
-[优化前的工程下载链接](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcbbXAjde)
+[Download link for the project before optimization](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcbbXAjde)
 
-下载 zip 包后，可以直接导入到 Nuclei Studio 中运行 (导入步骤：`File->Import->Existing Projects into Workspace->Select archive file->选择zip压缩包->Finish`即可)
+After downloading the zip package, you can import it directly into Nuclei Studio and run it (import steps: `File->Import->Existing Projects into Workspace->Select archive file->select the zip archive->Finish`).
 
-**step2：编译 Nuclei SDK 原始工程**
+**Step 2: Build the original Nuclei SDK project**
 
-编译原始工程，确保编译成功以及在 Debug 下可以找到生成的 elf 文件：
+Build the original project, and make sure the build succeeds and the generated elf file can be found under Debug:
 
 ![image-Ori_Project_Build](asserts/images/19/Ori_Project_Build.png)
 
-**step3：运行 Nuclei SDK 原始工程**
+**Step 3: Run the original Nuclei SDK project**
 
-在使用 Nuclei Model 运行程序时，需要先确定工程 `Nuclei Settings` 中的 `Core` 配置和 `Other extensions` 配置，这些配置需要传递给 Model 使用。当前使用的 `Core` 是 `n900fd`，`Other extensions` 未配置。
+Before running the program on Nuclei Model, you first need to confirm the `Core` configuration and the `Other extensions` configuration in the project's `Nuclei Settings`, as these configurations need to be passed to the Model. The `Core` currently used is `n900fd`, and `Other extensions` is not configured.
 
 ![image-Ori_Project_Nuclei_Settting](asserts/images/19/Ori_Project_Nuclei_Settting.png)
 
-Model 仿真程序需要配置 Nuclei Studio 中的 `GDB Nuclei Model riscv Debugging` 配置项，步骤如下：
+Model simulation requires configuring the `GDB Nuclei Model riscv Debugging` configuration in Nuclei Studio. The steps are as follows:
 
-1. 打开 Nuclei Studio 主菜单栏的 `Run` 选项的 `Run Configurations`
-2. 选择 `GDB Nuclei Model riscv Debugging` 配置项，右键选择 `New Configuration`，会自动生成项目名的 Model 配置页面，launch bar也会同步更新
-3. 在右侧 `Main` 选项卡中点击 `Search Project...` 选择编译好的 elf 文件
-4. 在右侧 `Debugger` 选项卡中选择 `Browse` 找到 Nuclei Model 可执行程序默认路径：`NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel.exe`
-5. 在右侧 `Debugger` 选项卡中的 `Nuclei Setup` 中完成 model 运行配置, 选择 `Nuclei RISC-V Core` 和 `Other Extensions` 需要保持和 `Nuclei Settings` 的 `Core` 和 `Other extensions` 配置一致，`Other Extensions` 为空时不传递此参数， `Enable Nuclei Model RVTrace` 表示运行时生成 rvtrace，然后点击 `Apply` 和 `Run`，model 就开始运行程序了
+1. Open `Run Configurations` from the `Run` option in the Nuclei Studio main menu bar.
+2. Select the `GDB Nuclei Model riscv Debugging` configuration, right-click and choose `New Configuration`. A Model configuration page named after the project will be automatically generated, and the launch bar will be updated accordingly.
+3. In the `Main` tab on the right, click `Search Project...` and select the built elf file.
+4. In the `Debugger` tab on the right, select `Browse` and locate the default path of the Nuclei Model executable: `NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel.exe`.
+5. In the `Nuclei Setup` section of the `Debugger` tab on the right, complete the model run configuration. The selected `Nuclei RISC-V Core` and `Other Extensions` must be consistent with the `Core` and `Other extensions` configured in `Nuclei Settings`. When `Other Extensions` is empty, this parameter is not passed. `Enable Nuclei Model RVTrace` means that rvtrace is generated at runtime. Then click `Apply` and `Run`, and the model starts running the program.
 
     ![image-Ori_Project_Model_Config](asserts/images/19/Ori_Project_Model_Config.png)
 
-> Nuclei Studio (< 2025.10) 只能使用 `Run Configurations` 中的 `Nuclei Model` 来配置 model，Nuclei Studio (>= 2025.10) 建议切换到使用 `GDB Nuclei Model riscv Debugging` 来配置
+> Nuclei Studio (< 2025.10) can only use `Nuclei Model` in `Run Configurations` to configure the model. For Nuclei Studio (>= 2025.10), it is recommended to switch to `GDB Nuclei Model riscv Debugging`.
 
-在 Console 中会看到 `Total elapsed real time` 说明 model 已经完成仿真了，程序会提取标量矩阵乘算法函数 `golden_case` 的执行指令数和 cycle 数如下：
+When `Total elapsed real time` appears in the Console, it means the model has finished the simulation. The program extracts the instruction count and cycle count of the scalar matrix multiplication algorithm function `golden_case` as follows:
 
 ![image-Ori_Project_Model_Run](asserts/images/19/Ori_Project_Model_Run.png)
 
-### NICE指令替换
+### NICE Instruction Replacement
 
-**step1：编译 xlmodel_nice 软件包**
+**Step 1: Build the xlmodel_nice package**
 
-下载并解压 `xlmodel_nice` zip 包后，可以直接导入到 Nuclei Studio 中运行 (导入步骤：`File->Import->Projects from Folder or Archive->Next->Directory->选择xlmodel_nice文件夹->Finish`即可)
+After downloading and unzipping the `xlmodel_nice` zip package, you can import it directly into Nuclei Studio and run it (import steps: `File->Import->Projects from Folder or Archive->Next->Directory->select the xlmodel_nice folder->Finish`).
 
 ![image-Import_xlmodel_nice](asserts/images/19/Import_xlmodel_nice.png)
 
-在编译 `xlmodel_nice` 前需先配置好 xlmodel 的编译环境 ([xlmodel_nice 编译环境配置](https://doc.nucleisys.com/nuclei_tools/xlmodel/intro.html#nice-build))，然后编译确保原始软件包可以成功编译生成 model 的可执行程序：
+Before building `xlmodel_nice`, you need to configure the xlmodel build environment first ([xlmodel_nice build environment configuration](https://doc.nucleisys.com/nuclei_tools/xlmodel/intro.html#nice-build)). Then build to make sure the original package can be successfully compiled to generate the model executable:
 
-> Nuclei Studio (< 2025.10) 生成的 elf 文件所在路径为 `build/default/xl_cpumodel`
+> For Nuclei Studio (< 2025.10), the generated elf file is located at `build/default/xl_cpumodel`.
 
 ![image-Ori_Model_Nice_Build](asserts/images/19/Ori_Model_Nice_Build.png)
 
-**step2：NICE Wizard生成NICE指令替换**
+**Step 2: Use NICE Wizard to generate NICE instruction replacement**
 
-应用程序的热点函数可以先用 Nuclei Model Profiling 来定位，具体使用可以参考 [通过Profiling展示Nuclei Model NICE/VNICE指令加速](https://nuclei-software.github.io/nuclei-studio/18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/)，这里不再赘述了。
+Hotspot functions of the application can be located with Nuclei Model Profiling first. For details, refer to [Demonstrate NICE/VNICE Instruction Acceleration of Nuclei Model Through Profiling](https://nuclei-software.github.io/nuclei-studio/18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/), which will not be repeated here.
 
-此用例的热点函数已知是矩阵乘累加，A矩阵某行 * B矩阵某列计算如下：
+The hotspot function in this use case is known to be matrix multiply-accumulate. The computation of one row of matrix A * one column of matrix B is as follows:
 
 ~~~c
 for (int32_t kk = 0; kk < 4; kk++)
@@ -98,119 +98,112 @@ for (int32_t kk = 0; kk < 4; kk++)
 }
 ~~~
 
-此算法完全可以替换成一条 `NICE` 指令来完成，输入为 sum 值， pin1 地址， pin2 地址，输出为 sum。
+This algorithm can be completely replaced by a single `NICE` instruction, with the sum value, the pin1 address, and the pin2 address as inputs, and the sum as the output.
 
-接下来用 NICE Wizard 来生成设想的 `NICE` 指令，用户可以在 Nuclei Studio 的 `xlmodel_nice` 工程根目录创建一个 `aicc.nice` 的文件，此文件创建后就会弹出 NICE Wizard 的指令生成窗口，配置生成 `NICE` 指令步骤如下：
+Next, use NICE Wizard to generate the envisioned `NICE` instruction. The user can create a file named `aicc.nice` in the root directory of the `xlmodel_nice` project in Nuclei Studio. Once this file is created, the NICE Wizard instruction generation window will pop up. The steps to configure and generate the `NICE` instruction are as follows:
 
-1. 选择 `Add` 添加一条 `NICE` 指令，指令格式如左上角 `NICE instruction format` 所示，首先填写 `Instruction name`项为 `matrix_row_col_multiply_asm` 表示矩阵行列乘加操作
-2. 依次选择填写 `opcode`、`funct3`、`funct7`
-3. `params` 是指令内嵌汇编的返回值和入参配置，构想的 `NICE` 指令返回值为 `int32_t`，入参个数为3个，分别是 `int32_t t`、`int8_t* a`、`int8_t* b`，分别在 `params` 中设置好
+1. Select `Add` to add a `NICE` instruction. The instruction format is shown in `NICE instruction format` in the upper-left corner. First, fill in the `Instruction name` field with `matrix_row_col_multiply_asm` to indicate a matrix row-column multiply-accumulate operation.
+2. Fill in `opcode`, `funct3`, and `funct7` in sequence.
+3. `params` configures the return value and input parameters of the instruction inline assembly. The envisioned `NICE` instruction returns an `int32_t` and has 3 input parameters: `int32_t t`, `int8_t* a`, and `int8_t* b`. Set them respectively in `params`.
 
-    **注意：** 在 入参的 `Edit Type` 设置界面中，是按照 a->b->t 的顺序配置的:
+    **Note:** In the `Edit Type` settings interface for the input parameters, the parameters are configured in the order a->b->t:
 
     ![image-NICE_Input_Para_Configure](asserts/images/19/NICE_Input_Para_Configure.png)
 
-4. 在 `Function full preview` 中预览指令内嵌汇编格式是否正确，确保没有问题后点击 `save`，`save` 完成后可以在左侧指令栏中看到生成好的自定义指令了
-5. 点击下方 `Save and Generate File`，在 `aicc.nice` 同路径下会生成 `insn.h` 和 `nice.cc`
+4. Preview in `Function full preview` whether the instruction inline assembly format is correct. After confirming there are no issues, click `save`. Once saved, the generated custom instruction can be seen in the instruction panel on the left.
+5. Click `Save and Generate File` at the bottom. `insn.h` and `nice.cc` will be generated in the same path as `aicc.nice`.
 
     ![image-NICE_Wizard_NICE_Config](asserts/images/19/NICE_Wizard_NICE_Config.png)
 
-6. 将生成好的 `insn.h` 中的 `NICE` 指令内嵌汇编复制到应用程序的头文件中，将生成好的 `nice.cc` 直接替换 `xlmodel_nice/nice/src/nice.cc`
+6. Copy the `NICE` instruction inline assembly from the generated `insn.h` into the application header file, and replace `xlmodel_nice/nice/src/nice.cc` directly with the generated `nice.cc`.
 
     ![image-NICE_Wizard_Generate](asserts/images/19/NICE_Wizard_Generate.png)
 
-    当然也可以将 `insn.h` 直接生成到应用程序工程路径下引用，这样可以省去每次手动的复制文件内容。
+    Alternatively, `insn.h` can be generated directly into the application project path for reference, which saves the manual copying of file contents each time.
 
-**step3：xlmodel_nice实现NICE指令**
+**Step 3: Implement the NICE instruction in xlmodel_nice**
 
-打开 `xlmodel_nice/nice/src/nice.cc` 文件，使用 spike 中定义的宏来实现 `NICE` 指令：`MMU` 宏表示 memory 访问，load memory 使用 `MMU.load_xxx<n>`，store memory 使用 `MMU.store_xxx<n>`，`RD`、`RS1`、`RS2`、`RS3` 宏表示其对应标量寄存器中的值, 写目标寄存器使用 `WRITE_RD`，这些宏的使用可以参考 `nice/inc/decode_macros.h`。
+Open the `xlmodel_nice/nice/src/nice.cc` file and use the macros defined in spike to implement the `NICE` instruction: the `MMU` macro represents memory access; use `MMU.load_xxx<n>` for load memory and `MMU.store_xxx<n>` for store memory; the `RD`, `RS1`, `RS2`, and `RS3` macros represent the values in their corresponding scalar registers; use `WRITE_RD` to write the destination register. The usage of these macros can be found in `nice/inc/decode_macros.h`.
 
-在指令实现完后，将自定义指令额外需要的 cycle 数 n 直接标定：`STATE.mcycle->bump(n);` 即可，这里标定此条 `NICE` 指令额外需要 1 cycle，由于指令默认需要 1 cycle，因此此条 `NICE` 指令需要消耗 2 cycle。
+After implementing the instruction, directly specify the number of additional cycles n required by the custom instruction: `STATE.mcycle->bump(n);`. Here, this `NICE` instruction is specified to require 1 additional cycle. Since an instruction takes 1 cycle by default, this `NICE` instruction consumes 2 cycles in total.
 
-实现的 `NICE` 指令实现和 cycle 标定如下：
+The implemented `NICE` instruction and its cycle specification are as follows:
 
 ![image-NICE_Implement](asserts/images/19/NICE_Implement.png)
 
-重新编译 `xlmodel_nice` 保证编译通过。
+Rebuild `xlmodel_nice` and make sure the build passes.
 
-**step4：Nuclei Model重新运行程序**
+**Step 4: Rerun the program on Nuclei Model**
 
-首先需要编写一个带 `NICE` 指令内嵌汇编的算法函数 `nice_case` 方便和 `golden_case` 对比，添加函数输出结果比对，然后重新编译应用程序工程：
+First, write an algorithm function `nice_case` with `NICE` instruction inline assembly for comparison with `golden_case`, add a comparison of the function output results, and then rebuild the application project:
 
 ![image-NICE_Project_Build](asserts/images/19/NICE_Project_Build.png)
 
-因为 model 已经使用 `xlmodel_nice` 重新编译出新的可执行程序了，需要重新配置 Nuclei Studio `Nuclei Model` 配置项中的 model 可执行程序路径为 `xlmodel_nice/build/default/xl_cpumodel.exe`，其余配置不变：
+Since the model has been rebuilt with `xlmodel_nice` into a new executable, you need to reconfigure the model executable path in the Nuclei Studio `Nuclei Model` configuration to `xlmodel_nice/build/default/xl_cpumodel.exe`. The rest of the configuration remains unchanged:
 
 ![image-NICE_Project_Model_Config](asserts/images/19/NICE_Project_Model_Config.png)
 
-`Apply` 后重新 `Run` 应用程序, 可以发现 `nice_case` 和 `golden_case` 输出结果一致，`nice_case` 的指令数和 cycle 数均大幅下降了，构想的 `NICE` 指令实现正确，并优化了原标量算法。
+After `Apply`, `Run` the application again. You can find that the output results of `nice_case` and `golden_case` are identical, while the instruction count and cycle count of `nice_case` have dropped significantly. The envisioned `NICE` instruction is implemented correctly and has optimized the original scalar algorithm.
 
 ![image-NICE_Project_Model_Run](asserts/images/19/NICE_Project_Model_Run.png)
 
-### VNICE指令替换
+### VNICE Instruction Replacement
 
-**step1：NICE Wizard生成VNICE指令替换**
+**Step 1: Use NICE Wizard to generate VNICE instruction replacement**
 
-当使用 `NICE` 指令运算时，每次仅得到的是输出矩阵的一个元素，效率还不够高，如果一次指令操作可以并行处理多个矩阵元素，效率应将进一步提高，很自然会想到使用 Vector 指令来多并行度处理矩阵数据。
+When computing with a `NICE` instruction, only one element of the output matrix is obtained each time, which is not efficient enough. If one instruction operation could process multiple matrix elements in parallel, the efficiency should be further improved. It is natural to think of using Vector instructions to process matrix data with higher parallelism.
 
-构想将完整的 4 * 4 矩阵乘加运算浓缩为一条 Vector 指令，可以使用一条 `VNICE` 指令来实现此行为，入参为 3 个 4 * 4 的输入矩阵，返回值为 4 * 4 的输出矩阵。
+The idea is to condense the complete 4 * 4 matrix multiply-accumulate operation into a single Vector instruction. A `VNICE` instruction can be used to implement this behavior, with three 4 * 4 input matrices as inputs and a 4 * 4 output matrix as the return value.
 
-双击 `aicc.nice` 再次使用 NICE Wizard 配置构想指令，生成指令的步骤和以上生成 `NICE` 指令相似，不同之处为配置 `Instruction name` 项为 `matrix_multiply_4x4_asm` 表示完成的是 4*4 的两矩阵的乘法，配置 `funct3` 为 1 避免与上条 `NICE` 指令编码相同，为了匹配和 `golden_case` 标量对应的 vector 数据类型的输入输出，设置返回值为 `vin32m8_t`，入参个数为 3，分别是 `vin32m8_t`、`vint8m1_t`、`vint8m2_t`，点击 `save` 后的配置界面如下：
+Double-click `aicc.nice` to use NICE Wizard again to configure the envisioned instruction. The steps to generate the instruction are similar to those for generating the `NICE` instruction above. The differences are: configure the `Instruction name` field as `matrix_multiply_4x4_asm` to indicate the multiplication of two 4*4 matrices; configure `funct3` as 1 to avoid the same encoding as the previous `NICE` instruction; and to match the vector data type inputs and outputs corresponding to the scalar `golden_case`, set the return value to `vin32m8_t`, the number of input parameters to 3, namely `vin32m8_t`, `vint8m1_t`, and `vint8m2_t`. The configuration interface after clicking `save` is as follows:
 
 ![image-NICE_Wizard_VNICE_Config](asserts/images/19/NICE_Wizard_VNICE_Config.png)
 
-点击下方 `Save and Generate File`，覆盖之前生成的 `insn.h` 和 `nice.cc`，此时在同路径下还会出现 `insn.h.bak` 和 `nice.cc.bak`, 这两个文件是上一次保存的 `insn.h` 和 `nice.cc` 备份文件不会被用到，再次将生成好的 `insn.h` 中的 `NICE` 指令内嵌汇编复制到应用程序的头文件中，将生成好的 `nice.cc` 中的新指令 decode 框架复制到 `xlmodel_nice/nice/src/nice.cc`：
+Click `Save and Generate File` at the bottom to overwrite the previously generated `insn.h` and `nice.cc`. At this point, `insn.h.bak` and `nice.cc.bak` will also appear in the same path. These two files are backups of the previously saved `insn.h` and `nice.cc` and will not be used. Again, copy the `NICE` instruction inline assembly from the generated `insn.h` into the application header file, and copy the new instruction decode framework from the generated `nice.cc` into `xlmodel_nice/nice/src/nice.cc`:
 
 ![image-VNICE_Wizard_Generate](asserts/images/19/VNICE_Wizard_Generate.png)
 
-**step2：xlmodel_nice实现VNICE指令**
+**Step 2: Implement the VNICE instruction in xlmodel_nice**
 
-在 `xlmodel_nice/nice/src/nice.cc` 中实现 `VNICE` 指令，`V_MATRIX_ST` 实现将指令输入的 vector 寄存器 store 到自定义 buffer 中，`V_MATRIX_LD` 实现将指令输出的结果 load 到 RD 寄存器，`V_MATRIX_CALC` 实现两矩阵乘加运算，`VNICE` 指令实现可以参考 spike 中的 vector 指令实现： `xlmodel_nice/xl_spike/include/riscv/v_ext_macros.h`。
+Implement the `VNICE` instruction in `xlmodel_nice/nice/src/nice.cc`: `V_MATRIX_ST` stores the vector registers input to the instruction into a custom buffer, `V_MATRIX_LD` loads the instruction output results into the RD register, and `V_MATRIX_CALC` implements the two-matrix multiply-accumulate operation. The `VNICE` instruction implementation can refer to the vector instruction implementation in spike: `xlmodel_nice/xl_spike/include/riscv/v_ext_macros.h`.
 
-标定此条 `VNICE` 指令需要 2 cycle，即实际消耗 3 cycle，实现的 `VNICE` 指令实现和 cycle 标定如下：
+Specify that this `VNICE` instruction requires 2 cycles, i.e., it actually consumes 3 cycles. The implemented `VNICE` instruction and its cycle specification are as follows:
 
 ![image-VNICE_Implement](asserts/images/19/VNICE_Implement.png)
 
-再重新编译 `xlmodel_nice` 保证编译通过。
+Rebuild `xlmodel_nice` again and make sure the build passes.
 
-**step3：Nuclei Model重新运行程序**
+**Step 3: Rerun the program on Nuclei Model**
 
-因为 `VNICE` 指令的输入输出均为 vector 寄存器，需要配置应用程序的 `Nuclei Settings`，使能对应 ARCH 的 vector 扩展，这里针对 `rv32imafdc` 添加 `_zve32f` 扩展：
+Since the inputs and outputs of the `VNICE` instruction are all vector registers, you need to configure the application's `Nuclei Settings` to enable the vector extension of the corresponding ARCH. Here, the `_zve32f` extension is added for `rv32imafdc`:
 
 ![image-VNICE_Project_Nuclei_Settings](asserts/images/19/VNICE_Project_Nuclei_Settings.png)
 
-对应的 `Nuclei Model` 配置项也需要添加 `--ext=_zve32f`使能 model 的 vector 功能，然后 `Apply`：
+The corresponding `Nuclei Model` configuration also needs to add `--ext=_zve32f` to enable the model's vector functionality, then click `Apply`:
 
 ![image-VNICE_Project_Model_Config](asserts/images/19/VNICE_Project_Model_Config.png)
 
-需要编写一个带 `VNICE` 指令内嵌汇编的算法函数 `vnice_case`，`VNICE` 内嵌汇编需要的输入输出需要写相应的 vector intrinsic API 来构造，然后添加和 `golden_case` 的结果比对，重新编译应用程序工程。
+You need to write an algorithm function `vnice_case` with `VNICE` instruction inline assembly. The inputs and outputs required by the `VNICE` inline assembly need to be constructed with the corresponding vector intrinsic API. Then add a result comparison with `golden_case` and rebuild the application project.
 
-**注意：** 在应用程序头文件中需要添加 `#include <riscv_vector.h>` 以使能 vector intrinsic API
+**Note:** You need to add `#include <riscv_vector.h>` to the application header file to enable the vector intrinsic API.
 
 ![image-VNICE_Project_Build](asserts/images/19/VNICE_Project_Build.png)
 
-重新 `Run` 应用程序, 可以发现 `vnice_case` 和 `golden_case` 输出结果一致，其指令数和 cycle 数相对 `nice_case` 进一步大幅下降了，构想的 `VNICE` 指令实现正确，并利用了 vector 的高并行度加速了矩阵乘加算法。
+`Run` the application again. You can find that the output results of `vnice_case` and `golden_case` are identical, and its instruction count and cycle count have dropped further significantly compared to `nice_case`. The envisioned `VNICE` instruction is implemented correctly and has accelerated the matrix multiply-accumulate algorithm by taking advantage of the high parallelism of vector.
 
 ![image-VNICE_Project_Model_Run](asserts/images/19/VNICE_Project_Model_Run.png)
 
-## 总结
+## Summary
 
-下表是实现了 `NICE/VNICE` 指令优化算法后的 instret/cycle 数据统计，相较于 `golden_case`, `nice_case` 优化后的性能提高了约 4 倍，`vnice_case` 优化后的性能提高了超过 30 倍。
+The table below shows the instret/cycle statistics after implementing the `NICE/VNICE` instructions to optimize the algorithm. Compared with `golden_case`, the performance of `nice_case` after optimization is improved by about 4 times, and the performance of `vnice_case` after optimization is improved by more than 30 times.
 
 | instret/cycle               | golden_case         | nice_case                | vnice_case                | golden / nice             | golden / vnice            | nice / vnice              |
 |-----------------------------|---------------------|--------------------------|---------------------------|---------------------------|---------------------------|---------------------------|
 | instret                     | 2854                | 730                      | 88                        | 3.91                      | 32.43                     | 8.30                      |
 | cycle                       | 3844                | 964                      | 122                       | 3.99                      | 31.51                     | 7.90                      |
 
-用户通过研究现有算法的优化策略，就可以将构想快速通过 NICE Wizard 生成相关 `NICE/VNICE` 指令，再通过 Nuclei Studio 导入 `xlmodel_nice` 软件包实现指令，编写应用程序指令优化 case，就可以很快的利用 Nuclei Model 验证算法优化效果，整个测试过程只需使用 Nuclei Studio 就可以完成。
+By studying the optimization strategy of an existing algorithm, the user can quickly generate the corresponding `NICE/VNICE` instructions with NICE Wizard, then import the `xlmodel_nice` package into Nuclei Studio to implement the instructions, and write an application instruction-optimization case. This way, the algorithm optimization effect can be quickly verified with Nuclei Model. The entire testing process can be completed using only Nuclei Studio.
 
-[优化后的工程下载链接](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc0dskAJG)
+[Download link for the optimized project](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc0dskAJG)
 
-[优化后的`xlmodel_nice`软件包](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcbA9mEgt)
-
-
-
-
-
-
-
+[Optimized `xlmodel_nice` package](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcbA9mEgt)

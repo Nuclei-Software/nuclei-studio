@@ -1,8 +1,8 @@
 # UnsatisfiedLinkError of swt-win32-4965r8.dll on Windows 7
 
-## 问题说明
+## Problem Description
 
-用户在Windows 7、Windows 8下使用NucleiStudio 2024.06时，发现启动不了，在`NucleiStudio\configuration`目录的日志中可以看到以下报错内容：
+When using NucleiStudio 2024.06 on Windows 7 or Windows 8, users find that it fails to start. The following error can be seen in the log files under the `NucleiStudio\configuration` directory:
 
 ```
 !ENTRY org.eclipse.osgi 4 0 2024-07-16 10:41:57.010
@@ -39,18 +39,18 @@ java.lang.UnsatisfiedLinkError: Could not load SWT library. Reasons:
 	
 ```
 
-是因为在eclipse 2024.06版本中，有使用到一些特性，而该特性对操作系统有要求，可以参考 https://github.com/eclipse-platform/eclipse.platform.swt/issues/1252
+This is because Eclipse 2024.06 uses certain features that have specific operating system requirements. For details, refer to https://github.com/eclipse-platform/eclipse.platform.swt/issues/1252
 
 ![](asserts/images/15/15-1.png)
 
-并且在eclipse的官方文档中，针对eclipse测试的操作系统中也做了说明，对某些版本的操作系统不再做兼容。可以参考 https://eclipse.dev/eclipse/development/plans/eclipse_project_plan_4_32.xml#target_environments
+In addition, the official Eclipse documentation states that the operating systems against which Eclipse is tested no longer include compatibility for certain OS versions. For details, refer to https://eclipse.dev/eclipse/development/plans/eclipse_project_plan_4_32.xml#target_environments
 
 ![](asserts/images/15/15-2.png)
 
-而NucleiStudio 2024.06是基于eclipse 2024.06，所以也会有同类型的问题。
+Since NucleiStudio 2024.06 is based on Eclipse 2024.06, it is affected by the same type of issue.
 
-## 解决方案
+## Solution
 
-请在windows 10或以上的版本操作系统上使用 NucleiStudio 2024.06。
+Please use NucleiStudio 2024.06 on Windows 10 or later.
 
-如果想在Windows 7、Windows 8等低版本的操作系统上使用NucleiStudio，可以考虑使用NucleiStudio 2024.02及以下版本。
+If you want to use NucleiStudio on older operating systems such as Windows 7 or Windows 8, consider using NucleiStudio 2024.02 or an earlier version.

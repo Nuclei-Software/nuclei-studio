@@ -1,101 +1,101 @@
-# 通过Profiling展示Nuclei Model NICE/VNICE指令加速
+# Demonstrate NICE/VNICE Instruction Acceleration of the Nuclei Model through Profiling
 
-> Nuclei Model 已支持 Windows/Linux 版本，此文档测试都是基于 Nuclei Studio 的 Windows 版本 (>= 2025.10) 完成的。
+> Nuclei Model is supported on both Windows and Linux. All tests in this document were performed with the Windows version of Nuclei Studio (>= 2025.10).
 
-## 背景描述
+## Background
 
 ### Nuclei Model Profiling
 
-在[Nuclei Studio使用Profiling功能进行性能调优举例](https://nuclei-software.github.io/nuclei-studio/17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/)中已经通过 qemu 以及上板测试两种运行方式展示了
-如何在IDE中导入特定程序进行 Profiling，此文档中的一部分将介绍如何针对 Nuclei Model 完成 Profiling。
+In [An Example to Demonstrate the Use of Profiling and Code Coverage in Nuclei Studio](https://nuclei-software.github.io/nuclei-studio/17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/), two run modes — qemu and on-board testing — were used to show
+how to import a specific program into the IDE for Profiling. Part of this document introduces how to perform Profiling on the Nuclei Model.
 
-Nuclei Model Profiling 的优势:  
+Advantages of Nuclei Model Profiling:  
 
-- 无需使用开发板等硬件
-- model 中内建了 gprof 功能，无需 Profiling 库和 `gcc -pg` 选项就可以产生 Profiling 文件
-- 采取了指令级别的采样，可以进行指令级别的 Profiling 分析
+- No development board or other hardware is required
+- The model has a built-in gprof feature, so Profiling files can be generated without a Profiling library or the `gcc -pg` option
+- It uses instruction-level sampling, enabling instruction-level Profiling analysis
 
-在[NucleiStudio_User_Guide.pdf](https://download.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202510.pdf)相关章节对 Nuclei Model 如何仿真性能分析配置已经有较详细的描述，此文档以一个例子来展示其实际应用。
+The relevant chapters of [NucleiStudio_User_Guide.pdf](https://download.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202510.pdf) already describe in detail how to configure simulation performance analysis for the Nuclei Model. This document demonstrates its practical application with an example.
 
-### NICE/VNICE 自定义指令加速
+### NICE/VNICE Custom Instruction Acceleration
 
-**NICE/VNICE**使得用户可以结合自己的应用扩展自定义指令，将芯来的标准处理器核扩展成为面向领域专用的处理器，**NICE** 具体编码规则可以参考 `Nuclei_RISC-V_ISA_Spec.pdf` 中的 `NICE Introduction`。**NICE** 适用于无需使用 RISCV Vector 的自定义指令，**VNICE** 适用于需要使用 RISCV Vector 的自定义指令。
+**NICE/VNICE** allows users to extend custom instructions based on their own applications, extending Nuclei's standard processor cores into domain-specific processors. For the detailed encoding rules of **NICE**, refer to the `NICE Introduction` section in `Nuclei_RISC-V_ISA_Spec.pdf`. **NICE** is suitable for custom instructions that do not use RISC-V Vector, while **VNICE** is suitable for custom instructions that do use RISC-V Vector.
 
-[demo_nice](https://doc.nucleisys.com/nuclei_sdk/design/app.html#demo-nice)/[demo_vnice](https://doc.nucleisys.com/nuclei_sdk/design/app.html#demo-vnice)介绍了 Nuclei 针对 **NICE/VNICE** 的 demo 应用
-是如何编译运行的，此文档将通过改造一个更为常见的 AES 加解密的例子，重点说明该如何使用 **NICE/VNICE** 指令替换热点函数以及如何在 model 里实现 **NICE/VNICE** 指令，然后通过 Nuclei Studio 的 Profiling 功能分析替换前后的程序性能。
+[demo_nice](https://doc.nucleisys.com/nuclei_sdk/design/app.html#demo-nice)/[demo_vnice](https://doc.nucleisys.com/nuclei_sdk/design/app.html#demo-vnice) introduce how Nuclei's **NICE/VNICE** demo applications
+are compiled and run. This document will adapt a more common AES encryption/decryption example, focusing on how to replace hotspot functions with **NICE/VNICE** instructions and how to implement **NICE/VNICE** instructions in the model, and then use Nuclei Studio's Profiling feature to analyze program performance before and after the replacement.
 
-## 解决方案
+## Solution
 
-### 环境准备
+### Environment Preparation
 
-Nuclei Studio：[NucleiStudio 2025.10 Windows](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202510-win64.zip)
+Nuclei Studio: [NucleiStudio 2025.10 Windows](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202510-win64.zip)
 
 ### Model Profiling
 
-工程创建方式有两种：
+There are two ways to create a project:
 
-- 方式1：用户可以使用 Nuclei Studio 中的 `demo_nice` 或 `demo_vnice` 模板来移植改造自己的 **NICE/VNICE** 程序
-- 方式2：用户导入自己的工程到 Nuclei Studio 中，然后再添加NICE 内嵌汇编头文件、NICE CSR 使能等代码
+- Method 1: Use the `demo_nice` or `demo_vnice` template in Nuclei Studio to port and adapt your own **NICE/VNICE** program
+- Method 2: Import your own project into Nuclei Studio, then add code such as the NICE inline assembly header file and NICE CSR enabling
 
-此文档将采取前一种方式创建工程，由于此 demo 会用到 VNICE 指令，故创建 `demo_vnice` 工程，然后将 AES 加解密程序移植替换到其中。
+This document uses the first method to create the project. Since this demo uses VNICE instructions, a `demo_vnice` project is created, and then the AES encryption/decryption program is ported into it.
 
-#### step1：新建 demo_vnice 工程
+#### step1: Create a new demo_vnice project
 
-File->New->New Nuclei RISC-V C/C++ Project，选择Nuclei FPGA Evalution Board->sdk-nuclei_sdk @0.6.0
+File->New->New Nuclei RISC-V C/C++ Project, select Nuclei FPGA Evalution Board->sdk-nuclei_sdk @0.6.0
 
-**注意：** Nuclei SDK 需选择 0.6.0 及以后版本
+**Note:** Nuclei SDK version 0.6.0 or later is required
 
 ![image-create_aes_project](asserts/images/18/create_aes_project.png)
 
-#### step2：基于 demo_vnice 工程移植 aes_demo 裸机用例
+#### step2: Port the aes_demo bare-metal test case based on the demo_vnice project
 
-移植 aes_demo 时，需要保留 `demo_vnice` 中的 `insn.h` 内嵌汇编头文件框架，方便后续添加自定义的 **NICE/VNICE** 指令，在 `main.c` 中需要保留 **NICE/VNICE** 指令执行前的 CSR 使能代码：
+When porting aes_demo, keep the `insn.h` inline assembly header file framework from `demo_vnice` so that custom **NICE/VNICE** instructions can be added later, and keep the CSR enabling code in `main.c` that runs before **NICE/VNICE** instructions are executed:
 
 ~~~c
 __RV_CSR_SET(CSR_MSTATUS, MSTATUS_XS);
 ~~~
 
-其余 `demo_vnice` 工程中 application 原始用例可删除，替换成 aes_demo 用例，形成如下目录结构，并确保能够编译通过。
+The remaining original application test cases in the `demo_vnice` project can be deleted and replaced with the aes_demo test case, resulting in the following directory structure. Make sure it compiles successfully.
 
 ![image-compile_aes_demo](asserts/images/18/compile_aes_demo.png)
 
-用户可以下载我们移植好的 AES 加解密 demo：[优化前AES工程链接下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcR7Ti53K)
+You can download our pre-ported AES encryption/decryption demo: [Download link for the AES project before optimization](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcR7Ti53K)
 
-下载 zip 包后，可以直接导入到 Nuclei Studio 中运行(导入步骤：`File->Import->Existing Projects into Workspace->Next->Select archive file->选择zip压缩包->next`即可)
+After downloading the zip package, you can import it directly into Nuclei Studio and run it (import steps: `File->Import->Existing Projects into Workspace->Next->Select archive file->select the zip archive->next`).
 
-#### step3：model 仿真程序
+#### step3: Simulate the program with the model
 
-首先将 `aes_debug.h` 中的 `LOCAL_DEBUG` 打开，准备测试 AES 算法的整体 cycle 数。
+First, enable `LOCAL_DEBUG` in `aes_debug.h` to prepare for measuring the overall cycle count of the AES algorithm.
 
-Model 仿真程序需要配置 Nuclei Studio 中的 `GDB Nuclei Model riscv Debugging` 配置项，步骤如下：
+To simulate the program with the Model, configure the `GDB Nuclei Model riscv Debugging` configuration in Nuclei Studio as follows:
 
-1. 打开 Nuclei Studio 主菜单栏的 `Run` 选项的 `Run Configurations`
-2. 选择 `GDB Nuclei Model riscv Debugging` 配置项，右键选择 `New Configuration`，会自动生成项目名的 Model 配置页面，launch bar也会同步更新
-3. 在右侧 `Main` 选项卡中点击 `Search Project...` 选择编译好的 elf 文件
-4. 在右侧 `Debugger` 选项卡中选择 `Browse` 找到 Nuclei Model 可执行程序默认路径：`NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel.exe`
-5. 在右侧 `Debugger` 选项卡中的 `Nuclei Setup` 中完成 model 运行配置, 选择 `Nuclei RISC-V Core` 和 `Other Extensions` 需要保持和 `Nuclei Settings` 的 `Core` 和 `Other extensions` 配置一致，`Other Extensions` 为空时不传递此参数， `Enable Nuclei Model RVTrace` 表示运行时生成 rvtrace，`More options` 加上 `--gprof=1` 开启 Profiling 功能， 然后点击 `Apply` 和 `Run`，model 就开始运行程序了
+1. Open `Run Configurations` from the `Run` option in the Nuclei Studio main menu bar
+2. Select the `GDB Nuclei Model riscv Debugging` configuration, right-click and select `New Configuration`; a Model configuration page named after the project is automatically generated, and the launch bar is updated accordingly
+3. In the `Main` tab on the right, click `Search Project...` and select the compiled elf file
+4. In the `Debugger` tab on the right, select `Browse` and locate the default path of the Nuclei Model executable: `NucleiStudio/toolchain/nucleimodel/bin/xl_cpumodel.exe`
+5. In the `Debugger` tab on the right, complete the model run configuration under `Nuclei Setup`: `Nuclei RISC-V Core` and `Other Extensions` must be consistent with the `Core` and `Other extensions` settings in `Nuclei Settings`. When `Other Extensions` is empty, this parameter is not passed. `Enable Nuclei Model RVTrace` means rvtrace is generated at runtime. Add `--gprof=1` to `More options` to enable the Profiling feature. Then click `Apply` and `Run`, and the model starts running the program.
 
     ![image-Ori_Project_Model_Config](asserts/images/18/Ori_Project_Model_Config.png)
 
-> Nuclei Studio (< 2025.10) 只能使用 `Run Configurations` 中的 `Nuclei Model` 来配置 model，Nuclei Studio (>= 2025.10) 建议切换到使用 `GDB Nuclei Model riscv Debugging` 来配置
+> Nuclei Studio (< 2025.10) can only configure the model using `Nuclei Model` in `Run Configurations`; for Nuclei Studio (>= 2025.10), it is recommended to switch to `GDB Nuclei Model riscv Debugging` for configuration
 
-在 Console 中会看到 `Total elapsed real time` 说明 model 已经完成仿真了，得到 AES 算法整体消耗 161108 cycle。
+When `Total elapsed real time` appears in the Console, the model has finished the simulation, showing that the AES algorithm consumes 161108 cycles in total.
 
 ![image-ase_demo_cycle](asserts/images/18/aes_demo_cycle.png)
 
-将 `aes_debug.h` 中的 `LOCAL_DEBUG` 关掉去掉程序打印，为了准确测试 Profiling 数据，确保 Nuclei Studio 的 launch bar 为 `aes_demo Debug`, 重新 Run model，运行结束后会生成 Profiling 文件：
+Disable `LOCAL_DEBUG` in `aes_debug.h` to remove program printouts. To measure Profiling data accurately, make sure the Nuclei Studio launch bar is set to `aes_demo Debug`, then Run the model again. After the run finishes, a Profiling file is generated:
 
 ![image-aes_demo_profiling](asserts/images/18/aes_demo_profiling.png)
 
-#### step4：解析 gprof 数据
+#### step4: Parse the gprof data
 
-model 仿真程序完成后，双击打开生成的 `gprof*.gmon` 文件，切换到函数视图，点击 `% Time`从高到低排列函数 CPU 占用率。
+After the model simulation completes, double-click the generated `gprof*.gmon` file to open it, switch to the function view, and click `% Time` to sort functions by CPU usage from high to low.
 
-**注意：** `Time/Call` 显示的是每个函数的函数体 text 段的 cycle 数，并不是整个函数的 cycle 数，是不计入其中子函数占用的 cycle 数的。
+**Note:** `Time/Call` shows the cycle count of each function's own body in the text section, not the cycle count of the entire function; cycles consumed by its child functions are not included.
 
 ![image-parse_gprof](asserts/images/18/parse_gprof.png)
 
-从而得到 CPU 占用率最高的 **TOP5** 热点函数为：
+The **TOP5** hotspot functions with the highest CPU usage are:
 
 ~~~
 aes_mix_columns_dec
@@ -105,15 +105,15 @@ aes_ecb_decrypt
 aes_ecb_encrypt
 ~~~
 
-**注意：** 此时需要备份当前的 `aes_demo` 工程，改名为 `aes_demo_nice` 工程，这样可以在 Nuclei Studio 中同时打开两个工程，方便添加 **NICE/VNICE** 指令优化后的工程和原 `aes_demo` 工程进行 Profiling 比较。
+**Note:** At this point, back up the current `aes_demo` project and rename the copy to `aes_demo_nice`. This way, both projects can be opened in Nuclei Studio at the same time, making it easy to compare the Profiling results of the project optimized with **NICE/VNICE** instructions against the original `aes_demo` project.
 
-#### step5：NICE/VNICE 指令替换
+#### step5: Replace hotspot functions with NICE/VNICE instructions
 
-用户需要在备份的 `aes_demo_nice` 工程下，研究热点函数算法特点，将其替换为 **NICE/VNICE** 指令，从而提升整体程序性能。
+In the backed-up `aes_demo_nice` project, the user needs to study the algorithmic characteristics of the hotspot functions and replace them with **NICE/VNICE** instructions to improve overall program performance.
 
-在包含 AES 加解密的 **TOP5** 热点函数的 `aes_dec.c` 和 `aes_dec.c` 两个C文件中 `#include "insn.h"` 以便添加 **NICE/VNICE** 指令替换。
+Add `#include "insn.h"` to the two C files `aes_dec.c` and `aes_dec.c`, which contain the **TOP5** hotspot functions of AES encryption/decryption, so that **NICE/VNICE** instruction replacements can be added.
 
-**TOP1** 热点函数为 `aes_mix_columns_dec`，实现了 AES 算法解密的逆混合列，输入一个状态矩阵，经过计算后原地址输出一个计算后的状态矩阵，实现了 Load 数据、逆混合运算以及 Store 数据，代码如下：
+The **TOP1** hotspot function is `aes_mix_columns_dec`, which implements the inverse MixColumns of AES decryption. It takes a state matrix as input, performs the computation, and outputs the computed state matrix to the same address. It implements Load data, the inverse mix computation, and Store data. The code is as follows:
 
 ~~~c
 static void aes_mix_columns_dec(
@@ -142,7 +142,7 @@ static void aes_mix_columns_dec(
 }
 ~~~
 
-由于输入输出地址一样，可以考虑用一条 **NICE** 指令替换，指令的 `opcode`、`funct3` 和 `funct7` 都可以在编码位域中自定义，该指令设置 `opcode` 为 `Custom-0`，`funct3` 设置为0，`funct7` 设置为0x10，寄存器只使用到 `rs1` 描述入参地址，不需要使用 `rd` 和 `rs2`，指令写到 `insn.h` 中，内嵌汇编如下：
+Since the input and output addresses are the same, consider replacing it with a single **NICE** instruction. The `opcode`, `funct3`, and `funct7` of the instruction can all be customized within the encoding fields. This instruction sets `opcode` to `Custom-0`, `funct3` to 0, and `funct7` to 0x10. Only the `rs1` register is used to describe the input parameter address; `rd` and `rs2` are not needed. The instruction is written into `insn.h` with the following inline assembly:
 
 ~~~c
 __STATIC_FORCEINLINE void custom_aes_mix_columns_dec(uint8_t* addr)
@@ -152,7 +152,7 @@ __STATIC_FORCEINLINE void custom_aes_mix_columns_dec(uint8_t* addr)
 }
 ~~~
 
-用户可以在 `insn.h` 中定义一个 `USE_NICE` 的宏选择是否使用 **NICE** ，在 `aes_dec.c` 改写 `aes_mix_columns_dec` 如下 ：
+The user can define a `USE_NICE` macro in `insn.h` to select whether to use **NICE**, and rewrite `aes_mix_columns_dec` in `aes_dec.c` as follows:
 
 ~~~c
 static void aes_mix_columns_dec(
@@ -186,7 +186,7 @@ static void aes_mix_columns_dec(
 }
 ~~~
 
-**TOP2** 热点函数为 `aes_mix_columns_enc`，和 TOP1 类似，实现的是 AES 加密的逆混合列，同样也是输入一个状态矩阵，经过计算后原地址输出一个计算后的状态矩阵：
+The **TOP2** hotspot function is `aes_mix_columns_enc`, which, similar to TOP1, implements the inverse MixColumns of AES encryption. It likewise takes a state matrix as input, performs the computation, and outputs the computed state matrix to the same address:
 
 ~~~c
 static void aes_mix_columns_enc(
@@ -214,9 +214,9 @@ static void aes_mix_columns_enc(
 }
 ~~~
 
-考虑到指令实现可能无法只用1条指令完成，可使用2条 **VNICE** 指令替换此算法，第一条 load 16 byte 数据到 Vector 寄存器，第二条再完成计算以及 store。
+Considering that the instruction implementation may not be achievable with a single instruction, two **VNICE** instructions can be used to replace this algorithm: the first one loads 16 bytes of data into a Vector register, and the second one performs the computation and the store.
 
-指令的 `opcode`、`funct3` 和 `funct7` 仍然可以在编码位域中自定义，第一条指令使用 `rd` 描述 Vector 寄存器，`rs1` 描述入参地址，第二条指令使用 `rs1` 描述入参地址，`rs1` 描述入参 Vector 寄存器，两条 **VNICE** 指令的内嵌汇编写到 `insn.h` 中，定义如下：
+The `opcode`, `funct3`, and `funct7` of the instructions can still be customized within the encoding fields. The first instruction uses `rd` to describe the Vector register and `rs1` to describe the input parameter address; the second instruction uses `rs1` to describe the input parameter address and `rs1` to describe the input Vector register. The inline assembly for the two **VNICE** instructions is written into `insn.h` and defined as follows:
 
 ~~~c
 __STATIC_FORCEINLINE vint8m1_t __custom_vnice_load_v_i8m1 (uint8_t* addr)
@@ -240,7 +240,7 @@ __STATIC_FORCEINLINE void __custom_vnice_aes_mix_columns_enc_i8m1 (uint8_t *addr
 }
 ~~~
 
-用户通过定义 Vector 寄存器以及使用上定义好的 VNICE 指令内嵌汇编改写 `aes_enc.c` 中的 `aes_mix_columns_enc` 如下：
+The user rewrites `aes_mix_columns_enc` in `aes_enc.c` by defining a Vector register and using the VNICE instruction inline assembly defined above, as follows:
 
 ~~~c
 static void aes_mix_columns_enc(
@@ -278,70 +278,70 @@ static void aes_mix_columns_enc(
 }
 ~~~
 
-修改后的程序代码编译通过：(`aes_demo_nice` 工程)
+The modified program code compiles successfully: (`aes_demo_nice` project)
 
 ![image-compile_aes_nice_demo](asserts/images/18/compile_aes_nice_demo.png)
 
-#### step6：在 Nuclei Model 中实现 NICE/VNICE 指令
+#### step6: Implement NICE/VNICE instructions in the Nuclei Model
 
-首先需要下载支持用户配置自定义 **NICE/VNICE** 指令的原始 Nuclei Model 软件包[原始model软件包下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCirwEWY)，解压软件包为 `xlmodel_nice`，然后将其导入 Nuclei Studio。
+First, download the original Nuclei Model software package that supports user-configured custom **NICE/VNICE** instructions: [Download the original model package](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcCirwEWY). Extract the package as `xlmodel_nice`, then import it into Nuclei Studio.
 
-导入步骤：File->Import->Projects from Folder or Archive->Next->Directory->选择 `xlmodel_nice`->Finish即可
+Import steps: File->Import->Projects from Folder or Archive->Next->Directory->select `xlmodel_nice`->Finish
 
-如何使用 Nuclei Model 以及查看 `xlmodel_nice` 软件包的目录结构可以参考[Nuclei Model介绍](https://doc.nucleisys.com/nuclei_tools/xlmodel/)，`xlmodel_nice` 是由CMake构建的，用户无需修改即可编译，在
-编译前选择 Nuclei Studio 的 launch bar 的 `xlmodel_nice`，然后点击编译，确保软件包本身编译通过：
+For how to use the Nuclei Model and the directory structure of the `xlmodel_nice` package, refer to the [Nuclei Model Introduction](https://doc.nucleisys.com/nuclei_tools/xlmodel/). `xlmodel_nice` is built with CMake and can be compiled without any modification. Before
+compiling, select `xlmodel_nice` in the Nuclei Studio launch bar, then click Build, and make sure the package itself compiles successfully:
 
-> Nuclei Studio (< 2025.10) 生成的 elf 文件所在路径为 `build/default/xl_cpumodel`
+> For Nuclei Studio (< 2025.10), the generated elf file is located at `build/default/xl_cpumodel`
 
 ![image-xlmodel_nice_build](asserts/images/18/xlmodel_nice_build.png)
 
-打开 `nice.cc` 文件，用户需要用该文件的 `do_nice` 函数实现所有自定义的 **NICE/VNICE** 指令，当前 `do_nice` 里包含了针对 `demo_nice` 或 `demo_vnice` 的 Nuclei定义的 **NICE/VNICE** 指令，
-用户可以参考其中注释完成自己的自定义指令。
+Open the `nice.cc` file. The user needs to implement all custom **NICE/VNICE** instructions in the `do_nice` function of this file. Currently, `do_nice` contains the **NICE/VNICE** instructions defined by Nuclei for `demo_nice` or `demo_vnice`;
+the user can refer to the comments in it to complete their own custom instructions.
 
-**注意：** 当用户编写自定义 **NICE/VNICE** 指令时，需要关掉和 Nuclei `demo_nice`/`demo_vnice` 对应的 `NUCLEI_NICE_SCALAR`/`NUCLEI_NICE_VECTOR` 宏，以免和用户自定义的指令编码相冲突。
+**Note:** When writing custom **NICE/VNICE** instructions, the user needs to disable the `NUCLEI_NICE_SCALAR`/`NUCLEI_NICE_VECTOR` macros corresponding to Nuclei's `demo_nice`/`demo_vnice`, so that they do not conflict with the encoding of the user's custom instructions.
 
 ![image-nice_inst_intro](asserts/images/18/nice_inst_intro.png)
 
-AES demo 中定义的 **NICE/VNICE** 指令实现如下图，通过指令的 `opcode`、`funct3` 和 `funct7` 编写条件判断语句指定该条指令，然后在其中实现指令行为以及指令 cycle 数添加。
+The implementation of the **NICE/VNICE** instructions defined in the AES demo is shown in the figure below. Conditional statements written against the instruction's `opcode`, `funct3`, and `funct7` identify each instruction, within which the instruction behavior and the instruction cycle count are implemented.
 
-**NICE** 指令实现中，`MMU` 宏表示 memory 访问，load memory 使用 `MMU.load_uint<n>`，store memory 使用 `MMU.store_uint<n>`，`RD`、`RS1`、`RS2`、`RS3` 宏表示其对应标量寄存器中的值，`FRS1`、`FRS2`、`FRS3` 宏表示其对应浮点寄存器中的值，这些宏的使用可以参考 `nice/inc/decode_macros.h`。
+In the **NICE** instruction implementation, the `MMU` macro represents memory access: use `MMU.load_uint<n>` to load memory and `MMU.store_uint<n>` to store memory. The `RD`, `RS1`, `RS2`, and `RS3` macros represent the values in their corresponding scalar registers, and the `FRS1`, `FRS2`, and `FRS3` macros represent the values in their corresponding floating-point registers. For the usage of these macros, refer to `nice/inc/decode_macros.h`.
 
-**VNICE** 指令实现中仍然是用 `MMU` 宏访问 memory，只不过 Vector 寄存器数据会存储在 `P.VU.elt` 类中，用户可以参考 `xlspike/include/riscv/v_ext_macros.h`完成相关代码编写。
+In the **VNICE** instruction implementation, memory is still accessed with the `MMU` macro, but Vector register data is stored in the `P.VU.elt` class. The user can refer to `xlspike/include/riscv/v_ext_macros.h` to write the related code.
 
-在指令实现完后，将自定义指令需要的 cycle 数 n 直接标定：`STATE.mcycle->bump(n);` 即可，这里根据硬件通过 **NICE/VNICE** 实现此算法的理论值，标定 `custom_aes_mix_columns_dec` 为 7 cycle，`__custom_vnice_load_v_i8m1` 为 1 cycle，`__custom_vnice_aes_mix_columns_enc_i8m1` 为 2 cycle。
+After implementing the instructions, directly specify the cycle count n required by the custom instruction: `STATE.mcycle->bump(n);`. Here, based on the theoretical values of implementing this algorithm in hardware with **NICE/VNICE**, `custom_aes_mix_columns_dec` is specified as 7 cycles, `__custom_vnice_load_v_i8m1` as 1 cycle, and `__custom_vnice_aes_mix_columns_enc_i8m1` as 2 cycles.
 
 ![image-xlmodel_nice_aes](asserts/images/18/xlmodel_nice_aes.png)
 
-以上介绍了用户如何从原始 Nuclei Model 软件包添加自定义 **NICE/VNICE** 指令，接下来需要将新编译出的 model 可执行程序导入到 Nuclei Studio 中，为了不和 Nuclei Studio 原始 model 名称混淆，可以将 model 导入到 `NucleiStudio/toolchain/nucleimodel/bin_aes/` 的创建路径下，我们提供了两种 model 可执行程序获取方式：  
+The above describes how the user adds custom **NICE/VNICE** instructions from the original Nuclei Model package. Next, the newly compiled model executable needs to be imported into Nuclei Studio. To avoid confusion with the name of Nuclei Studio's original model, the model can be imported into a created path such as `NucleiStudio/toolchain/nucleimodel/bin_aes/`. We provide two ways to obtain the model executable:  
 
-1. 实现 AES demo **NICE/VNICE** 指令的 Nuclei model 软件包[添加AES NICE指令model软件包](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcrcrb4T6)，编译后将 `xl_cpumodel` 可执行程序导入上述路径。
-2. 编译好的 model 的可执行程序 [xl_cpumodel](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcB1NbrL1)，直接导入上述路径。
+1. The Nuclei model software package that implements the AES demo **NICE/VNICE** instructions: [Model package with AES NICE instructions added](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcrcrb4T6). After compiling it, import the `xl_cpumodel` executable into the above path.
+2. A pre-compiled model executable: [xl_cpumodel](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcB1NbrL1). Import it directly into the above path.
 
-#### step7：热点函数再分析
+#### step7: Re-analyze the hotspot functions
 
-**注意：** 请务必完成 step6 中介绍的实现了 **NICE/VNICE** 指令的 model 导入 Nuclei Studio 中才能用 model Run `aes_demo_nice` 工程。
+**Note:** You must complete the model import described in step6 — the model implementing the **NICE/VNICE** instructions — into Nuclei Studio before you can use the model to Run the `aes_demo_nice` project.
 
-首先打开 Nuclei Studio 主菜单栏的 `Run` 选项的 `Run Configurations`，model 配置需要重新添加新的 `GDB Nuclei Model riscv Debugging` 运行配置 `aes_demo_nice Debug`，在 `Main` 选项卡中选择 `aes_demo_nice.elf`：
+First, open `Run Configurations` from the `Run` option in the Nuclei Studio main menu bar. A new `GDB Nuclei Model riscv Debugging` run configuration `aes_demo_nice Debug` needs to be added for the model configuration. In the `Main` tab, select `aes_demo_nice.elf`:
 
 ![image-aes_demo_nice_model_config_main](asserts/images/18/aes_demo_nice_model_config_main.png)
 
-然后在 `Debugger` 选项卡中的 model 执行路径 `Executable path` 改为 step6 中新修改 model 的执行路径： `.../NucleiStudio/toolchain/nucleimodel/bin_aes/xl_cpumodel`:
+Then, in the `Debugger` tab, change the model `Executable path` to the executable path of the model newly modified in step6: `.../NucleiStudio/toolchain/nucleimodel/bin_aes/xl_cpumodel`:
 
 ![image-aes_demo_nice_model_config_debugger](asserts/images/18/aes_demo_nice_model_config_debugger.png)
 
-运行前将 `aes_debug.h` 中的 `LOCAL_DEBUG` 打开，测试优化后 AES 算法的整体 cycle 数，选择 Nuclei Studio 的 launch bar 的 `aes_demo_nice Debug`后 Run model，得到 AES 算法优化后整体消耗 cycle 数从优化前的 161108 降到了 42066 cycle。
+Before running, enable `LOCAL_DEBUG` in `aes_debug.h` to measure the overall cycle count of the optimized AES algorithm. Select `aes_demo_nice Debug` in the Nuclei Studio launch bar and Run the model. The result shows that the total cycle count of the optimized AES algorithm dropped from 161108 before optimization to 42066 cycles.
 
 ![image-aes_demo_nice_cycle](asserts/images/18/aes_demo_nice_cycle.png)
 
-将 `aes_debug.h` 中的 `LOCAL_DEBUG` 关掉测试重新 Run model 测试 Profiling 数据，双击 `gprof0.gmon` 可以看到 CPU 占用率较高的热点函数已经没有 `aes_mix_columns_enc` 和 `aes_mix_columns_dec` 了：
+Disable `LOCAL_DEBUG` in `aes_debug.h` and Run the model again to measure Profiling data. Double-click `gprof0.gmon`, and you can see that `aes_mix_columns_enc` and `aes_mix_columns_dec` are no longer among the hotspot functions with high CPU usage:
 
 ![image-parse_gprof_nice](asserts/images/18/parse_gprof_nice.png)
 
-搜索 `aes_mix_columns_enc` 和 `aes_mix_columns_dec` ，CPU 占用率 `aes_mix_columns_enc` 从 8.05% 降到了 2.93%，`aes_mix_columns_dec` 从 57.87% 降到了 0.5%，函数 Time per Call 消耗 cycle 数 `aes_mix_columns_enc` 从 1141 cycle 降到了 146 cycle，`aes_mix_columns_dec` 从 8209 cycle 降到了 25 cycle，说明了通过 **NICE/VNICE** 指令替换热点函数可以大幅提高程序算法性能。
+Searching for `aes_mix_columns_enc` and `aes_mix_columns_dec`, the CPU usage of `aes_mix_columns_enc` dropped from 8.05% to 2.93%, and that of `aes_mix_columns_dec` dropped from 57.87% to 0.5%. The Time per Call cycle consumption of `aes_mix_columns_enc` dropped from 1141 cycles to 146 cycles, and that of `aes_mix_columns_dec` dropped from 8209 cycles to 25 cycles. This demonstrates that replacing hotspot functions with **NICE/VNICE** instructions can greatly improve program algorithm performance.
 
 ![image-parse_gprof_aes_enc_dec](asserts/images/18/parse_gprof_aes_enc_dec.png)
 
-数据统计如下：(`enc`: `aes_mix_columns_enc`, `dec`: `aes_mix_columns_dec`)
+The data statistics are as follows: (`enc`: `aes_mix_columns_enc`, `dec`: `aes_mix_columns_dec`)
 
 | Function                    | Before Optimization | NICE/VNICE Optimization  |
 |-----------------------------|---------------------|--------------------------|
@@ -354,5 +354,4 @@ AES demo 中定义的 **NICE/VNICE** 指令实现如下图，通过指令的 `op
 |-----------------------------|---------------------|--------------------------|
 | Cycles                      | 161,108             | 42,066                   |
 
-AES加解密 NICE/VNICE demo：[优化后AES工程链接下载](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc5f6zPQW)
-
+AES encryption/decryption NICE/VNICE demo: [Download link for the AES project after optimization](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc5f6zPQW)

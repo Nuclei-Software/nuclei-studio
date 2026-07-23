@@ -1,35 +1,35 @@
-# OpenOCD对FreeRTOS的调试支持使用指南
+# User Guide for FreeRTOS Debugging Support in OpenOCD
 
-通过更新您的Nuclei Studio IDE到202502版本和下载0.7.1的sdk-nuclei_sdk,并配合一些下面的修改，就可以使用OpenOCD对FreeRTOS进行调试。
+By updating your Nuclei Studio IDE to version 202502 and downloading sdk-nuclei_sdk 0.7.1, together with the modifications described below, you can debug FreeRTOS using OpenOCD.
 
-### 环境准备
+### Environment Preparation
 
-**Nuclei Studio**：
+**Nuclei Studio**:
 
 - [NucleiStudio 202502 Windows](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-win64.zip)
 - [NucleiStudio 202502 Linux](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-lin64.tgz)
 
-**Nuclei OpenOCD**：
+**Nuclei OpenOCD**:
 
-- 使用NucleiStudio 202502自带的的OpenOCD即可。
+- The OpenOCD bundled with NucleiStudio 202502 is sufficient.
 
-### 使用步骤
+### Usage Steps
 
-**step1：创建原始工程**
+**Step 1: Create the Original Project**
 
-在NucleiStudio IDE下载好0.7.1版本的sdk-nuclei_sdk。
+Download sdk-nuclei_sdk version 0.7.1 in NucleiStudio IDE.
 
 ![image-20250513103947602](asserts/images/26/26-1.png)
 
-创建一个900的项目，如下图。
+Create a 900 project, as shown below.
 
 ![image-20250513170041690](asserts/images/26/26-2.png)
 
-开发板烧写对应的bit即可，这里我们使用u900_best_config_ku060_50M_c1dd7f44af_915aefa97_202504141013_v4.1.0.bit
+Program the corresponding bitstream to the development board. In this guide, we use u900_best_config_ku060_50M_c1dd7f44af_915aefa97_202504141013_v4.1.0.bit.
 
-**step2：修改portmacro.h内容**
+**Step 2: Modify the portmacro.h Content**
 
-项目创建好，找到nuclei_sdk\OS\FreeRTOS\Source\portable\portmacro.h, 修改该文件内容如下
+After the project is created, locate nuclei_sdk\OS\FreeRTOS\Source\portable\portmacro.h and modify the file content as follows:
 
 ~~~
 typedef uint32_t TickType_t;
@@ -41,9 +41,9 @@ typedef uint32_t TickType_t;
 
 ![image-20250513165844658](asserts/images/26/26-3.png)
 
-**step3：修改openocd_evalsoc.cfg内容**
+**Step 3: Modify the openocd_evalsoc.cfg Content**
 
-找到nuclei_sdk/SoC/evalsoc/Board/nuclei_fpga_eval/openocd_evalsoc.cfg,修改第118行内容
+Locate nuclei_sdk/SoC/evalsoc/Board/nuclei_fpga_eval/openocd_evalsoc.cfg and modify line 118:
 
 ~~~
 target create $_TARGETNAME riscv -chain-position $_TARGETNAME -coreid $BOOTHART -rtos FreeRTOS
@@ -51,15 +51,14 @@ target create $_TARGETNAME riscv -chain-position $_TARGETNAME -coreid $BOOTHART 
 
 ![image-20250513165933970](asserts/images/26/26-4.png)
 
-**step4：openocd调试工程**
+**Step 4: Debug the Project with OpenOCD**
 
-Debug运行程序，打开Debugger Console视图。
+Run the program in Debug mode and open the Debugger Console view.
 
-在Debugger Console视图下输入info threads，回车。
+In the Debugger Console view, type info threads and press Enter.
 
 ![image-20250513165625083](asserts/images/26/26-5.png)
 
-### 使用说明
+### Usage Notes
 
-目前支持**FreeRTOS**,不支持**Zephyr**、**ThreadX**、**UCOSII**。
-
+Currently only **FreeRTOS** is supported; **Zephyr**, **ThreadX**, and **UCOSII** are not supported.

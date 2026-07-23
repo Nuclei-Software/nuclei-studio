@@ -1,74 +1,74 @@
-# Live Watch 功能的使用
+# Using the Live Watch Feature
 
-Live Watch 是一款强大的实时监控工具，专为开发者设计，旨在帮助您更高效地调试和优化代码。通过 Live Watch，您可以即时查看程序运行过程中变量的变化情况，无需打断执行流程或手动添加日志语句。在 Nuclei Studio 2025.02 版中实现了 Live Watch 功能，它支持自动刷新变量值，确保始终看到最新的数据变化。直观的图形化界面，能轻松管理需要监控的变量。
+Live Watch is a powerful real-time monitoring tool designed for developers to help you debug and optimize code more efficiently. With Live Watch, you can instantly observe how variables change while the program is running, without interrupting execution or manually adding log statements. The Live Watch feature is implemented in Nuclei Studio 2025.02. It supports automatic refreshing of variable values, ensuring that you always see the latest data changes. Its intuitive graphical interface makes it easy to manage the variables you want to monitor.
 
-## 背景描述
+## Background
 
-Live Watch 功能依赖 Nuclei OpenOCD >= 2025.02 版本，并且仅支持 Nuclei CPU 配置了 RISC-V SBA 功能。通过 Live Watch，开发者可以在调试过程中实时监控变量的变化，帮助快速定位问题并优化代码性能。
+The Live Watch feature depends on Nuclei OpenOCD version >= 2025.02, and it only supports Nuclei CPUs configured with the RISC-V SBA feature. With Live Watch, developers can monitor variable changes in real time during debugging, helping to quickly locate issues and optimize code performance.
 
-## 解决方案
+## Solution
 
-### 环境准备
+### Environment Preparation
 
-**Nuclei Studio**：
+**Nuclei Studio**:
 
 - [NucleiStudio 202502 Windows](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-win64.zip)
 - [NucleiStudio 202502 Linux](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-lin64.tgz)
 
-**Nuclei OpenOCD**：
+**Nuclei OpenOCD**:
 
-- 确保安装的 OpenOCD 版本 >= 2025.02，并且支持 RISC-V SBA 功能。
+- Make sure the installed OpenOCD version is >= 2025.02 and that it supports the RISC-V SBA feature.
 
-### Live Watch 使用演示
+### Live Watch Usage Demo
 
-**step1：创建项目，烧写bit**
+**Step 1: Create a project and flash the bitstream**
 
-使用0.7.1版本的sdk-nuclei_sdk创建一个u900的helloworld项目，依次选择Simple Helloworld Demo和U900 Core，点击Finsh。
+Use version 0.7.1 of sdk-nuclei_sdk to create a u900 helloworld project. Select Simple Helloworld Demo and U900 Core in turn, then click Finish.
 
 ![image-Ori_Project_Model_Config](asserts/images/21/21-0.png)
 
-开发板烧写对应的bit即可，这里我们使用trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit
+Flash the corresponding bitstream to the development board. Here we use trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit
 
-**step2：编译 Nuclei SDK 原始工程**
+**Step 2: Build the original Nuclei SDK project**
 
-编译原始工程，确保编译成功以及在 Debug 下可以找到生成的 elf 文件：
+Build the original project and make sure the build succeeds and that the generated elf file can be found under Debug:
 
 ![image-Ori_Project_Model_Config](asserts/images/21/21.png)
 
-**step3：打开 Live Watch 视图**
+**Step 3: Open the Live Watch view**
 
-打开 Live Watch 视图，找到 Live Watch Settings 并根据需要设置相关参数，这里我们直接使用默认值。
+Open the Live Watch view, find Live Watch Settings, and configure the relevant parameters as needed. Here we simply use the default values.
 
-如需配置可参考下图或[Nuclei Development Tool Guide](https://download.nucleisys.com/upload/files/doc/nucleistudio/NucleiStudio_User_Guide.202502.pdf)
+For configuration details, refer to the figure below or the [Nuclei Development Tool Guide](https://download.nucleisys.com/upload/files/doc/nucleistudio/NucleiStudio_User_Guide.202502.pdf)
 
 ![image-Ori_Project_Model_Config](asserts/images/21/21-1.png)
 
-**step4：运行Nuclei SDK原始工程**
+**Step 4: Run the original Nuclei SDK project**
 
-Debug运行程序，在Live Watch视图中添加需要查看的变量seed。
+Debug and run the program, then add the variable seed you want to observe in the Live Watch view.
 
-这里想要通过Live Plot查看变量的变化曲线，选中该条记录，并点击鼠标右键，在弹出的菜单中选中 ``Toggle Live Plot`` ,Live Plot工具就会弹出。
+If you want to view the variable's change curve through Live Plot, select that record, right-click it, and choose ``Toggle Live Plot`` from the pop-up menu. The Live Plot tool will then pop up.
 
 ![image-Ori_Project_Model_Config](asserts/images/21/21-2.png)
 
-让工程全速运行时，可以看到变量的值，以设定的Live Watch Speed变化，Live Plot绘制的曲线图如下。
+When the project runs at full speed, you can see the variable's value changing at the configured Live Watch Speed. The curve plotted by Live Plot is shown below.
 
 ![image-Ori_Project_Model_Config](asserts/images/21/21-3.png)
 
-当随着时间数据节点越来越多时，届时会隐藏数据节点。用户可以在Live Plot右键点击Suspend暂停，然后通过滚动鼠标放大曲线，放大到一定倍数会显示节点，鼠标移至节点可查看数据详情；点击 ``Continue`` Live Plot则继续绘制曲线。
+As more and more data nodes accumulate over time, the data nodes will be hidden. You can right-click Suspend in Live Plot to pause, then scroll the mouse wheel to zoom in on the curve. Once zoomed in to a certain level, the nodes will be displayed, and you can hover the mouse over a node to view its data details. Click ``Continue`` to let Live Plot resume plotting the curve.
 
 ![image-Ori_Project_Model_Config](asserts/images/21/21-5.png)
 
-选中seed行,点击鼠标右键，将该变量的结果存为CSV格式文件，用来查阅和使用。
+Select the seed row and right-click it to save the variable's results as a CSV file for review and use.
 
 ![image-Ori_Project_Model_Config](asserts/images/21/21-6.png)
 
-Live Watch也会自动将查询到的数据结果保存到 ``Save Data Path`` 中，可以在Save Data Path对应地址找到对应的CSV格式的数据文件。
+Live Watch also automatically saves the queried data results to the ``Save Data Path``. You can find the corresponding CSV data files at the address specified by Save Data Path.
 
 ![image-Ori_Project_Model_Config](asserts/images/21/21-7.png)
 
 ![image-Ori_Project_Model_Config](asserts/images/21/21-10.png)
 
-### 总结
+### Summary
 
-Live Watch 功能为开发者提供了一个强大的实时监控工具，极大地提升了调试效率和代码优化的能力。通过合理使用 Live Watch，开发者可以更轻松地应对复杂的调试任务，提升开发效率。
+The Live Watch feature provides developers with a powerful real-time monitoring tool that greatly improves debugging efficiency and code optimization capabilities. By using Live Watch effectively, developers can handle complex debugging tasks more easily and improve development productivity.

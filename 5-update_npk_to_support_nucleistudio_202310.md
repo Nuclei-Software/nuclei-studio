@@ -1,16 +1,16 @@
-# 升级npk.yml以支持Nuclei Studio 2023.10
+# Upgrading npk.yml to Support Nuclei Studio 2023.10
 
-在Nuclei Studio 2023.10中，一个重要变更，是支持GCC 13, 所以之前发布的NPK Package也需要做对应的变更，以更好的适用于Nuclei Studio 2023.10，其中有以下几个变更点。
+In Nuclei Studio 2023.10, an important change is the support for GCC 13. Therefore, previously released NPK Packages also need corresponding changes to better work with Nuclei Studio 2023.10. The changes include the following points.
 
-> 需要注意新版的npk.yml 不再支持以前 2022.12版本的IDE
+> Note that the new version of npk.yml no longer supports the previous 2022.12 version of the IDE
 
-## npk.yml中的工具链升级
+## Toolchain Upgrade in npk.yml
 
-在npk中，我们定义了buildconfig来自定义工程build时的各种参数，Nuclei Studio通过type标识使用的是那一种toolchain，如gcc、clang等，
-通过 type->**toolchain_name** & **cross_prefix** 来标识使用的toolchain里面具体的那个发行版本。升级SDK以支持GCC 13，对比以下两个例子不难看出，
-只需要修改 toolchain_name: **RISC-V GCC/Newlib** 和 cross_prefix: **riscv64-unknown-elf-** ，就可以使SDK支持在创建工程时，可以选择GCC 13工具链。
+In NPK, we define buildconfig to customize various parameters used when building a project. Nuclei Studio uses the type field to identify which toolchain is used, such as gcc, clang, etc.,
+and uses type->**toolchain_name** & **cross_prefix** to identify the specific distribution within that toolchain. To upgrade an SDK to support GCC 13, comparing the following two examples makes it easy to see that
+you only need to modify toolchain_name: **RISC-V GCC/Newlib** and cross_prefix: **riscv64-unknown-elf-**, so that the SDK supports selecting the GCC 13 toolchain when creating a project.
 
-以下内容是支持gcc 10 的buildconfig配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）。
+The following is the buildconfig configuration that supports gcc 10 (some parameters are hidden for the sake of example; define the actual parameters according to your situation).
 
 ```yaml
 ## Build Configuration
@@ -32,15 +32,15 @@ buildconfig:
       description:
 ```
 
-下以内容，是支持GCC 13和Clang的**buildconfig**配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）。
+The following is the **buildconfig** configuration that supports GCC 13 and Clang (some parameters are hidden for the sake of example; define the actual parameters according to your situation).
 
 ```yaml
 ## Build Configuration
 buildconfig:
   - type: gcc
     description: Nuclei GNU Toolchain
-    # 升级到 GCC13时，这里进行如下两行的改变
-    # 且针对所有npk.yml的文件只要包含buildconfig的都需要进行修改，不仅仅限于ssp/bsp类型，还包括bsp/app/mwp/osp/sdk类型
+    # When upgrading to GCC13, make the following two-line changes here
+    # And for all npk.yml files, any file containing buildconfig needs to be modified, not limited to ssp/bsp types, but also including bsp/app/mwp/osp/sdk types
     toolchain_name: RISC-V GCC/Newlib
     cross_prefix: riscv64-unknown-elf- # optional
     common_flags: # flags need to be combined together across all packages
@@ -73,33 +73,33 @@ buildconfig:
       description:
 ```
 
-## 除标准的IMAFDC之外的扩展(ARCHEXT)的升级
+## Upgrade of Extensions (ARCHEXT) Beyond the Standard IMAFDC
 
-> 以下示例以Nuclei SDK 0.5.0的evalsoc的npk.yml升级举例， 仅考虑GCC的支持，如果需要考虑CLANG的支持，请参见 SDK中evalsoc的npk.yml的详细变更
+> The following example uses the npk.yml upgrade of evalsoc in Nuclei SDK 0.5.0, considering only GCC support. If you need to consider CLANG support, please refer to the detailed changes of evalsoc's npk.yml in the SDK
 
-在GCC 13中，对RISC-V 指令扩展使用有了很大的变更，具体内容可以查看Nuclei Studio用户手册2.1.4章内容和Nuclei SDK中**ARCH_EXT**说明。
+In GCC 13, there are significant changes to the use of RISC-V instruction extensions. For details, see Section 2.1.4 of the Nuclei Studio User Guide and the **ARCH_EXT** description in Nuclei SDK.
 
-- [Nuclei Studio用户手册](https://www.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202310.pdf)
+- [Nuclei Studio User Guide](https://www.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202310.pdf)
 
-- [ARCH_EXT说明](https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#arch-ext)
+- [ARCH_EXT Description](https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#arch-ext)
 
-升级npk.yml时，如果SDK中使用到了RISC-V 除了标准的**IMAFDC**之外指令扩展，例如**B/P/K/V**， 也需要升级对应的配置。
+When upgrading npk.yml, if the SDK uses RISC-V instruction extensions beyond the standard **IMAFDC**, such as **B/P/K/V**, the corresponding configuration also needs to be upgraded.
 
-在NPK中，RISC-V 指令扩展以是`-march=xxx`的方式传递给Nuclei Studio，Nuclei Studio接收到相关配置，就会存储并应用到编译的过程中。
-以Nuclei SDK中的npk.yml为例，通过下面这段配置我们就可以得到`-march=`的值，不难看出与RISC-V指令扩展相关的是NPK中的变量**nuclei_archext**。
+In NPK, RISC-V instruction extensions are passed to Nuclei Studio in the form of `-march=xxx`. When Nuclei Studio receives the relevant configuration, it stores it and applies it during compilation.
+Taking the npk.yml in Nuclei SDK as an example, the value of `-march=` can be obtained through the configuration below. It is easy to see that what relates to RISC-V instruction extensions is the NPK variable **nuclei_archext**.
 
 ```yaml
-## （为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+## (Some parameters are hidden for the sake of example; define the actual parameters according to your situation)
 ## Build Configuration
 buildconfig:
   - type: gcc
     description: Nuclei RISC-V GNU Toolchain #must
     cross_prefix: riscv-nuclei-elf- # optional
     common_flags: # flags need to be combined together across all packages
-      # 这里 -march 传递的值 就是 nuclei_core.arch 和 nuclei_archext 两个变量拼接而来
-      # 例如 nuclei_core.arch设置为rv32imafdc, nuclei_archext设置为 _zba_zbb_zbc_zbs_xxldspn1x,
-      # 那么 传递的就是 -march=rv32imafdc_zba_zbb_zbc_zbs_xxldspn1x
-      # 如果你的 march是已知和确定的，这里直接就可以给定 -march/-mabi的选项，无需通过 configuration字段来进行传递
+      # The value passed to -march here is concatenated from the two variables nuclei_core.arch and nuclei_archext
+      # For example, if nuclei_core.arch is set to rv32imafdc and nuclei_archext is set to _zba_zbb_zbc_zbs_xxldspn1x,
+      # then what is passed is -march=rv32imafdc_zba_zbb_zbc_zbs_xxldspn1x
+      # If your march is known and fixed, you can directly specify the -march/-mabi options here, without passing them through the configuration field
       - flags: -march=${nuclei_core.arch}$(join(${nuclei_archext},'')) -mabi=${nuclei_core.abi}
     ldflags:
     cflags:
@@ -114,14 +114,14 @@ buildconfig:
       description:
 ```
 
-在旧版的SDK中，nuclei_archext定义的是一个`multicheckbox`，用户可以自己选择，而在新版的SDK中`nuclei_archext`定义的是一个`text`输入框，
-这样用户可以更灵活的使用RISC-V 指令扩展，如果在某些工程或场景下，想要预设一些RISC-V 指令扩展，建议给一个默认值就可以了，可以参考下代的示例代码。
+In the old version of the SDK, nuclei_archext was defined as a `multicheckbox` that users could select by themselves, while in the new version of the SDK, `nuclei_archext` is defined as a `text` input box,
+so that users can use RISC-V instruction extensions more flexibly. If in certain projects or scenarios you want to preset some RISC-V instruction extensions, it is recommended to simply give a default value. You can refer to the sample code below.
 
-- 用于支持**Nuclei RISC-V Toolchain 2022.12**的写法
+- Syntax for supporting **Nuclei RISC-V Toolchain 2022.12**
 
 ```yaml
-  ## 旧版的SDK中，nuclei_archext定义的是一个multicheckbox
-  ##（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+  ## In the old version of the SDK, nuclei_archext was defined as a multicheckbox
+  ## (Some parameters are hidden for the sake of example; define the actual parameters according to your situation)
   nuclei_archext:
     default_value: []
     type: multicheckbox
@@ -136,10 +136,10 @@ buildconfig:
         description: Vector Extension
 ```
 
-- 用于支持**Nuclei RISC-V Toolchain 2023.10**的写法
+- Syntax for supporting **Nuclei RISC-V Toolchain 2023.10**
 
 ```yaml
-    ## 新版的SDK中nuclei_archext定义的是一个text输入框
+    ## In the new version of the SDK, nuclei_archext is defined as a text input box
     ## Package Configurations
     configuration:
     nuclei_archext:
@@ -153,21 +153,21 @@ buildconfig:
         description: Nuclei ARCH Extensions
 ```
 
-最终显示创建项目的时候显示效果如下
+The final display effect when creating a project is as follows
 
 ![](asserts/images/5/create_project.png)
 
 
-## libncrt的升级
+## libncrt Upgrade
 
-libncrt较之前也有了些许变化，在NPK中使用libncrt之前，新旧版SDK中都是一样的在**conifguration**中定义了一个变量`stdclib`，
-它的值是一个下拉框，可以选择不同的值。不同点是在得到`stdclib`后，在`common_flags`或者其它地方使用`stdclib`时略有不同。
+libncrt has also changed somewhat compared to before. Before using libncrt in NPK, both the old and new versions of the SDK define a variable `stdclib` in **conifguration**,
+whose value is a dropdown box that allows selecting different values. The difference lies in how `stdclib` is used in `common_flags` or elsewhere after it is obtained.
 
-关于`stdclib`的一些说明，可以参见 [这里](https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#stdclib)
+For some notes about `stdclib`, see [here](https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#stdclib)
 
 ```yaml
-## 定义stdclib变量
-##（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+## Define the stdclib variable
+## (Some parameters are hidden for the sake of example; define the actual parameters according to your situation)
 ## Package Configurations
 configuration:
   stdclib:
@@ -200,15 +200,15 @@ configuration:
         description: no std c library will be used, not pass any --specs options
 ```
 
-在新版的SDK中，如果使用`--specs=libncrt_xxx.specs` 或者链接库里面包含 `-lncrt_xxx` （表示采用libncrt c库），
-则需变更为 `-lncrt_xxx -lfileops_uart -lheapops_basic`，这也是旧SDK变更为支持GCC 13的新SDK的原则。
+In the new version of the SDK, if `--specs=libncrt_xxx.specs` is used or the linked libraries contain `-lncrt_xxx` (indicating the use of the libncrt C library),
+it needs to be changed to `-lncrt_xxx -lfileops_uart -lheapops_basic`. This is also the principle for changing an old SDK into a new SDK that supports GCC 13.
 
-下面配置为在旧版SDK中的npk变量stdclib,当变量stdclib以libncrt开头时，会直接定义一个`--specs=${stdclib}.specs`，
-按照上面我们说的原则，这里应该变成设置`-l$(subst(${stdclib},lib,)) -lfileops_uart -lheapops_basic`，所以在新版SDK中的写法就变成了下面的配置方式。
+The configuration below shows the npk variable stdclib in the old SDK. When the variable stdclib starts with libncrt, a `--specs=${stdclib}.specs` is defined directly.
+According to the principle we mentioned above, this should be changed to setting `-l$(subst(${stdclib},lib,)) -lfileops_uart -lheapops_basic`, so the syntax in the new SDK becomes the configuration below.
 
 ```yaml
-## 在旧版SDK中使用stdclib变量
-##（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+## Using the stdclib variable in the old SDK
+## (Some parameters are hidden for the sake of example; define the actual parameters according to your situation)
 ## Build Configuration
 buildconfig:
   - type: gcc
@@ -230,11 +230,11 @@ buildconfig:
       description:
 ```
 
-**转变为**
+**Changed to**
 
 ```yaml
-## 在新版SDK中使用stdclib变量
-##（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+## Using the stdclib variable in the new SDK
+## (Some parameters are hidden for the sake of example; define the actual parameters according to your situation)
 ## Build Configuration
 buildconfig:
   - type: gcc
@@ -260,11 +260,11 @@ buildconfig:
 
 ```
 
-## Link Warning的消除
+## Eliminating Link Warnings
 
-在Nuclei Studio 2023.10中集成的GCC 13,在使用过程中会有warning，链接选项增加一个`-Wl,--no-warn-rwx-segments`可以隐藏warning。
+In Nuclei Studio 2023.10, the integrated GCC 13 produces warnings during use. Adding the link option `-Wl,--no-warn-rwx-segments` can hide the warnings.
 
-具体可以参考以下配置（为了方便举例，隐藏了部分参数，具体参数根据实际情况定义）
+For details, refer to the following configuration (some parameters are hidden for the sake of example; define the actual parameters according to your situation)
 
 ```yaml
 ## Build Configuration
@@ -275,7 +275,7 @@ buildconfig:
     cross_prefix: riscv64-unknown-elf- # optional
     common_flags: # flags need to be combined together across all packages
     ldflags:
-       # 用于消除gcc13链接阶段的warning
+       # Used to eliminate warnings in the gcc13 linking stage
        - flags: -Wl,--no-warn-rwx-segments
     cflags:
     asmflags:
@@ -290,21 +290,21 @@ buildconfig:
 ```
 
 
-## 关于Nuclei SDK 0.5.0 npk.yml 详细变更
+## Detailed Changes of npk.yml in Nuclei SDK 0.5.0
 
-关于支持Nuclei Studio + Nuclei RISC-V Toolchain 2023.10的npk.yml变更，可以参考nuclei-sdk 0.5.0的变更。
+For the npk.yml changes supporting Nuclei Studio + Nuclei RISC-V Toolchain 2023.10, you can refer to the changes in nuclei-sdk 0.5.0.
 
-- gd32vf103的变化 `git diff 0.4.1..0.5.0 SoC/gd32vf103/***npk.yml`
+- Changes for gd32vf103: `git diff 0.4.1..0.5.0 SoC/gd32vf103/***npk.yml`
 
-- evalsoc的变化: `git diff 0.4.1..0.5.0 SoC/evalsoc/***npk.yml`
+- Changes for evalsoc: `git diff 0.4.1..0.5.0 SoC/evalsoc/***npk.yml`
 
-- NMSIS的变化: `git diff 0.4.1..0.5.0 NMSIS/***npk.yml`
+- Changes for NMSIS: `git diff 0.4.1..0.5.0 NMSIS/***npk.yml`
 
-- application的变化: `git diff 0.4.1..0.5.0 application/***npk.yml`
+- Changes for application: `git diff 0.4.1..0.5.0 application/***npk.yml`
 
-- RTOS的变化: `git diff 0.4.1..0.5.0 OS/***npk.yml`
+- Changes for RTOS: `git diff 0.4.1..0.5.0 OS/***npk.yml`
 
-执行查看代码变更命令方法如下
+The commands to view the code changes are as follows
 
 ~~~shell
 git clone https://github.com/Nuclei-Software/nuclei-sdk/

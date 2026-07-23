@@ -1,8 +1,8 @@
 # Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available
 
-## 问题说明
+## Problem Description
 
-在NucleiStudio中使用OpenOCD调试hbird/hbirdv2处理器（不支持硬件断点）或者 Nuclei 100 系列的处理器时，当程序运行在Flash/FlashXip下时，会报Error。
+When using OpenOCD in NucleiStudio to debug hbird/hbirdv2 processors (which do not support hardware breakpoints) or the Nuclei 100 series processors, an Error is reported when the program runs from Flash/FlashXip.
 ```
 Error: Couldn't find an available hardware trigger.
 Error: can't add breakpoint: resource not available
@@ -12,8 +12,8 @@ Error: can't add breakpoint: resource not available
 
 ![](asserts/images/13/13-2.png)
 
-是因为所运行的CPU不支持硬件断点，导致程序运行在Flash上的时候，IDE调试功能无法正常工作，这个是IDE会需要打一个临时断点的缘故导致的。如果需要下载并运行程序，切换到Run运行模式可以正常运行程序。
+This happens because the CPU being run does not support hardware breakpoints, which prevents the IDE's debug functionality from working properly when the program runs from Flash — the IDE needs to set a temporary breakpoint. If you only need to download and run the program, switch to Run mode and the program will run normally.
 
-## 解决方案
+## Solution
 
-当在调试此类型处理器时，如果需要调试的话，就需要将程序编译运行在RAM上。
+When debugging this type of processor, if debugging is required, the program must be compiled to run from RAM.

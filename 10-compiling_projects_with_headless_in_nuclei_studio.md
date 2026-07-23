@@ -1,77 +1,77 @@
-# 在Nuclei Studio下用命令行编译工程
+# Compiling Projects from the Command Line in Nuclei Studio
 
-## 问题说明
+## Problem Description
 
-很多客户咨询怎么在Nuclei Studio上使用IDE的无头Headless模式来构建和编译工程。
+Many customers ask how to use the IDE's headless mode in Nuclei Studio to build and compile projects.
 
-## 解决方案
+## Solution
 
-> 所有以 ``NucleiStudio.exe`` 开头的命令行执行时，会有一个弹框显示执行日志，如果需屏蔽弹框，可以将命令改为 ``eclipsec.exe``
+> When running any command line that starts with ``NucleiStudio.exe``, a pop-up window appears showing the execution log. To suppress this pop-up, change the command to ``eclipsec.exe``
 
-> 以下文档是在**2024.06**版本的IDE中实测，作为补充说明。
+> The following documentation was tested with the **2024.06** version of the IDE and is provided as supplementary information.
 
-因NucleiStudio 2024.06版运行在java 21的环境上，实际应用中很多用户的本地没有java 21环境，故在运行命令时发现在执行该命令时，因找不到对应的jre而报错。为解决上述问题，可以在本地机器上安装java 21的环境（如何安装用户可以自行搜索相关教程），也可以在命令行中通过 `-vm` 参数指定NucleiStudio 2024.06中自带的jre的路径。
+Because NucleiStudio 2024.06 runs on a Java 21 environment, and many users do not have a Java 21 environment installed locally, running the command may fail with an error because the corresponding JRE cannot be found. To resolve this issue, you can either install a Java 21 environment on your local machine (users can search for relevant installation tutorials themselves), or use the `-vm` parameter on the command line to specify the path of the JRE bundled with NucleiStudio 2024.06.
 
 ~~~shell
 NucleiStudio.exe -vm "<user_nucleistudio_path>/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin" --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug -Debug
 ~~~
 
-提供一组批量导入工程并批量编译工程的命令
+The following is a set of commands for batch importing and batch building projects
 
-创建workspace并批量导入工程
+Create a workspace and batch import projects
 
 ~~~shell
 NucleiStudio.exe -vm "<user_nucleistudio_path>/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin"  --launcher.suppressErrors -noSplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data $CI_PROJECT_DIR -importAll $CI_PROJECT_DIR
 ~~~
 
-编译这组导入的工程
+Build the imported projects
 
 ~~~shell
 NucleiStudio.exe -vm "<user_nucleistudio_path>/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin" --launcher.suppressErrors -noSplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data $CI_PROJECT_DIR -build ${TARGET_PHASE}_Project/Debug
 ~~~
 
-> 以下文档是在**2023.10**版本的IDE中实测，其他版本可能需要做一些调整适配才可以正常工作。
+> The following documentation was tested with the **2023.10** version of the IDE; other versions may require some adjustments to work properly.
 
-Nuclei Studio是图形化（GUI）的代码编写工具，但是在某些特定的场景下，用户需要通过命令行来快速编译工程，
-在Nuclei Studio中，只需要一行命令就可以实现。下载好Nuclei Studio后，在Nuclei Studio的workspace已经创建好了需要编译的工程`test`,
-**同时Nuclei Studio已退出运行**, 执行以下命令就可以完成工程的编译。
+Nuclei Studio is a graphical (GUI) code editing tool, but in certain scenarios users need to build projects quickly from the command line.
+In Nuclei Studio, this can be done with a single command. After downloading Nuclei Studio, make sure the project `test` to be built has already been created in the Nuclei Studio workspace,
+**and that Nuclei Studio is not running**, then execute the following command to build the project.
 
-> **提醒**: 请确保 NucleiStudio的PATH已经设置到系统中，这样 `NucleiStudio.exe`/`NucleiStudio` 才可以被执行。
+> **Note**: Make sure the NucleiStudio PATH has been added to the system, so that `NucleiStudio.exe`/`NucleiStudio` can be executed.
  
-> **下面以Windows系统举例**
+> **The following example uses Windows**
 
 ~~~shell
 NucleiStudio.exe --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug -Debug
 ~~~
 
-> `--launcher.suppressErrors` 用来屏蔽构建出错时，Eclipse会出错弹窗.
+> `--launcher.suppressErrors` is used to suppress the Eclipse error pop-up window when a build error occurs.
 
-如果需要在**2022.12版本**的IDE上进行使用，则需要先设置好toolchain目录下`gcc/bin`和`build-tools/bin`的路径到系统PATH中，然后将`NucleiStudio.exe`换成`eclipsec.exe`
+If you need to use the **2022.12 version** of the IDE, you must first add the paths of `gcc/bin` and `build-tools/bin` under the toolchain directory to the system PATH, and then replace `NucleiStudio.exe` with `eclipsec.exe`
 
-针对**2022.12版本**，命令举例如下:
+For the **2022.12 version**, the example commands are as follows:
 
 ~~~shell
-# 这里请修改成自己的IDE路径
+# Change this to your own IDE path
 set NSIDE=D:\NucleiStudio_IDE_202212-win64\NucleiStudio
-# 必须设置好系统PATH
+# The system PATH must be set correctly
 set PATH=%NSIDE%\toolchain\gcc\bin;%NSIDE%\toolchain\build-tools\bin;%PATH%
-# 注意NucleiStudio.exe换成了eclipsec.exe
+# Note that NucleiStudio.exe is replaced with eclipsec.exe
 %NSIDE%\eclipsec.exe --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data C:\NucleiStudio_workspace -cleanBuild test/Debug
 ~~~
 
-> 这个**2023.10**版本的举例的命令 会 弹出一个额外的命令行窗口进行输出。
+> The example command for the **2023.10** version opens an additional command-line window for output.
 
 ![Nuclei Studio Command Line Build](asserts/images/10/wx_20231208153525.png)
 
-- `NucleiStudio.exe`：该参数是Nuclei Studio的启动应用，在Nuclei Studio的安装目录下。
-- `--launcher.suppressErrors`：该参数是用于抑制Nuclei Studio启动时的错误信息。
-- `-nosplash`：该参数用于关闭启动时的 Splash 屏幕。这意味着在启动 Eclipse 时不会显示一个短暂的加载屏幕。
-- `-application`：该参数用于指定要运行的应用程序。在这里，`org.eclipse.cdt.managedbuilder.core.headlessbuild`
-   是指  Headless 构建应用程序。该应用程序用于执行构建操作，而不需要图形用户界面（GUI）。
-- `-data`：该参数用于指定工作区路径。它告诉 Nuclei Studio 将数据存储在哪里，例如工作空间、项目和文件。
-- `-build`：该参数用于指定需要编译的工程，`test/Debug`，表示的是编译test工程中的Debug配置；
-   一般Nuclei Studio创建的工程有Debug、Release两套配置，如果不指定配置，这个默认会编译出Debug、Release，
-   可以看到编译后工程目录下有Debug、Release两个目录。
+- `NucleiStudio.exe`: This is the Nuclei Studio launcher application, located in the Nuclei Studio installation directory.
+- `--launcher.suppressErrors`: This parameter is used to suppress error messages when Nuclei Studio starts.
+- `-nosplash`: This parameter disables the splash screen at startup. This means no brief loading screen is displayed when Eclipse starts.
+- `-application`: This parameter specifies the application to run. Here, `org.eclipse.cdt.managedbuilder.core.headlessbuild`
+   refers to the headless build application. This application performs build operations without a graphical user interface (GUI).
+- `-data`: This parameter specifies the workspace path. It tells Nuclei Studio where to store data, such as workspaces, projects, and files.
+- `-build`: This parameter specifies the project to build; `test/Debug` means building the Debug configuration of the test project;
+   projects created by Nuclei Studio generally have two configurations, Debug and Release. If no configuration is specified, both Debug and Release are built by default,
+   and you can see the Debug and Release directories under the project directory after the build.
 
 ~~~
     ├─.settings
@@ -85,10 +85,10 @@ set PATH=%NSIDE%\toolchain\gcc\bin;%NSIDE%\toolchain\build-tools\bin;%PATH%
         └─nuclei_sdk
 ~~~
 
-- `-cleanBuild`：该参数与`-build`类似，只是在编译之前，会清空清理工作空间。建议使用`-cleanBuild`。
-- `-Debug`：该参数用于指定编译过程是Debug模式，在编译时会输出详细的编译过程日志。如果不带此参数，命令将静默执行，没有任何输出。
+- `-cleanBuild`: This parameter is similar to `-build`, except that it cleans the workspace before building. Using `-cleanBuild` is recommended.
+- `-Debug`: This parameter specifies that the build process runs in Debug mode, outputting detailed build logs during compilation. Without this parameter, the command runs silently with no output.
 
-**以下为上面举例命令的输出内容，以供参考**
+**The following is the output of the example command above, for reference**
 
 ~~~
 17:00:17 **** Clean-only build of configuration Debug for project test ****
@@ -287,7 +287,7 @@ Finished building: test.lst
 17:00:23 Build Finished. 0 errors, 0 warnings. (took 5s.75ms)
 ~~~
 
-以下为`org.eclipse.cdt.managedbuilder.core.headlessbuild`所提供的参数，以供参考。
+The following are the parameters provided by `org.eclipse.cdt.managedbuilder.core.headlessbuild`, for reference.
 
 ~~~
    -data       {/path/to/workspace}
