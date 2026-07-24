@@ -31,7 +31,7 @@ according to the address mapping of evalsoc.
 └── ovlymgr.h
 ```
 
-The original code can be obtained from [bminor/binutils-gdb/gdb/testsuite/gdb.base](https://github.com/bminor/binutils-gdb/tree/master/gdb/testsuite/gdb.base).
+The original code can be obtained from [gdb/testsuite/gdb.base](https://github.com/riscv-mcu/riscv-binutils-gdb/tree/nuclei/binutils-2_44/gdb/testsuite/gdb.base).
 
 ### Overlay Layout
 
