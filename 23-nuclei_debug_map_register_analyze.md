@@ -1,34 +1,34 @@
-# 如何使用芯来提供的DebugMap寄存器分析错误现场
+# How to Use the DebugMap Registers Provided by Nuclei to Analyze Error Scenarios
 
-## 首先需要确定硬件支持DebugMap功能
+## First, Confirm That the Hardware Supports the DebugMap Feature
 
-core的顶层有一个信号叫做**dm_map_enable**，这个信号接1表示使能DebugMap功能
+There is a signal called **dm_map_enable** at the top level of the core. Tying this signal to 1 enables the DebugMap feature.
 
-> 详情参见 *Nuclei_CPU_Debug_Function_Specification.pdf* 文档的 *Debug Control Interface* 部分内容
+> For details, refer to the *Debug Control Interface* section of the *Nuclei_CPU_Debug_Function_Specification.pdf* document
 
-## 什么是DebugMap寄存器
+## What Are DebugMap Registers
 
-DebugMap功能就是当Core被hang的时候可以通过OpenOCD查看core内部的状态，将若干内部状态映射到DM寄存器中，目前只实现了下面三个状态的映射：
+The DebugMap feature allows you to inspect the internal state of the Core via OpenOCD when the Core is hung. Several internal states are mapped into DM registers. Currently, only the following three states are mapped:
 
 - 00: Commit PC(i0 for dual issue)
 - 16: ICache miss address(ICache is supported)
 - 32: DCache address waiting for retire(DCache is supported)
 
-> 详情参见 *Nuclei_CPU_Debug_Function_Specification.pdf* 文档的 *CFR0 (Custom Feature Register0)* 部分内容
+> For details, refer to the *CFR0 (Custom Feature Register0)* section of the *Nuclei_CPU_Debug_Function_Specification.pdf* document
 
-## OpenOCD里DebugMap的输出信息
+## DebugMap Output Information in OpenOCD
 
-在使用OpenOCD连接FPGA/芯片时，经常会看到类似下面这样的输出信息：
+When using OpenOCD to connect to an FPGA/chip, you will often see output similar to the following:
 
 ```
 Info : coreid=0, nuclei debug map reg 00: 0xa00003ac, 16: 0xa0003240, 32: 0x10003014
 ```
 
-- **coreid** 表示当前输出的是哪个core的debug-map信息
+- **coreid** indicates which core's debug-map information is currently being output
 
-## 可能出现的错误现场
+## Possible Error Scenarios
 
-错误现场一：
+Error scenario 1:
 
 ```
 Info : Using libusb driver
@@ -50,7 +50,7 @@ Info : Listening on port 22800 for gdb connections
 Error: Target not examined yet
 ```
 
-错误现场二：
+Error scenario 2:
 
 ```
 Info : libusb_open() failed with LIBUSB_ERROR_NOT_FOUND
@@ -75,18 +75,18 @@ Error: Timed out after 2s waiting for busy to go low (abstractcs=0x2001004). Inc
 Error: Abstract command ended in error 'busy' (abstractcs=0x2001104)
 ```
 
-## 如何正确利用DebugMap分析错误现场
+## How to Correctly Use DebugMap to Analyze Error Scenarios
 
-- 在出现Core被hang的现象之后，需要在不断电、不复位的情况下再次使用OpenOCD连接FPGA/芯片，此时OpenOCD输出的DebugMap才可被用于分析错误现场
-- “00”：当前Commit的PC——用来指示最近正在Commit的PC，通过此信息可以大概推测CPU跑到了什么PC位置
-- “16”：配置了ICache的话，记录ICache最近发出去的地址（暂时没有记录ILM的地址），理论上ICache有2个Oustanding，记录的是那个最先发出去还没有返回Response的地址
-- “32”：配置了DCache 的话，记录DCache最近发出去的地址（DLM、Mem也可以被记录，暂时没有记录PPI/FIO发出去的地址），理论上DCache有很多个Oustanding，记录的是那个最先发出去还没有返回Response的地址
+- After the Core-hang symptom occurs, you need to use OpenOCD to connect to the FPGA/chip again without power-cycling or resetting. Only the DebugMap output at this point can be used to analyze the error scenario.
+- "00": The currently committed PC — indicates the most recently committed PC. From this information, you can roughly infer which PC location the CPU has reached.
+- "16": If ICache is configured, this records the most recent address issued by the ICache (ILM addresses are not recorded for now). In theory, the ICache has 2 outstanding transactions; what is recorded is the address of the earliest issued transaction that has not yet returned a response.
+- "32": If DCache is configured, this records the most recent address issued by the DCache (DLM and Mem can also be recorded; addresses issued to PPI/FIO are not recorded for now). In theory, the DCache has many outstanding transactions; what is recorded is the address of the earliest issued transaction that has not yet returned a response.
 
-## 通过OpenOCD读取其他DebugMap寄存器
+## Reading Other DebugMap Registers via OpenOCD
 
-OpenOCD里有一组 *nuclei expose_cpu_core* *nuclei examine_cpu_core* 命令，可以使用这两个命令读取其他DebugMap寄存器, 详细参见 https://doc.nucleisys.com/nuclei_tools/openocd/intro.html#debug-map-feature
+OpenOCD provides a set of commands, *nuclei expose_cpu_core* and *nuclei examine_cpu_core*, which can be used to read other DebugMap registers. For details, see https://doc.nucleisys.com/nuclei_tools/openocd/intro.html#debug-map-feature
 
-> OpenOCD里的命令实现及使用方法 [source code](https://github.com/riscv-mcu/riscv-openocd/blob/be0e02e2f4b74fc33e7617154791570e74fde2d0/src/target/riscv/nuclei_riscv.c#L984-L999)
+> Command implementation and usage in OpenOCD: [source code](https://github.com/riscv-mcu/riscv-openocd/blob/be0e02e2f4b74fc33e7617154791570e74fde2d0/src/target/riscv/nuclei_riscv.c#L984-L999)
 
-- 注意 *nuclei expose_cpu_core* 命令需要在**init**命令之前使用
-- *nuclei examine_cpu_core* 在**init**命令之后使用，也可以在gdb/telent连接上后使用，注意gdb给openocd发送命令需要使用monitor关键词 *monitor nuclei examine_cpu_core*
+- Note that the *nuclei expose_cpu_core* command must be used before the **init** command
+- *nuclei examine_cpu_core* is used after the **init** command, and can also be used after a gdb/telnet connection is established. Note that sending commands from gdb to OpenOCD requires the monitor keyword: *monitor nuclei examine_cpu_core*

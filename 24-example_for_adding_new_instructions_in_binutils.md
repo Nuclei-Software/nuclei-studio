@@ -1,16 +1,16 @@
-在binutils中新增自定义汇编指令教程
+Tutorial for Adding Custom Assembly Instructions in binutils
 ======================================
 
-以下皆以32位指令为例说明
+The following examples all use 32-bit instructions.
 
-自定义扩展名的识别
+Recognizing the Custom Extension Name
 ----------------
 
-以下以`xnice`扩展为例
+The following uses the `xnice` extension as an example.
 
-文件:`bfd\elfxx-riscv.c`    
+File: `bfd\elfxx-riscv.c`    
 
-`riscv_supported_vendor_x_ext[]` 函数:
+`riscv_supported_vendor_x_ext[]` function:
 
 ```
 static struct riscv_supported_ext riscv_supported_vendor_x_ext[] ={
@@ -18,10 +18,10 @@ static struct riscv_supported_ext riscv_supported_vendor_x_ext[] ={
 }
 
 ```
-Tips:该函数负责添加扩展名称和版本号，其中前面两位`1,0`为该扩展版本号
+Tips: This function is responsible for adding the extension name and version number, where the first two values `1,0` are the extension's version number.
 
 
-`riscv_multi_subset_supports` 函数:
+`riscv_multi_subset_supports` function:
 
 ```
 /* Each instuction is belonged to an instruction class INSN_CLASS_*.
@@ -39,9 +39,9 @@ riscv_multi_subset_supports (riscv_parse_subset_t *rps,
 }
 
 ```
-Tips: `switch`里面是要添加的内容，添加了`xnice`扩展的指令所对应的`INSN_CLASS_XNICE`与`xnice`扩展之间的联系
+Tips: The content to be added goes inside the `switch` statement, establishing the association between `INSN_CLASS_XNICE`, which corresponds to the instructions of the added `xnice` extension, and the `xnice` extension itself.
 
-`riscv_implicit_subsets[]` 函数:(可选)
+`riscv_implicit_subsets[]` function: (optional)
 
 ```
 /* Please added in order since this table is only run once time.  */
@@ -50,9 +50,9 @@ static struct riscv_implicit_subset riscv_implicit_subsets[] ={
 }
 
 ```
-Tips:该函数控制自定义的`xnice`扩展是否依赖其他扩展，如果不依赖，则不需要添加。假设依赖`zve32x`扩展，则需要在该函数内按上面形式添加依赖关系，若依赖多个扩展，则在`zve32x`扩展后面继续添加
+Tips: This function controls whether the custom `xnice` extension depends on other extensions. If there are no dependencies, nothing needs to be added. Assuming it depends on the `zve32x` extension, you need to add the dependency in the format shown above within this function. If it depends on multiple extensions, continue adding them after the `zve32x` extension.
 
-文件 `include\opcode\riscv.h`
+File `include\opcode\riscv.h`
 
 ```
 enum riscv_insn_class
@@ -60,20 +60,20 @@ enum riscv_insn_class
   INSN_CLASS_XNICE,
 }
 ```
-Tips:该文件主要负责在`riscv_insn_class`枚举类中，对`INSN_CLASS_XNICE`进行声明
+Tips: This file is mainly responsible for declaring `INSN_CLASS_XNICE` in the `riscv_insn_class` enumeration.
 
-自定义汇编指令识别
+Recognizing Custom Assembly Instructions
 ----------------
 
-以下以新增一条标准R类型`nice`指令为例
+The following uses adding a standard R-type `nice` instruction as an example.
 
-1、添加指令编码
+1. Add the instruction encoding
 
-假设该nice指令汇编格式为`nice rd, rs1, rs2`, 并且使用的是RISC-V预留的custom3区域的编码空间，其编码为： 
+Assume the assembly format of this nice instruction is `nice rd, rs1, rs2`, and it uses the encoding space of the RISC-V reserved custom3 region. Its encoding is: 
 
 ![alt text](asserts/images/24/24-1.png)
 
-- 生成编译器所需的`opcode`宏(推荐使用`riscv-opcodes` https://github.com/riscv/riscv-opcodes/tree/master 仓库)   
+- Generate the `opcode` macros required by the compiler (it is recommended to use the `riscv-opcodes` repository at https://github.com/riscv/riscv-opcodes/tree/master)   
 
 ```
 git clone https://github.com/riscv/riscv-opcodes.git
@@ -89,21 +89,21 @@ cd ../../
 make EXTENSIONS='unratified/rv_xnice'
 ```
 
-上述步骤后得到了`opcode`宏，在 `riscv-opcodes/encoding.out.h` 文件中, 如下所示:
+After the above steps, the `opcode` macros are obtained in the `riscv-opcodes/encoding.out.h` file, as shown below:
 
 ```
 #define MATCH_NICE 0xba00107b
 #define MASK_NICE 0xfe00707f
 ```
-注意：也可以根据编码手动生成宏，规则为：`MATCH_NICE` 的编码是未定义位置全为0，其余位置不变。`MASK_NICE` 的编码是未定义位置全为0，其余位置全为1.
+Note: You can also generate the macros manually based on the encoding. The rule is: for the encoding of `MATCH_NICE`, all undefined bit positions are 0 and the remaining positions stay unchanged. For the encoding of `MASK_NICE`, all undefined bit positions are 0 and all remaining positions are 1.
 
-- 在 `include\opcode\riscv-opc.h` 文件中，添加上述生成的宏
+- In the `include\opcode\riscv-opc.h` file, add the macros generated above.
 
-2、添加扩展与扩展指令编码之间的联系
+2. Add the association between the extension and the extension's instruction encodings
 
-文件：`opcodes\riscv-opc.c`
+File: `opcodes\riscv-opc.c`
 
-`riscv_opcodes[]`函数:
+`riscv_opcodes[]` function:
 ```
 const struct riscv_opcode riscv_opcodes[] =
 {
@@ -111,17 +111,18 @@ const struct riscv_opcode riscv_opcodes[] =
 {"xnice",  0, INSN_CLASS_XNICE,  "d,s,t", MATCH_XNICE, MASK_XNICE, match_opcode, 0 },
 }
 ```
-Tips: 第一个`0`代表该指令对`xlen`没有要求。`d,s,t` 分别代表`rd,rs1,rs2`, 其中对应的映射关系可在 `gas/config/tc-riscv.c` 文件 `validate_riscv_insn`函数中查找
+Tips: The first `0` means this instruction has no `xlen` requirement. `d,s,t` correspond to `rd,rs1,rs2` respectively; the corresponding mapping relationships can be found in the `validate_riscv_insn` function in the `gas/config/tc-riscv.c` file.
 
-使用说明
+Usage Instructions
 -------
-使用时需要将`xnice`通过`-march`选项传递给编译器，例如`-march=rv32imafdc_xnice`
 
-参考链接:
+When using it, pass `xnice` to the compiler through the `-march` option, for example `-march=rv32imafdc_xnice`.
+
+References:
 --------
 
-修改binutils在RISC-V上添加汇编指令:  
+Modifying binutils to add assembly instructions on RISC-V:  
 https://blog.cyyself.name/add-compile-instr-for-riscv/
 
-nuclei自定义vpu指令的扩展识别及汇编实现:  
+Extension recognition and assembly implementation of Nuclei custom VPU instructions:  
 https://github.com/riscv-mcu/riscv-binutils-gdb/commit/c8806f4bd8c1a1673ec61ad3badfc3d490fa52f7   

@@ -1,84 +1,84 @@
-# 如何同时使用多个蜂鸟调试器进行调试
+# How to Debug with Multiple Hummingbird Debuggers Simultaneously
 
-## 问题说明
+## Problem Description
 
-芯来科技的蜂鸟调试器采用[FTDI-FT2232H](https://ftdichip.cn/Products/ICs/FT2232H.html)作为USB接口转换芯片。
-在同时连接多个蜂鸟调试器的情况下，如何区分不同的调试器？如何配置OpenOCD识别指定的蜂鸟调试器？
+Nuclei System Technology's Hummingbird Debugger uses the [FTDI-FT2232H](https://ftdichip.cn/Products/ICs/FT2232H.html) as its USB interface bridge chip.
+When multiple Hummingbird Debuggers are connected at the same time, how can you distinguish between different debuggers? How do you configure OpenOCD to recognize a specific Hummingbird Debugger?
 
-## 解决方案
+## Solution
 
-FT2322H提供了一个可配置的串号（Serial Number），可用于区分不同的调试器。
+The FT2232H provides a configurable Serial Number that can be used to distinguish between different debuggers.
 
-### 下载FT_PROG
+### Download FT_PROG
 
-FT_PROG是一个用于烧写FT2322H片内的EEPROM的工具。可用于查看和修改FT2322H的串号。
+FT_PROG is a tool for programming the EEPROM inside the FT2232H. It can be used to view and modify the FT2232H's Serial Number.
 
-FT_PROG下载地址：[https://ftdichip.com/utilities/](https://ftdichip.com/utilities/)
+FT_PROG download page: [https://ftdichip.com/utilities/](https://ftdichip.com/utilities/)
 
-从这个页面中可以找到下载链接，如下图所示：
+You can find the download link on this page, as shown in the figure below:
 
 ![ft_prog](asserts/images/27/27-1.png)
 
-下载并安装后，会在桌面生成FT_Prog工具的图标。
+After downloading and installing, an FT_Prog tool icon will be created on the desktop.
 
-### 查看串号
+### View the Serial Number
 
-使用FT_PROG工具，可以查看FT2322H的串号。
+Using the FT_PROG tool, you can view the FT2232H's Serial Number.
 
-1. **连接蜂鸟调试器** 建议在无法区分多个蜂鸟调试器的情况下，先只连接一个蜂鸟调试器。
-2. **打开FT_PROG工具** 点击FT_PROG图标打开工具。
-3. **扫描设备** 点击菜单栏`DEVICES`中的`Scan and Parse`，扫描已连接的蜂鸟调试器。
+1. **Connect the Hummingbird Debugger** If you cannot distinguish between multiple Hummingbird Debuggers, it is recommended to connect only one Hummingbird Debugger first.
+2. **Open the FT_PROG tool** Click the FT_PROG icon to open the tool.
+3. **Scan for devices** Click `Scan and Parse` in the `DEVICES` menu to scan for connected Hummingbird Debuggers.
 
   ![scan_device](asserts/images/27/27-2.png)
 
-4. **查看串号** 通过`USB String Descriptors`中的`Serial Number`可以查看蜂鸟调试器的串号。
+4. **View the Serial Number** You can view the Hummingbird Debugger's Serial Number under `Serial Number` in the `USB String Descriptors` section.
 
   ![serial_number](asserts/images/27/27-3.png)
 
-### 修改串号
+### Modify the Serial Number
 
-在查看串号的页面可以修改蜂鸟调试器的串号。
+You can modify the Hummingbird Debugger's Serial Number on the same page where you view it.
 
-比如下图中，我将原来的串号`FT7DI6ZK`改成了`FT7DI6ZB`
+For example, in the figure below, I changed the original Serial Number `FT7DI6ZK` to `FT7DI6ZB`
 
 ![modify_serial_number](asserts/images/27/27-4.png)
 
-再通过菜单栏`DEVICES`中的`Program`选项，可以将修改后的串号写入到FT2322H的EEPROM中。
+Then, using the `Program` option in the `DEVICES` menu, you can write the modified Serial Number into the FT2232H's EEPROM.
 
 ![program](asserts/images/27/27-5.png)
 
-**注意**：多个蜂鸟调试器需要分别设置不同的串号来进行区分。
+**Note**: Multiple Hummingbird Debuggers must be assigned different Serial Numbers to distinguish between them.
 
-### 更新OpenOCD配置
+### Update the OpenOCD Configuration
 
-在使用Nuclei FPGA Evaluation Board时，打开Nuclei Studio中的工程OpenOCD配置文件，可以看到如下内容：
+When using the Nuclei FPGA Evaluation Board, open the project's OpenOCD configuration file in Nuclei Studio, and you will see the following content:
 
 ![openocd_config](asserts/images/27/27-6.png)
 
 #### Linux
 
-修改`openocd_evalsoc.cfg`文件，即根据图中红框中的说明进行修改：
+Modify the `openocd_evalsoc.cfg` file according to the instructions in the red box in the figure:
 
 ```
-# 注意要去掉adapter serial前面的注释符号 #
+# Note: remove the comment symbol # before adapter serial
 adapter serial "<Serial Number>"
 ```
 
-其中的`<Serial Number>`需要替换成实际的串号。
+Replace `<Serial Number>` with the actual Serial Number.
 
-修改后的工程即可使用指定串号的蜂鸟调试器进行调试。
+Once modified, the project can be debugged using the Hummingbird Debugger with the specified Serial Number.
 
 #### Windows
 
-**注意**：在Windows系统下，需要在实际的串号后加上`A`才是有效的设置。
+**Note**: On Windows, you need to append `A` to the actual Serial Number for the setting to be valid.
 
-例如实际的串号是`FT7DI6ZB`，那么OpenOCD的配置文件需要添加如下设置：
+For example, if the actual Serial Number is `FT7DI6ZB`, the OpenOCD configuration file needs the following setting:
 
 ```
 adapter serial "FT7DI6ZBA"
 ```
 
-## 参考资料
+## References
 
 - [Nuclei Studio FAQs —— How to select correct FTDI debugger?](https://doc.nucleisys.com/nuclei_sdk/faq.html#how-to-select-correct-ftdi-debugger)
 - [FTDI Utilities](https://ftdichip.com/utilities/)

@@ -1,46 +1,46 @@
-# Nuclei SDK基于evalsoc快速适配customsoc
+# Quick Porting from evalsoc to customsoc Based on Nuclei SDK
 
-## 方案说明
+## Overview
 
-Nuclei Eval SoC(简称evalsoc)是芯来科技提供的一款用于评估芯来CPU的SoC，具有On-Chip SRAMs，UART, SPI等；
+Nuclei Eval SoC (evalsoc for short) is a SoC provided by Nuclei System Technology for evaluating Nuclei CPUs. It features On-Chip SRAMs, UART, SPI, and more.
 
-[Nuclei SDK][1]和[Nuclei N100 SDK][2]提供基于evalsoc的软件开发平台。客户通过evalsoc评估完芯来CPU后，希望在对应的SDK中快速适配为自己的SoC(本文称为customsoc)。
+[Nuclei SDK][1] and [Nuclei N100 SDK][2] provide an evalsoc-based software development platform. After evaluating Nuclei CPUs with evalsoc, customers often want to quickly adapt the corresponding SDK to their own SoC (referred to as customsoc in this document).
 
-- **Nuclei SDK** 主要支持Nuclei 200/300/600/900/1000 series RISC-V CPU, 用于基于这些系列CPU的EvalSoC快速软件评估和开发
-- **Nuclei N100 SDK** 主要支持Nuclei 100 series RISC-V CPU, 用于基于这些系列CPU的EvalSoC快速软件评估和开发
+- **Nuclei SDK** mainly supports Nuclei 200/300/600/900/1000 series RISC-V CPUs, for rapid software evaluation and development on EvalSoC based on these CPU series
+- **Nuclei N100 SDK** mainly supports Nuclei 100 series RISC-V CPUs, for rapid software evaluation and development on EvalSoC based on these CPU series
 
-## 解决方案
+## Solution
 
-根据需要移植适配的CPU系列，拉取最新的对应的SDK仓库或者直接使用cpu交付包中的SDK。
+Depending on the CPU series to be ported and adapted, pull the latest corresponding SDK repository, or directly use the SDK included in the CPU delivery package.
 
-### 环境准备
+### Environment Preparation
 
-### 适配修改
+### Adaptation Modifications
 
-> 如果通过nuclei_gen工具生成了配套的文件，则直接替换同名文件即可，这样比较简单不出错；如果手动修改，则注意下文提到的文件和修改点
-
-
-**先不要改任何目录名，文件名**，按步骤修改如下文件。
-
-#### 1 修改cpu特性描述宏文件
-
-**SoC/evalsoc/Common/Include/cpufeature.h** 文件定义了customsoc支持的特性、参数相关的`#define`宏。CPU交付包中的nuclei_gen工具会自动生成该文件，直接替换即可。
+> If the accompanying files were generated with the nuclei_gen tool, simply replace the files with the same names directly — this is simple and less error-prone. If modifying manually, pay attention to the files and modification points mentioned below.
 
 
-#### 2 修改cpu特性isa配置
+**Do not rename any directories or files yet.** Modify the following files step by step.
 
-**SoC/evalsoc/cpufeature.mk** 文件定义了customsoc的CORE(是否支持单/双精度浮点)ARCH_EXT(是否支持b和v扩展等)。CPU交付包中的nuclei_gen工具会自动生成该文件，直接替换即可。
+#### 1 Modify the CPU feature description macro file
 
-#### 3  修改链接地址的memory map
-
-**SoC/evalsoc/Board/nuclei_fpga_eval/Source/GCC/evalsoc.memory** 描述了ILM/DLM/FLASH/SRAM/DDR 的BASE address和SIZE以及代码段的大小。CPU交付包中的nuclei_gen工具会自动生成该文件，直接替换即可。
+The **SoC/evalsoc/Common/Include/cpufeature.h** file defines the `#define` macros related to the features and parameters supported by customsoc. The nuclei_gen tool in the CPU delivery package automatically generates this file; simply replace it.
 
 
-#### 4 修改openocd配置文件
+#### 2 Modify the CPU feature ISA configuration
 
-> openocd会通过jtag与cpu建立gdb server port，供gdb debug和load使用
+The **SoC/evalsoc/cpufeature.mk** file defines the CORE (whether single/double-precision floating point is supported) and ARCH_EXT (whether the b and v extensions are supported, etc.) of customsoc. The nuclei_gen tool in the CPU delivery package automatically generates this file; simply replace it.
 
-**SoC/evalsoc/Board/nuclei_fpga_eval/openocd_evalsoc.cfg** 是openocd的配置描述文件。CPU交付包中的nuclei_gen工具会自动生成该文件，直接替换即可。关键参数如下：
+#### 3  Modify the memory map of link addresses
+
+**SoC/evalsoc/Board/nuclei_fpga_eval/Source/GCC/evalsoc.memory** describes the BASE addresses and SIZEs of ILM/DLM/FLASH/SRAM/DDR, as well as the size of the code sections. The nuclei_gen tool in the CPU delivery package automatically generates this file; simply replace it.
+
+
+#### 4 Modify the OpenOCD configuration file
+
+> OpenOCD establishes a gdb server port with the CPU via JTAG, which is used by GDB for debugging and loading.
+
+**SoC/evalsoc/Board/nuclei_fpga_eval/openocd_evalsoc.cfg** is the OpenOCD configuration description file. The nuclei_gen tool in the CPU delivery package automatically generates this file; simply replace it. Key parameters are as follows:
 
 ```c
 # TODO: variables should be replaced by nuclei_gen
@@ -50,67 +50,67 @@ set flashxip_base   0x20000000
 set xipnuspi_base   0x10014000
 ```
 
-#### 5 修改Systimer频率
+#### 5 Modify the Systimer frequency
 
-**SoC/evalsoc/Common/Include/evalsoc.h** 中修改`SOC_TIMER_FREQ`为customsoc的Systimer的真实频率（需咨询你们SoC硬件设计人员）
+In **SoC/evalsoc/Common/Include/evalsoc.h**, modify `SOC_TIMER_FREQ` to the actual Systimer frequency of customsoc (consult your SoC hardware designers).
 
 ```c
-// 单位是hz 比如32768hz，这里填32768
+// The unit is Hz; for example, for 32768 Hz, enter 32768 here
 #define SOC_TIMER_FREQ              customsoc_systimer_freq
 ```
 
 
-#### 6 修改CPU主频
+#### 6 Modify the CPU core frequency
 
-**SoC/evalsoc/Common/Source/system_evalsoc.c** 中，`SystemCoreClock = get_cpu_freq()`自动计算cpu主频(依赖Systimer)，可以直接修改为customsoc的主频
+In **SoC/evalsoc/Common/Source/system_evalsoc.c**, `SystemCoreClock = get_cpu_freq()` automatically calculates the CPU core frequency (depending on Systimer). It can be modified directly to the customsoc core frequency.
 
 ```c
-// 单位是hz 比如50Mhz，这里填50000000
+// The unit is Hz; for example, for 50 MHz, enter 50000000 here
 SystemCoreClock = customsoc_cpu_freq;
 ```
 
-#### 7 修改串口驱动
+#### 7 Modify the UART driver
 
 
-> evalsoc的UART IP是评估版本
+> The UART IP of evalsoc is an evaluation version.
 
-> `evalsoc_uart.c`和`evalsoc_uart.h`里面的`uart_xxx` API名称不要修改，因为`SoC/evalsoc/Common/Source/Stubs`下的一些桩函数使用了uart的API
-
-
-串口驱动位于 **SoC/evalsoc/Common/Source/Drivers/evalsoc_uart.c** ，**SoC/evalsoc/Common/Include/evalsoc_uart.h** ，如果使用其它串口IP，根据实际的串口寄存器定义适配。
+> Do not modify the `uart_xxx` API names in `evalsoc_uart.c` and `evalsoc_uart.h`, because some stub functions under `SoC/evalsoc/Common/Source/Stubs` use the UART APIs.
 
 
-
-#### 8 修改串口波特率
-
-**SoC/evalsoc/Common/Source/system_evalsoc.c**: ``uart_init(SOC_DEBUG_UART, 115200)``; 一般波特率为**115200**
+The UART driver is located in **SoC/evalsoc/Common/Source/Drivers/evalsoc_uart.c** and **SoC/evalsoc/Common/Include/evalsoc_uart.h**. If a different UART IP is used, adapt it according to the actual UART register definitions.
 
 
-#### 9 修改_premain_init
 
-> 一些在main函数之前执行的初始化可以放在这个函数
+#### 8 Modify the UART baud rate
 
-如果有 IOMUX 和 PLL 等其他相关的配置，可以在**SoC/evalsoc/Common/Source/system_evalsoc.c**: ``_premain_init`` 函数里面实现；如果没有，可以跳过
+**SoC/evalsoc/Common/Source/system_evalsoc.c**: ``uart_init(SOC_DEBUG_UART, 115200)``; the baud rate is generally **115200**.
 
 
-#### 10 删除Nuclei内部使用的代码
+#### 9 Modify _premain_init
 
-**SoC/evalsoc/Common/Source/system_evalsoc.c**: ``SIMULATION_EXIT`` 宏定义是用于Nuclei内部仿真标记，可以定义为空
+> Some initialization that needs to run before the main function can be placed in this function.
+
+If there are other related configurations such as IOMUX and PLL, they can be implemented in the ``_premain_init`` function in **SoC/evalsoc/Common/Source/system_evalsoc.c**; if not, this step can be skipped.
+
+
+#### 10 Remove the code used internally by Nuclei
+
+**SoC/evalsoc/Common/Source/system_evalsoc.c**: the ``SIMULATION_EXIT`` macro definition is a marker used for Nuclei internal simulation, and can be defined as empty.
 
 ```c
 #define SIMULATION_EXIT(ret)    {}
 ```
 
-#### 11 检查外设地址
+#### 11 Check peripheral addresses
 
-> 建议CPU配置时不要修改，保持与evalsoc一致
+> It is recommended not to modify these when configuring the CPU; keep them consistent with evalsoc.
 
-> 串口使用的`SOC_DEBUG_UART`定义为`UART0`
+> The `SOC_DEBUG_UART` used by the UART is defined as `UART0`.
 
 
-* 外设的Base address由`EVALSOC_PERIPS_BASE`决定，`EVALSOC_PERIPS_BASE`在**SoC/evalsoc/Common/Include/cpufeature.h**(由nuclei_gen工具生成，拷贝覆盖即可)中定义，一般无需再修改
+* The base addresses of peripherals are determined by `EVALSOC_PERIPS_BASE`, which is defined in **SoC/evalsoc/Common/Include/cpufeature.h** (generated by the nuclei_gen tool; just copy and overwrite it). Generally no further modification is needed.
 
-* 外设的offset address在 **SoC/evalsoc/Common/Include/evalsoc.h** 中定义，搜索`Peripheral memory map`, 一般无需修改
+* The offset addresses of peripherals are defined in **SoC/evalsoc/Common/Include/evalsoc.h**. Search for `Peripheral memory map`; generally no modification is needed.
 
 ```c
 #define UART0_BASE              (EVALSOC_PERIPH_BASE + 0x13000)          /*!< (UART0) Base Address */
@@ -118,13 +118,13 @@ SystemCoreClock = customsoc_cpu_freq;
 #define UART0                   ((UART_TypeDef *) UART0_BASE)
 ```
 
-### 测试运行
+### Test Run
 
-如果以上修改完毕，就可以测试SoC能否正常工作了
+Once the above modifications are complete, you can test whether the SoC works properly.
 
-> 这里因为是在`evalsoc`的基础上改的，还没有修改相关地方的名称为`customsoc`
+> Since this is modified on the basis of `evalsoc`, the related names have not yet been changed to `customsoc`.
 
-> 所以仍然`SOC=evalsoc BOARD=nuclei_fpga_eval`
+> Therefore, still use `SOC=evalsoc BOARD=nuclei_fpga_eval`.
 
 ```shell
 # Test helloworld application
@@ -139,34 +139,34 @@ make SOC=evalsoc BOARD=nuclei_fpga_eval clean all
 make SOC=evalsoc BOARD=nuclei_fpga_eval upload
 ```
 
-如果可以正常运行打印Hello World From Nuclei RISC-V Processor，那基本没有问题了。如果还需要运行更多case，请参考如下应用示例文档确认是否运行成功。
+If it runs normally and prints Hello World From Nuclei RISC-V Processor, then there are basically no problems. If you need to run more cases, please refer to the following application example documentation to confirm whether they run successfully.
 
 - Nuclei SDK: https://doc.nucleisys.com/nuclei_sdk/design/app.html
 - Nuclei N100 SDK: https://doc.nucleisys.com/nuclei_n100_sdk/design/app.html
 
-### 调整名称
+### Adjust Names
 
-> 重命名的地方有点多，这里就不列举了，最终保证编译通过就可以。
+> There are quite a few places to rename, so they are not listed here. Ultimately, just make sure compilation passes.
 
-测试通过后，就可以把涉及evalsoc的文件名和目录名修改为customsoc，以及eval/EVAL开头的宏名/文件名替换成custom
+After the test passes, you can change the file names and directory names involving evalsoc to customsoc, and replace the macro names/file names starting with eval/EVAL with custom.
 
 ```shell
-# 修改完后，再次测试运行
+# After the modifications, test again
 make SOC=customsoc BOARD=nuclei_fpga_custom upload
 ```
 
-至此，**SDK就去掉了eval的logo,成为SDK for custom了。**
+At this point, **the SDK has shed the eval logo and become an SDK for custom.**
 
 
-### 精简代码
+### Streamline the Code
 
-因为Nuclei SDK/N100 SDK支持Nuclei多款CPU系列的评估和内部测试，需要考虑非常多的场景，因此存在一些冗余代码，建议在阅读SDK文档并且熟悉代码框架后，再进行精简删除。
+Because Nuclei SDK/N100 SDK supports evaluation and internal testing of multiple Nuclei CPU series, it has to cover a great many scenarios, so there is some redundant code. It is recommended to streamline and remove code only after reading the SDK documentation and becoming familiar with the code framework.
 
 
-### IAR工程
+### IAR Project
 
-* IAR的工程有专门的链接脚本，位于`SoC/evalsoc/Board/nuclei_fpga_eval/Source/IAR/*.icf`
-IAR的链接脚本当前没有通过nuclei_gen工具生成，所以需要手动检查调整`ROM_region32/ILM_region32/RAM_region32`的base address和size, 这里的from就是代表base address，size 表示该region的大小
+* The IAR project has a dedicated linker script, located at `SoC/evalsoc/Board/nuclei_fpga_eval/Source/IAR/*.icf`.
+The IAR linker script is currently not generated by the nuclei_gen tool, so you need to manually check and adjust the base addresses and sizes of `ROM_region32/ILM_region32/RAM_region32`. Here, "from" represents the base address, and "size" indicates the size of that region.
 
 ```c
 define region ROM_region32 = mem:[from 0x20000000 size 0x800000];
@@ -174,8 +174,8 @@ define region ILM_region32 = mem:[from 0x80000000 size 0x10000];
 define region RAM_region32 = mem:[from 0x90000000 size 0x10000];
 ```
 
-* IAR的工程位于`ideprojects/iar`，也是`prebuilt for evalsoc`，在未调整名称之前是可以直接运行的
-如果经过了调整名称，路径和文件名都变化了，也需要重新新建工程，建议文本打开`ewp`文件，搜索“eval”关键词替换
+* The IAR project is located at `ideprojects/iar` and is also `prebuilt for evalsoc`, so it can run directly before the names are adjusted.
+If the names have been adjusted, the paths and file names have changed, and the project needs to be recreated. It is recommended to open the `ewp` file in a text editor and search for the keyword "eval" to replace it.
 
 ```diff
 diff --git a/ideprojects/iar/baremetal/coremark.ewp b/ideprojects/iar/baremetal/coremark.ewp
@@ -194,16 +194,16 @@ index 3eed66a8..17443eae 100644
                 </option>
 ```
 
-### IDE工程支持
+### IDE Project Support
 
-如果希望Nuclei Studio IDE能支持custom soc，需要修改以下文件中涉及eval的名字，npk.yml的语法格式见 [2.4. Nuclei Studio NPK 介绍](https://doc.nucleisys.com/nuclei_tools/ide/npkoverview.html)
+If you want Nuclei Studio IDE to support the custom SoC, you need to modify the names involving "eval" in the following files. For the syntax format of npk.yml, see [2.4. Nuclei Studio NPK Introduction](https://doc.nucleisys.com/nuclei_tools/ide/npkoverview.html).
 
 ```c
 evalsoc/Common/npk.yml
 evalsoc/Board/nuclei_fpga_eval/npk.yml
 ```
 
-## 参考资料
+## References
 
 - [Nuclei 200/300/600/900/1000 Eval SoC](https://doc.nucleisys.com/nuclei_sdk/design/soc/evalsoc.html)
 - [Port your SoC into Nuclei SDK](https://doc.nucleisys.com/nuclei_sdk/contribute.html#port-your-nuclei-soc-into-nuclei-sdk)

@@ -1,23 +1,23 @@
-# 使用 Profiling 功能时可能遇到的一些问题
+# Issues You May Encounter When Using the Profiling Feature
 
-目前使用 Profiling 功能可能遇到一些问题，记录如下:
+You may encounter some issues when using the Profiling feature. They are documented below:
 
-* **问题1**：日志打印中报片上内存不足，没有充足内存来存放 gprof/gcov 数据
-* **问题2**：采用串口输出的方式收集数据，打印被冲掉，Console 或 Terminal 收集的数据不全，导致数据解析失败，弹出 `No files have been generated` 错误弹框  
-* **问题3**：删掉 `gmon.out` 文件，再次解析时，弹出 `No files have been generated` 错误弹框
+* **Issue 1**: The log output reports insufficient on-chip memory, meaning there is not enough memory to store gprof/gcov data
+* **Issue 2**: When collecting data via serial port output, the printed output is overwritten/truncated, so the data collected in the Console or Terminal is incomplete, causing data parsing to fail and a `No files have been generated` error dialog to pop up  
+* **Issue 3**: After deleting the `gmon.out` file, parsing again triggers a `No files have been generated` error dialog
 
-## 问题1：日志打印中报片上内存不足，没有充足内存来存放 gprof/gcov 数据
+## Issue 1: The log output reports insufficient on-chip memory, meaning there is not enough memory to store gprof/gcov data
 
-gprof/gcov data 需要存到片上内存上，占用内存的大小与用例规模有关(几十到几百KB不等)，需要确保片上内存足够大。
+gprof/gcov data needs to be stored in on-chip memory. The amount of memory required depends on the size of the use case (ranging from tens to hundreds of KB), so make sure the on-chip memory is large enough.
 
 ![Alt text](asserts/images/16/overflow.png)
 
 
-### 解决方案
+### Solution
 
-首先需要确认软件配置的内存大小与硬件实际大小相匹配（ilm/sram/flash/ddr/），否则需要适配软件链接脚本内存布局：   
-比如，如果是 `DOWNLOAD=ilm` 模式下载，可以按硬件的 ilm 与 dlm 大小适配。
-对于 `nuclei sdk 0.6.0` 版本，修改的文件为`nuclei-sdk/SoC/evalsoc/Board/nuclei_fpga_eval/Source/GCC/gcc_evalsoc_ilm.ld`
+First, make sure the memory size configured in the software matches the actual hardware size (ilm/sram/flash/ddr/). Otherwise, you need to adapt the memory layout in the software linker script:   
+For example, if downloading in `DOWNLOAD=ilm` mode, you can adapt it according to the actual ilm and dlm sizes of the hardware.
+For `nuclei sdk 0.6.0`, the file to modify is `nuclei-sdk/SoC/evalsoc/Board/nuclei_fpga_eval/Source/GCC/gcc_evalsoc_ilm.ld`
 
 ~~~c
 INCLUDE evalsoc.memory
@@ -29,68 +29,67 @@ MEMORY
 }
 ~~~
 
-如果 `DOWNLOAD=ilm` 模式内存不足，可以使用内存大一点的下载方式（如 `DOWNLOAD=ddr`）。
+If `DOWNLOAD=ilm` mode does not provide enough memory, you can use a download mode with more memory (such as `DOWNLOAD=ddr`).
 
-## 问题2：Console 或 Terminal 收集的数据不全导致数据解析时失败
+## Issue 2: Data parsing fails because the data collected in the Console or Terminal is incomplete
 
-在 NucleiStudio 2024.06 中，当选择使用串口输出的方式使用 Profiling 功能时，可能使用 `Parse and Generate Hexdump` 解析数据时
-弹出 `No files have been generated` 错误弹框，最后没有生成对应的 `gmon.out` 文件或者 `*.gcno` 文件。这可能是因为串口数据被冲掉，导致数据不完整从而解析失败
+In NucleiStudio 2024.06, when using the Profiling feature with serial port output, parsing the data with `Parse and Generate Hexdump` may
+pop up a `No files have been generated` error dialog, and the corresponding `gmon.out` file or `*.gcno` file is not generated in the end. This may be because the serial port data was overwritten/truncated, resulting in incomplete data and parsing failure.
 
 ![generated_fail](asserts/images/16/generated_fail.png)
 
-**确认方法：** 
+**How to confirm:** 
 
-需确保串口开始时的打印没有被冲掉，参考[Nuclei Studio使用Profiling功能进行性能调优举例](17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage.md)
+Make sure the initial output printed at the start of the serial port session has not been overwritten/truncated. Refer to [An Example Demonstrating Performance Tuning with the Profiling Feature in Nuclei Studio](17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage.md)
 
 ![parse_profiling_fail](asserts/images/16/parse_profiling_fail.png)
 
-### 解决方案
+### Solution
 
-因为在Console或者Terminal中，对输出的内容条数有限制，当输出的内容长度超过限制时，前面的内容会被冲掉，导致内容不完整，这样会解析失败。
+The Console and Terminal limit the number of output lines. When the output length exceeds the limit, the earlier content is overwritten/truncated, making the content incomplete and causing parsing to fail.
 
-需要调节 Console 或 Terminal 输出大小限制，确保数据没有被冲掉。    
+You need to increase the output size limit of the Console or Terminal to ensure that data is not overwritten/truncated.    
 
-* 建议将Console中输出内容条限修改为不受限制。
+* It is recommended to set the Console output limit to unlimited.
 
-`Window->Preference` 进入如下界面：
+Go to `Window->Preference` to open the following interface:
 
 ![config_console_limit](asserts/images/16/config_console_limit.png)
 
-* 建议将Terminal中输出内容条限修改为一个较大的值。
+* It is recommended to set the Terminal output limit to a larger value.
 
-`Window->Preference` 进入如下界面：
+Go to `Window->Preference` to open the following interface:
 
 ![config_terminal_limit](asserts/images/16/config_terminal_limit.png)
 
 
-## 问题3：删掉 gmon.out 文件，再次解析，弹出 No files have been generated 错误弹框
+## Issue 3: After deleting the gmon.out file, parsing again pops up a No files have been generated error dialog
 
-手动删掉工程文件夹下的 gmon.out 文件，再次解析时出现 `No files have been generated` 的错误弹框
+After manually deleting the gmon.out file in the project folder, parsing again shows a `No files have been generated` error dialog.
 
 ![generated_fail](asserts/images/16/generated_fail.png)
 
-### 解决方案
+### Solution
 
-手动删掉 gmon.out 文件后，需要手动刷新一下工程。  
+After manually deleting the gmon.out file, you need to manually refresh the project.  
 
 ![refresh_project](asserts/images/16/refresh_project.png)
 
 
 
 
+## Issue 4: Compilation error when importing amrwb_profiling_demo.zip in Nuclei Studio on Linux
 
-## 问题4：Linux 环境中使用 Nuclei studio导入amrwb_profiling_demo.zip 编译报错
-
-文档《[使用 Profiling 功能时可能遇到的一些问题](https://doc.nucleisys.com/nuclei_studio_supply/16-incomplete_data_output_when_using_profiling_function/) 》中制作的用例有问题，导致使用Linux Nuclei studio导入amrwb_profiling_demo.zip 编译时报错   
-具体错误如下：evalsoc.memory: 没有那个文件或目录    
+The use case created in the document "[Issues You May Encounter When Using the Profiling Feature](https://doc.nucleisys.com/nuclei_studio_supply/16-incomplete_data_output_when_using_profiling_function/)" has a problem, causing a compilation error when importing amrwb_profiling_demo.zip into Nuclei Studio on Linux.   
+The specific error is: evalsoc.memory: No such file or directory    
 
 ![](asserts/images/16/cannot_find_evalsoc_memory.png)
 
-**原因：** 是因为Linux环境中混入了Windows路径分隔符    
+**Cause:** Windows path separators were mixed into the Linux environment    
 
-**解决方法： **    
-可采取如下两种方法：       
-方法1. 文档中的zip包已经修复这个问题，下载新的用例包即可      
-方法2. 按照下图示意，将路径中的``\`` 改为``/``    
+**Solution:**    
+You can use either of the following two methods:       
+Method 1. The zip package in the document has already been fixed; simply download the new use case package      
+Method 2. As shown in the figure below, change the ``\`` in the path to ``/``    
 
 ![](asserts/images/16/correct_link_path.png)

@@ -1,6 +1,6 @@
 # How to print memory usage in Nuclei Studio
 
-## 问题说明
+## Problem Description
 
 In order to print memory usage when compile an application, you can do it like this:
 
@@ -23,6 +23,6 @@ Finished building target: 050hello.elf
 
 For Nuclei SDK or NMSIS template linker script, the stack is placed at the bottom of ram memory, so the ram usage is 100%.
 
-## 解决方案
+## Solution
 
 Add extra link option ``-Wl,--print-memory-usage`` will solve this issue.

@@ -1,83 +1,83 @@
-# Nuclei Studio使用Profiling功能进行性能调优举例
+# An Example of Using the Profiling Feature in Nuclei Studio for Performance Tuning
 
-> 文档是基于 Nuclei Studio 的 **2024.06** Windows/Linux 版本实测。
+> This document is based on hands-on testing with the **2024.06** Windows/Linux version of Nuclei Studio.
 
-## 问题说明
+## Problem Description
 
-Nuclei Studio 2024.06 提供 Profiling 功能、Call Graph 功能 以及 Code coverage 功能，方便用户使用。 简单描述如下：  
+Nuclei Studio 2024.06 provides the Profiling feature, the Call Graph feature, and the Code coverage feature for user convenience. A brief description is as follows:  
 
-* **Profiling 功能**：基于 binutils gprof 工具，可用于分析函数调用关系、调用次数、以及运行时间；通过 Profiling 抓取热点函数可以用来分析程序的瓶颈，以便进行性能优化。
-* **Call Graph 功能**：基于 Profiling 功能，将函数调用关系、调用次数、以及运行时间用图展示出来，方便开发人员分析。
-* **Code coverage 功能**：基于 gcc 编译器提供 gcov 工具，可用来查看源码文件的代码覆盖率，帮助开发人员确定测试用例是否足够充分，是否覆盖了被测代码的所有分支和路径。
+* **Profiling feature**: Based on the binutils gprof tool, it can be used to analyze function call relationships, call counts, and execution time. Hotspot functions captured through Profiling can be used to analyze program bottlenecks for performance optimization.
+* **Call Graph feature**: Based on the Profiling feature, it displays function call relationships, call counts, and execution time in graph form, making analysis easier for developers.
+* **Code coverage feature**: Based on the gcov tool provided by the gcc compiler, it can be used to view the code coverage of source files, helping developers determine whether test cases are sufficient and whether they cover all branches and paths of the code under test.
 
-在 [NucleiStudio_User_Guide.pdf](https://download.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202406.pdf) 相关章节对这几个功能已经有较详细的描述，这篇文档以一个例子来展示它们的实际应用。
+The relevant chapters of [NucleiStudio_User_Guide.pdf](https://download.nucleisys.com/upload/files/doc/nucleistudio/Nuclei_Studio_User_Guide.202406.pdf) already describe these features in detail. This document demonstrates their practical application through an example.
 
 
-## 解决方案
+## Solution
 
-### 1 环境准备
+### 1 Environment Preparation
 
-**所需材料：**  
+**Required materials:**  
 
-* Nuclei Studio：[NucleiStudio 2024.06](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202406-win64.zip)，以 Windows 版本为例
-* 用例： 以 [AMR-WB-enc](https://sourceforge.net/projects/opencore-amr/files/vo-amrwbenc/vo-amrwbenc-0.1.3.tar.gz/download) 即自适应多速率宽带编码音频算法为例，用户可以移植自己的用例
+* Nuclei Studio: [NucleiStudio 2024.06](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202406-win64.zip); the Windows version is used as an example
+* Use case: [AMR-WB-enc](https://sourceforge.net/projects/opencore-amr/files/vo-amrwbenc/vo-amrwbenc-0.1.3.tar.gz/download), i.e., the Adaptive Multi-Rate Wideband encoding audio algorithm, is used as an example; users may port their own use cases
 
-**基于 nuclei-sdk v0.6.0 移植 amrwbenc 裸机用例：**
+**Porting the amrwbenc bare-metal use case based on nuclei-sdk v0.6.0:**
 
-打开 Nuclei Studio 建立 amrwbenc 工程，然后移植 amrwbenc 源码，最终用例可正常运行。用户可以移植自己的用例，不同用例移植的细节各不相同，这一步不是这篇文档的重点，略过。
+Open Nuclei Studio and create an amrwbenc project, then port the amrwbenc source code so that the final use case runs correctly. Users may port their own use cases; the porting details differ from case to case, and this step is not the focus of this document, so it is skipped.
 
-### 2 Profiling 功能
+### 2 Profiling Feature
 
-Nuclei studio 中 Profiling 功能基于 binutils gprof 工具。编译时需带特定的编译选项 `-pg` 来编译指定源码文件，编译成功后得到 ELF 文件，
-然后在实际开发板上运行并收集需要的 gmon.out 文件，最终在 IDE 上以图形化的方式展示。所以还需要在用例末尾添加 gprof 数据收集代码，有两种方式：
+The Profiling feature in Nuclei Studio is based on the binutils gprof tool. During compilation, the specified source files must be compiled with the specific compiler option `-pg`. After a successful build, an ELF file is obtained,
+which is then run on the actual development board to collect the required gmon.out file, and finally the results are displayed graphically in the IDE. Therefore, gprof data collection code also needs to be added at the end of the use case. There are two ways to do this:
 
-* 方式1：移植 gprof 数据收集代码到自己的工程中，代码可以参考 [Profiling README](https://github.com/Nuclei-Software/nuclei-sdk/tree/master/Components/profiling#readme)
-* 方式2：基于 Nuclei Studio 中的 Profiling demo 进行改造，即用自己的用例替换掉 Profiling demo 工程的的用例部分
+* Method 1: Port the gprof data collection code into your own project. The code can refer to [Profiling README](https://github.com/Nuclei-Software/nuclei-sdk/tree/master/Components/profiling#readme)
+* Method 2: Modify the Profiling demo in Nuclei Studio, i.e., replace the use case portion of the Profiling demo project with your own use case
 
-下面示例采用后一种方法进行演示：
+The following example demonstrates the latter method:
 
-**step1：新建 Profiling demo 工程**
+**Step 1: Create a new Profiling demo project**
 
-`File->New->New Nuclei RISC-V C/C++ Project`，选择 `Nuclei FPGA Evalution Board->sdk-nuclei_sdk @0.6.0`
+`File->New->New Nuclei RISC-V C/C++ Project`, select `Nuclei FPGA Evalution Board->sdk-nuclei_sdk @0.6.0`
 
-**注意：** Nuclei SDK 需选择 0.6.0 及以后版本才支持 Profiling 与 Code coverage 功能
+**Note:** Nuclei SDK version 0.6.0 or later must be selected to support the Profiling and Code coverage features
 
-可以根据需求选择不同的工具链：
+You can choose different toolchains according to your needs:
 
 1. `RISC-V GCC/Newlib(riscv-unknown-elf-gcc)`
 2. `RISC-V Clang/Newlib(riscv-unknown-elf-clang)`
 3. `Terapines ZCC(zcc)`
 
-**注意：**Nuclei SDK 需选择 0.7.1及以后版本才支持`Terapines ZCC(zcc)`工具链，若选择`Terapines ZCC(zcc)`工具链使用profiling功能请同步修改`Standard C  Library(STDCLIB=)`选项为`newlib_small`
-**注意：**对于`RISC-V Clang`和`Terapines ZCC`工具链当前最新SDK（0.8.1）及之前版本仅支持profiling功能，未支持`Code coverage`功能
+**Note:** Nuclei SDK version 0.7.1 or later must be selected to support the `Terapines ZCC(zcc)` toolchain. If you select the `Terapines ZCC(zcc)` toolchain to use the profiling feature, please also change the `Standard C  Library(STDCLIB=)` option to `newlib_small`
+**Note:** For the `RISC-V Clang` and `Terapines ZCC` toolchains, the latest SDK (0.8.1) and earlier versions currently only support the profiling feature; the `Code coverage` feature is not yet supported
 
-![建立Profiling demo](asserts/images/17/build_profiling_demo.png)
+![build_profiling_demo](asserts/images/17/build_profiling_demo.png)
 
-**step2：基于 Profiling demo 工程移植 amrwbenc 裸机用例**
+**Step 2: Port the amrwbenc bare-metal use case based on the Profiling demo project**
 
-删掉 Profiling demo 工程中 application 中的原始用例，替换成 amrwbenc 用例，形成如下目录结构，并确保能编译成功。 
+Delete the original use case in the application folder of the Profiling demo project and replace it with the amrwbenc use case, forming the following directory structure, and make sure it compiles successfully. 
 
-这里提供本示例使用的工程，有兴趣可以下载使用：  
-[优化前的工程下载链接](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcaVG02T9)
+The project used in this example is provided here; feel free to download and use it:  
+[Download link for the project before optimization](https://drive.weixin.qq.com/s?k=ABcAKgdSAFcaVG02T9)
 
-下载 zip 包后，可以直接导入到 Nuclei Studio 中运行(导入步骤：`File->Import->Existing Projects into Workspace->Next->Select archive file->选择zip压缩包->next`即可)
+After downloading the zip package, you can import it directly into Nuclei Studio and run it (import steps: `File->Import->Existing Projects into Workspace->Next->Select archive file->select the zip archive->next`)
 
-![移植amrwbenc用例](asserts/images/17/amrwbenc_demo.png)
+![amrwbenc_demo](asserts/images/17/amrwbenc_demo.png)
 
-**注意：** 在Linux环境中使用 nuclei studio 导入旧的用例包可能会出现报错（找不到 evalsoc.memory），这是因为Linux环境混入Windows路径分隔符导致的，2026-02-09日修复了这个问题，此文档用例链接已经更新，可以重新下载新用例包，或者直接修改错误路径，具体可参考 [Profiling与 Code coverage 功能可能遇到的问题](16-incomplete_data_output_when_using_profiling_function.md) 问题4
+**Note:** When using Nuclei Studio in a Linux environment to import an old use case package, an error may occur (evalsoc.memory not found). This is caused by Windows path separators mixed into the Linux environment. This issue was fixed on 2026-02-09. The use case link in this document has been updated; you can re-download the new use case package, or directly fix the incorrect path. For details, refer to [Possible Issues with the Profiling and Code coverage Features](16-incomplete_data_output_when_using_profiling_function.md), Issue 4
 
-**step3：在用例结尾处添加 grof 数据收集代码，并添加 -pg 编译选项，重新编译代码**
+**Step 3: Add gprof data collection code at the end of the use case, add the -pg compiler option, and recompile the code**
 
-在 main 函数的结尾处添加 gprof 数据收集代码：
+Add the gprof data collection code at the end of the main function:
 
 ~~~c
 int main(int argc, char *argv[]) {
     /*
-     * 代码省略
+     * Code omitted
      */
 
     /*
-     * 在main函数的结尾处添加gprof数据收集代码
+     * Add gprof data collection code at the end of the main function
      */
     // TODO this is used for collect gprof and gcov data
     // See Components/profiling/README.md about how to set the IDE project properities
@@ -88,59 +88,59 @@ int main(int argc, char *argv[]) {
 }
 ~~~
 
-收集 gprof data 有三种方式，通过入参不同进行区分：
+There are three ways to collect gprof data, distinguished by different input parameters:
 
-* gprof_collect(0)：在缓冲区中收集 gprof 或 gcov 数据，在调试程序时可以使用 GDB 脚本转储 gcov 或 gprof 二进制文件
-* gprof_collect(1)：使用 semihost 直接将 gprof 或 gcov 数据写入文件中
-* gprof_collect(2)：直接在 Console 或 Serial Terminal 中打印 gcov 或 gprof 数据，然后可以通过IDE中 `Parse and Generate HexDump` 功能进行解析数据并保存到PC上
+* gprof_collect(0): Collects gprof or gcov data in a buffer; while debugging the program, a GDB script can be used to dump the gcov or gprof binary file
+* gprof_collect(1): Uses semihost to write the gprof or gcov data directly into a file
+* gprof_collect(2): Prints the gcov or gprof data directly to the Console or Serial Terminal; the data can then be parsed and saved to the PC using the `Parse and Generate HexDump` feature in the IDE
 
-详情可参考 [Profiling README](https://github.com/Nuclei-Software/nuclei-sdk/tree/master/Components/profiling#readme)，这里以将 gprof data 打印到串口（Console 或 Serial Terminal）为例。
+For details, refer to [Profiling README](https://github.com/Nuclei-Software/nuclei-sdk/tree/master/Components/profiling#readme). Here, printing the gprof data to the serial port (Console or Serial Terminal) is used as an example.
 
-对需要进行profiling的代码添加 `-pg` 编译选项，重新编译代码：
+Add the `-pg` compiler option to the code that needs profiling, then recompile the code:
 
-**注意：** 选择 application, 对关键代码添加 `-pg` 编译选项，这个用例只有 C 代码，只对 C 代码添加 `-pg` 编译选项即可
+**Note:** Select application and add the `-pg` compiler option to the key code. This use case contains only C code, so the `-pg` compiler option only needs to be added to the C code
 
 ![add_pg_compile](asserts/images/17/add_pg_compile.png)
 
-**step4：运行程序**
+**Step 4: Run the program**
 
-有几种方式可以运行程序：
+There are several ways to run the program:
 
-* qemu 模拟器（不需要硬件，简单跑一下流程，测试结果不准确）
-* 上板测试 （基于定时器采集数据）
-* 基于 xl_cpumodel (Nuclei Near Cycle Model)，参考: [通过Profiling展示Nuclei Model NICE/VNICE指令加速](18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling.md)
+* qemu emulator (no hardware required; a quick run-through of the flow, but the test results are not accurate)
+* On-board testing (data collected based on a timer)
+* Based on xl_cpumodel (Nuclei Near Cycle Model), see: [Demonstrating Nuclei Model NICE/VNICE Instruction Acceleration Through Profiling](18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling.md)
 
-这一篇文章只介绍 qemu 仿真与上板测试两种方式，qemu 收集的数据打印到 Console 口，上板实际运行输出到 Nuclei Studio 的 Serial Terminal 口。
+This article only covers two methods: qemu simulation and on-board testing. The data collected by qemu is printed to the Console, while the actual on-board run outputs to the Serial Terminal of Nuclei Studio.
 
-**step5：解析 gprof 数据**
+**Step 5: Parse the gprof data**
 
-开始解析 gprof 数据。**注意：** 这一步可能遇到一些问题，解决方法可参考 [Profiling与 Code coverage 功能可能遇到的问题](16-incomplete_data_output_when_using_profiling_function.md)
+Start parsing the gprof data. **Note:** Some issues may be encountered in this step; for solutions, refer to [Possible Issues with the Profiling and Code coverage Features](16-incomplete_data_output_when_using_profiling_function.md)
 
-* 在 qemu 上测试, log 打印到 Console 口
+* Testing on qemu, with logs printed to the Console
 
-**注意**: qemu 仅用来模拟展示，如果希望得到准确的热点函数，需要上板测试。
+**Note**: qemu is only used for demonstration purposes. If accurate hotspot functions are desired, on-board testing is required.
 ![call_prase_tools](asserts/images/17/call_prase_tools.png)   
-解析完成后，会在当前工程目录下生成 gmon.out，双击打开展示：  
+After parsing is complete, a gmon.out file is generated in the current project directory. Double-click to open it:  
 ![profiling_on_qemu](asserts/images/17/profiling_on_qemu.png)   
 
-* 上板测试
+* On-board testing
 
-上板测试的步骤与 qemu 类似，唯一不同的是 gprof 数据输出到 Serial Terminal 上。  
+The steps for on-board testing are similar to those for qemu; the only difference is that the gprof data is output to the Serial Terminal.  
 
-配置 Serial Terminal:
+Configure the Serial Terminal:
 
-**注意**:如果串口工具已经打开，确保每次运行 gprof 前，清除掉串口打印（鼠标右键-> Clear Terminal），避免对数据解析产生影响。  
+**Note**: If the serial terminal tool is already open, make sure to clear the serial output before each gprof run (right-click -> Clear Terminal) to avoid affecting data parsing.  
 
 ![config_uart](asserts/images/17/config_uart.png)  
 
-同样, 全选 log，右键选择`Parse and Generate HexDump` 功能，就会在工程文件夹下生成 gmon.out 文件，
-刷新工程后，就可以双击打开这个gmon.out 文件。
+Similarly, select all the logs, right-click and choose the `Parse and Generate HexDump` feature, and a gmon.out file will be generated in the project folder.
+After refreshing the project, you can double-click to open this gmon.out file.
 
-如下图是在**板子上实际运行**得到的 gprof 数据：  
+The figure below shows the gprof data obtained from an **actual run on the board**:  
 
 ![profiling_on_fpga](asserts/images/17/profiling_on_fpga.png)
 
-从而得到 TOP5 热点函数为（实际上板测试）：
+The TOP5 hotspot functions thus obtained are (actual on-board test):
 
 ~~~c
 cor_h_vec_012
@@ -150,35 +150,35 @@ voAWB_Convolve
 voAWB_Syn_filt
 ~~~
 
-获得热点函数后，可以从热点函数入手开始优化，优化 TOP 函数往往可以事半功倍。
+Once the hotspot functions are identified, optimization can begin from them; optimizing the TOP functions often achieves twice the result with half the effort.
 
-**step6：优化热点函数**
+**Step 6: Optimize the hotspot functions**
 
-有如下几种方法优化热点函数：
+There are several methods for optimizing hotspot functions:
 
-* 调节编译器参数，针对整个工程或单独算子使用 O2/O3/Ofast 等优化等级，开启 `-finline-functions` `-funroll-all-loops` 等优化选项
-* 针对算法进行优化，使用更好的算法实现热点函数
-* 使用 RISC-V 扩展指令（ RVP/RVV 扩展等）优化
+* Adjust compiler parameters: use optimization levels such as O2/O3/Ofast for the entire project or for individual operators, and enable optimization options such as `-finline-functions` and `-funroll-all-loops`
+* Optimize at the algorithm level: implement the hotspot functions with better algorithms
+* Optimize using RISC-V extension instructions (RVP/RVV extensions, etc.)
 
-这里以 RVP 扩展为例，按照热点函数从高到低，用 RVP 扩展来优化。需要确定所用硬件支持 RVP 扩展。
+Here, the RVP extension is used as an example. The hotspot functions are optimized with the RVP extension in descending order of hotness. Make sure the hardware in use supports the RVP extension.
 
 
-**举例如下：**
+**Example:**
 
-TOP1 热点函数为 `cor_h_vec_012`，分析函数，尝试使用 RVP 扩展优化：
+The TOP1 hotspot function is `cor_h_vec_012`. Analyze the function and try to optimize it using the RVP extension:
 
-如下以 `#if defined __riscv_xxldspn3x` 隔开的代码表示使用 Nuclei N3 P 扩展指令优化的代码。
-其中`__RV_DSMALDA` 是一条 Nuclei N3 P扩展指令，实现了 一次完成 4 笔 int16 相乘，最后累加，结果存放到 int64 变量中。
+In the code below, the sections delimited by `#if defined __riscv_xxldspn3x` represent code optimized with Nuclei N3 P extension instructions.
+`__RV_DSMALDA` is a Nuclei N3 P extension instruction that performs 4 int16 multiplications in one pass, accumulates the results, and stores the result in an int64 variable.
 
-这些指令Intrinsic API可参考 [Nuclei P 扩展指令Intrinsic API](https://github.com/Nuclei-Software/nuclei-sdk/blob/master/NMSIS/Core/Include/core_feature_dsp.h)
+For the Intrinsic APIs of these instructions, refer to [Nuclei P Extension Instruction Intrinsic API](https://github.com/Nuclei-Software/nuclei-sdk/blob/master/NMSIS/Core/Include/core_feature_dsp.h)
 
-具体的RVP指令手册，请联系芯来科技获取。
+For the detailed RVP instruction manual, please contact Nuclei System Technology.
 
-优化后的工程如下，可以与优化之前的工程做对比，只优化了`cor_h_vec_012` 算子:
+The optimized project is shown below. Compared with the project before optimization, only the `cor_h_vec_012` operator was optimized:
 
-[优化后的工程下载链接](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc0ussmf0)
+[Download link for the optimized project](https://drive.weixin.qq.com/s?k=ABcAKgdSAFc0ussmf0)
 
-使用 Nuclei N3 P 扩展指令优化的代码片段如下：
+The code snippet optimized with Nuclei N3 P extension instructions is as follows:
 
 ~~~c
 void cor_h_vec_012(
@@ -284,69 +284,69 @@ void cor_h_vec_012(
 
 ~~~
 
-这个算子进行 P 扩展优化后，**编译时务必带上** dsp 扩展选项进行编译，如下图所示：
+After optimizing this operator with the P extension, **make sure to compile with** the dsp extension option enabled, as shown in the figure below:
 
 ![Alt text](asserts/images/17/set_p_ext_opt.png)
 
-CLean Project 并重新编译，重新跑一次profiling，可以看到优化效果，`cor_h_vec_012` 函数占用率有所下降，函数调用时间也有所减少。
+Clean the project and recompile, then run profiling again. You can see the optimization effect: the occupancy of the `cor_h_vec_012` function has decreased, and the function execution time has also been reduced.
 
 ![Alt text](asserts/images/17/profiling_on_fpga_opt.png)
 
-**注意：** 上述仅提供简单的示例，用户可以依次对热点函数进行分析并优化，运行过程中由于采样等原因，
-导致 TOP 函数分布有所波动，这是正常的，最终精确的分析需要统计最终的总 cycle 数，然后计算提升比。
+**Note:** The above is only a simple example. Users can analyze and optimize the hotspot functions one by one. Due to sampling and other factors during execution,
+the distribution of TOP functions may fluctuate, which is normal. The final precise analysis requires counting the total number of cycles and then calculating the improvement ratio.
 
-### 2 Call Graph 功能
+### 2 Call Graph Feature
 
-Nuclei Studio 中 Call Graph 主要是通过分析 Profiling 的数据来获取到程序中函数的调用关系。
+The Call Graph in Nuclei Studio mainly obtains the function call relationships in the program by analyzing Profiling data.
 
 ![call_graph](asserts/images/17/call_graph.png)
 
-Call Graph 功能包括如下几种视图：
+The Call Graph feature includes the following views:
 
 * Radial View
 
-本视图中展示了程序的调用关系。
+This view displays the call relationships of the program.
 
 ![Radial View](asserts/images/17/Radial_View.png)
 
 * Tree View
 
-展示了 Radial View 中所选中的程序的调用关系、耗时所占比率、调用次数等信息；选中某一个函数，可以查看到它的父节点以及子节点等信息。
+It displays the call relationships, time consumption ratios, call counts, and other information of the program selected in the Radial View. Selecting a function allows you to view its parent nodes, child nodes, and other information.
 
 ![Tree View](asserts/images/17/Tree_View.png)
 
 * Level View
 
-与 Tree View 有点类似，展示了程序的调用关系以及调用次数。
+Similar to the Tree View, it displays the call relationships and call counts of the program.
 
 ![Level_View](asserts/images/17/Level_View.png)
 
 * Aggregate View
 
-以方图的方式，非常直观的展示了程序的耗时关系。
+It presents the program's time consumption relationships very intuitively in the form of a block diagram.
 
 ![Aggregate View](asserts/images/17/Aggregate_View.png)
 
-### 3 Code coverage 功能
+### 3 Code coverage Feature
 
-Nuclei studio 中 Code coverage 功能基于 gcc 编译器提供的 gcov 工具，编译时需带特定的编译选项 `-coverage` 来编译指定源码文件，编译成功后得到 ELF 文件，然后在实际开发板上运行并收集需要的 coverage 文件(gcda/gcno 文件)，最终在 IDE 上以图形化的方式展示。
+The Code coverage feature in Nuclei Studio is based on the gcov tool provided by the gcc compiler. During compilation, the specified source files must be compiled with the specific compiler option `-coverage`. After a successful build, an ELF file is obtained, which is then run on the actual development board to collect the required coverage files (gcda/gcno files), and finally the results are displayed graphically in the IDE.
 
-使用方法与 Profiling 功能类似，这里仅对不同的地方进行说明：
+The usage is similar to the Profiling feature; only the differences are explained here:
 
-**step1：新建 Profiling demo 工程**  
-**step2：基于 Profiling demo 工程移植 amrwbenc 裸机用例**  
-**step3：添加 gcov 数据收集代码，并添加 -coverage 编译选项，重新编译代码**  
+**Step 1: Create a new Profiling demo project**  
+**Step 2: Port the amrwbenc bare-metal use case based on the Profiling demo project**  
+**Step 3: Add gcov data collection code, add the -coverage compiler option, and recompile the code**  
 
-在main函数的结尾处添加gprof数据收集代码：
+Add the gcov data collection code at the end of the main function:
 
 ~~~c
 int main(int argc, char *argv[]) {
     /*
-     * 代码省略
+     * Code omitted
      */
 
     /*
-     * 在main函数的结尾处添加 gcov 数据收集代码
+     * Add gcov data collection code at the end of the main function
      */
     // TODO this is used for collect gprof and gcov data
     // See Components/profiling/README.md about how to set the IDE project properities
@@ -357,23 +357,23 @@ int main(int argc, char *argv[]) {
 }
 ~~~
 
-添加`-coverage`编译选项，重新编译代码：
+Add the `-coverage` compiler option and recompile the code:
 
 ![add_coverage_compile](asserts/images/17/add_coverage_compile.png)
 
-**step4：运行程序**  
+**Step 4: Run the program**  
 
-可以在qemu中模拟运行，或者上板实际运行都可以（统计覆盖率，不涉及到性能分析，所以使用 qemu 或者上板测试都可以）。  
+You can run it in the qemu simulator or on the actual board (coverage statistics do not involve performance analysis, so either qemu or on-board testing works).  
 
 ![prase coverage data](asserts/images/17/prase_coverage_data.png)  
 
-解析之后，在Debug->application文件夹下生成了 gcda 与 gcno 文件，双击打开即可  
+After parsing, gcda and gcno files are generated in the Debug->application folder; double-click to open them  
 
 ![coverage_result](asserts/images/17/coverage_result.png)  
 
-### 4 补充
+### 4 Additional Notes
 
-1. Profiling 与 Code coverage 功能可以同时打开，只需添加一起收集 Profiling 数据与 Code coverage 数据的代码，并在编译时添加 `-pg -coverage` 编译选项。
+1. The Profiling and Code coverage features can be enabled at the same time. Simply add code that collects both Profiling data and Code coverage data, and add the `-pg -coverage` compiler options when compiling.
 
 ~~~c
     // TODO this is used for collect gprof and gcov data
@@ -386,12 +386,11 @@ int main(int argc, char *argv[]) {
 
 ![add_pg_coverage_compile](asserts/images/17/add_pg_coverage_compile.png)
 
-2. 使用Profiling可能遇见的问题：
+2. Issues that may be encountered when using Profiling:
 
-* 片上内存不足，打印日志中有错误打印，gprof/gcov data 需要占用一定大小空间
-* Console 或 Terminal 收集的数据不全导致解析数据不正确，需确认数据没有被冲掉，需要调节 Console 或 Terminal 输出大小限制
-* 手动删掉 gmon.out 文件，再次解析，弹出 No files have been generated 错误弹框
+* Insufficient on-chip memory, with error messages in the printed logs; gprof/gcov data requires a certain amount of space
+* Incomplete data collected from the Console or Terminal leads to incorrect parsing; make sure the data has not been overwritten, and adjust the output size limit of the Console or Terminal
+* After manually deleting the gmon.out file and parsing again, a "No files have been generated" error dialog pops up
 
 
-上述具体解决方法可参考 [Profiling与 Code coverage 功能可能遇到的问题](16-incomplete_data_output_when_using_profiling_function.md)
-
+For detailed solutions to the above issues, refer to [Possible Issues with the Profiling and Code coverage Features](16-incomplete_data_output_when_using_profiling_function.md)

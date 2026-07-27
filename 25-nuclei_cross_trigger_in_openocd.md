@@ -1,13 +1,13 @@
-# OpenOCD 中 Nuclei 交叉触发功能使用指南
+# Guide to Using the Nuclei Cross-Trigger Feature in OpenOCD
 
-## 功能概述
+## Feature Overview
 
-为满足 AMP 多核调试中同步暂停(halt)与恢复(resume)的需求，Nuclei RISC-V CPU实现了 cross-trigger 功能，OpenOCD 已集成以下两种同步控制功能：
+To meet the need for synchronized halt and resume in AMP multicore debugging, the Nuclei RISC-V CPU implements the cross-trigger feature. OpenOCD has integrated the following two synchronization control features:
 
-1. **同步暂停组 (halt_group)** - 组内任一核暂停时，其他成员自动同步暂停
-2. **同步恢复组 (resume_group)** - 组内任一核恢复运行时，其他成员自动同步恢复
+1. **Synchronized Halt Group (halt_group)** - When any core in the group halts, all other members automatically halt in sync
+2. **Synchronized Resume Group (resume_group)** - When any core in the group resumes execution, all other members automatically resume in sync
 
-基本命令格式：
+Basic command format:
 
 ```
 # add target to halt_group
@@ -23,9 +23,9 @@ nuclei cti resume_group on $_TARGETNAME0 $_TARGETNAME1
 nuclei cti resume_group off $_TARGETNAME0 $_TARGETNAME1
 ```
 
-## 配置文件示例
+## Configuration File Examples
 
-### 1. 同步暂停组配置
+### 1. Synchronized Halt Group Configuration
 
 ```tcl
 adapter_khz     1000
@@ -62,7 +62,7 @@ if {[ info exists pulse_srst]} {
   ftdi_set_signal nSRST z
 }
 
-# 添加目标到暂停组
+# add targets to the halt group
 nuclei cti halt_group on $_TARGETNAME0 $_TARGETNAME1
 
 foreach t [target names] {
@@ -71,7 +71,7 @@ foreach t [target names] {
 }
 ```
 
-### 2. 同步恢复组配置
+### 2. Synchronized Resume Group Configuration
 
 ```tcl
 adapter_khz     1000
@@ -117,49 +117,49 @@ foreach t [target names] {
 }
 ```
 
-## 命令行验证步骤
+## Command-Line Verification Steps
 
-### 1. 同步暂停组验证
+### 1. Synchronized Halt Group Verification
 
-1. 配置文件中已添加目标到 `halt_group`
-2. 为两个核心分别加载不同固件
-3. 仅在 core0 的 `__amp_wait()` 函数设置断点
-4. 执行流程：先恢复 core1，再恢复 core0
-5. 验证结果：当 core0 触发断点暂停时，core1 同步暂停
+1. Targets have been added to the `halt_group` in the configuration file
+2. Load different firmware onto the two cores
+3. Set a breakpoint only in the `__amp_wait()` function of core0
+4. Execution flow: resume core1 first, then resume core0
+5. Expected result: when core0 hits the breakpoint and halts, core1 halts in sync
 
 ![](asserts/images/25/halt-group-command-test.png)
 
-### 2. 同步恢复组验证
+### 2. Synchronized Resume Group Verification
 
-1. 配置文件中已添加目标到 `resume_group`
-2. 为两个核心加载相同 helloworld 固件
-3. 仅向 core0 发送继续运行命令：
-4. 验证结果：串口输出显示两个核心同时运行
+1. Targets have been added to the `resume_group` in the configuration file
+2. Load the same helloworld firmware onto both cores
+3. Send the continue/resume command to core0 only:
+4. Expected result: the serial port output shows both cores running simultaneously
 
 ![](asserts/images/25/resume-group-command-test.png)
 
 ![](asserts/images/25/resume-group-command-test-log.png)
 
-## IDE 验证步骤
+## IDE Verification Steps
 
-### 1. 同步暂停组验证
+### 1. Synchronized Halt Group Verification
 
-1. 配置文件中已配置 `halt_group`
-2. 为两个核心加载不同固件
-3. 在 core0 的 `core_main.c` 第 152 行设置断点
-4. 操作顺序：
-   - 先启动 core1 运行
-   - 再启动 core0 运行
-5. 验证结果：core0 触发断点时，core1 同步暂停
+1. `halt_group` has been configured in the configuration file
+2. Load different firmware onto the two cores
+3. Set a breakpoint at line 152 of `core_main.c` in core0
+4. Operation sequence:
+   - Start core1 first
+   - Then start core0
+5. Expected result: when core0 hits the breakpoint, core1 halts in sync
 
 ![](asserts/images/25/halt-group-ide-test.png)
 
-### 2. 同步恢复组验证
+### 2. Synchronized Resume Group Verification
 
-1. 配置文件中已配置 `resume_group`
-2. 为两个核心加载不同固件
-3. 仅启动 core0 运行
-4. 验证结果：串口输出显示两个核心同时运行
+1. `resume_group` has been configured in the configuration file
+2. Load different firmware onto the two cores
+3. Start core0 only
+4. Expected result: the serial port output shows both cores running simultaneously
 
 ![](asserts/images/25/resume-group-ide-test.png)
 

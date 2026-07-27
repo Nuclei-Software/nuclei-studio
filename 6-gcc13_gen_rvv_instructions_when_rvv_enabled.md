@@ -1,6 +1,6 @@
 # GCC13 auto generated RVV instructions when RVV enabled
 
-## 问题说明
+## Problem Description
 
 If you are using `Nuclei SDK 0.5.0` with Nuclei RISC-V Toolchain 2023.10, and
 when compile some examples with RVV enabled, it may generate rvv instructions
@@ -17,7 +17,7 @@ make CORE=nx900fd ARCH_EXT=v dasm
 
 Then if you check the `dhrystone.dasm`, you will be able to see rvv instructions:
 
-## 解决方案
+## Solution
 
 This auto generated instructions may affect your hardware performance, so if you want
 to disable it, you don't need to pass rvv extension when compile application.

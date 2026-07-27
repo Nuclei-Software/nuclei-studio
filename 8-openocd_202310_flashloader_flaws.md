@@ -1,25 +1,25 @@
-# OpenOCD在操作容量大于16M-Byte的nor-flash时的问题
+# Issues with OpenOCD When Operating on NOR Flash Larger Than 16 MB
 
-## 问题说明
+## Problem Description
 
-操作``0 ~ 16M``地址区间spi控制器需要发送三个字节的地址信息，称为3byte地址模式；操作``16M ~ 2G``地址区间spi控制器则需要发送四个字节的地址信息，称为4byte地址模式；
+To access the ``0 ~ 16M`` address range, the SPI controller needs to send three bytes of address information; this is called 3-byte address mode. To access the ``16M ~ 2G`` address range, the SPI controller needs to send four bytes of address information; this is called 4-byte address mode.
 
-nuspi控制器的普通spi和xip默认都是3byte地址模式
+Both the normal SPI mode and XIP mode of the nuspi controller default to 3-byte address mode.
 
-## 解决方案
+## Solution
 
-我们在OpenOCD里开发了两组spi驱动分别是nuspi和custom，都可以支持3byte模式和4byte模式，其中nuspi可通过判断操作地址，自动切换模式
+We have developed two sets of SPI drivers in OpenOCD, namely nuspi and custom, both of which support 3-byte mode and 4-byte mode. The nuspi driver can automatically switch between modes by checking the address being accessed.
 
-在OpenOCD里有很多种方式可以read/verify flash内的数据，可以归结为两大类，一类是直接通过xip的方式读取flash数据，另一类则是通过调用驱动使用普通spi的方式读取flash数据。
+There are many ways to read/verify data in flash with OpenOCD, which can be grouped into two categories: one reads flash data directly through XIP, and the other reads flash data by calling the driver through normal SPI.
 
-因此，直接通过xip的方式读取flash数据时，就会有只能读到前面16M地址范围的限制，这样的命令有
+Therefore, when reading flash data directly through XIP, there is a limitation that only the first 16M of the address range can be read. Commands affected by this include:
 
 - ``flash verify_image filename [offset] [type]``
 - ``dump_image filename address size``
-- gdb的``x``命令
-- 等等 直接读取memory的命令
+- the gdb ``x`` command
+- and other commands that read memory directly
 
-当然OpenOCD里面也存在一些读取flash的命令，会直接调用cfg文件注册的spi驱动，这样的命令有
+Of course, OpenOCD also provides flash-reading commands that directly call the SPI driver registered in the cfg file, such as:
 
 - ``flash read_bank num filename [offset [length]]``
 - ``flash verify_bank num filename [offset]``

@@ -1,55 +1,55 @@
-# Flash Programming使用案例
+# Flash Programming Use Case
 
-为了满足用户将编译好的二进制文件直接下载到硬件开发板的需求，Nuclei Studio 提供了 **Flash Programming** 功能。该功能允许用户快速、便捷地将编译好的二进制文件直接下载到硬件开发板中，极大提升了开发和调试的效率。用户只需点击一次即可完成二进制文件的下载，简化了操作流程。
+To meet users' need to download compiled binary files directly to a hardware development board, Nuclei Studio provides the **Flash Programming** feature. This feature allows users to quickly and conveniently download compiled binary files directly to the hardware development board, greatly improving development and debugging efficiency. Users can complete the binary file download with a single click, simplifying the workflow.
 
-## 解决方案
+## Solution
 
-### 环境准备
+### Environment Preparation
 
-**Nuclei Studio**：
+**Nuclei Studio**:
 
-要求版本 >= 202412，下面提供202502版本。
+Version >= 202412 is required. Version 202502 is provided below.
 
 - [NucleiStudio 202502 Windows](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-win64.zip)
 - [NucleiStudio 202502 Linux](https://download.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202502-lin64.tgz)
 
-### Flash Programming 使用演示
+### Flash Programming Demo
 
-**step1：创建项目，烧写bit**
+**step1: Create a project and program the bit file**
 
-使用0.7.1版本的sdk-nuclei_sdk创建一个u900的helloworld项目，依次选择Simple Helloworld Demo,FLASH下载模式和U900 Core，点击Finsh。
+Use version 0.7.1 of sdk-nuclei_sdk to create a u900 helloworld project. Select Simple Helloworld Demo, FLASH download mode, and U900 Core in sequence, then click Finsh.
 
 ![image-Ori_Project_Build](asserts/images/20/20.png)
 
-开发板烧写对应的bit即可，这里我们使用trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit
+Program the corresponding bit file to the development board. Here we use trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit
 
-**step2：配置编译 Nuclei SDK 原始工程**
+**step2: Configure and build the original Nuclei SDK project**
 
-编译原始工程，确保编译成功以及在 Debug 下可以找到生成的 elf 文件：
+Build the original project, making sure the build succeeds and the generated elf file can be found under Debug:
 
 ![image-Ori_Project_Build](asserts/images/20/20-1.png)
 
-**step3：配置Flash Programming选项卡**
+**step3: Configure the Flash Programming tab**
 
-在Launch Configuration 选中对应调试选项(openocd)，点击edit打开配置页面。
+In Launch Configuration, select the corresponding debug option (openocd) and click edit to open the configuration page.
 
 ![image-Ori_Project_Build](asserts/images/20/20-2.png)
 
-选择 **Flash Programming** 选项卡，进入配置页面。
+Select the **Flash Programming** tab to enter the configuration page.
 
-由于是Flash下载模式，这里默认选择的verify image和reset and run即可。
+Since this is FLASH download mode, the default options verify image and reset and run are sufficient here.
 
 ![image-Ori_Project_Build](asserts/images/20/20-3.png)
 
-具体配置项内容可参考[Nuclei Development Tool Guide](https://download.nucleisys.com/upload/files/doc/nucleistudio/NucleiStudio_User_Guide.202502.pdf)
+For details of each configuration item, refer to the [Nuclei Development Tool Guide](https://download.nucleisys.com/upload/files/doc/nucleistudio/NucleiStudio_User_Guide.202502.pdf)
 
-**step4：下载**
+**step4: Download**
 
-选中项目，点击Flash Programming，下载二进制文件到硬件开发板。
+Select the project and click Flash Programming to download the binary file to the hardware development board.
 
 ![image-Ori_Project_Build](asserts/images/20/20-4.png)
 
-下载成功后，用户可以在 **Console** 中看到下载结果，确认二进制文件已成功烧录到硬件中。
+After the download succeeds, users can view the download result in the **Console** to confirm that the binary file has been successfully programmed into the hardware.
 
 ~~~
 ** Programming Started **
@@ -75,33 +75,33 @@ shutdown command invoked
 
 ![image-Ori_Project_Build](asserts/images/20/20-6.png)
 
-**step5：下载到内存的区别**
+**step5: Differences when downloading to memory**
 
-Nuclei Studio有DDR、FLASH、FLASHXIP、ILM、SRAM多种下载模式。
+Nuclei Studio supports multiple download modes: DDR, FLASH, FLASHXIP, ILM, and SRAM.
 
-FLASH、FLASHXIP模式按上面的步骤使用即可，而DDR、ILM、SRAM是下载到内存中的与Flash有所区别，下面以ILM为例。
+The FLASH and FLASHXIP modes can be used by following the steps above, while DDR, ILM, and SRAM download to memory, which differs from Flash. The following uses ILM as an example.
 
-点击Nulcei Settings打开页面，在Download中选择ILM并保存。
+Click Nulcei Settings to open the page, select ILM in Download, and save.
 
 ![image-Ori_Project_Build](asserts/images/20/20-7.png)
 
-重新编译项目，clean project -> build project
+Rebuild the project: clean project -> build project
 
-然后打开对应的.map文件，这里是u900_helloworld.map，在里面找到起始加载地址，如下图的0x80000000
+Then open the corresponding .map file, here u900_helloworld.map, and find the initial load address in it, such as 0x80000000 in the figure below.
 
 ![image-Ori_Project_Build](asserts/images/20/20-8.png)
 
-打开Flash Programming选项卡，因为是下载到内存，这里要勾选Load in Ram,此时下面的command line会增加load_image命令，
+Open the Flash Programming tab. Since the download is to memory, check Load in Ram here. At this point, the load_image command is added to the command line below.
 
-再在Program Address中填入上面获取到的地址0x80000000,command line会带上 resume 0x80000000参数。
+Then enter the address obtained above, 0x80000000, in Program Address, and the command line will include the resume 0x80000000 parameter.
 
-点击OK。
+Click OK.
 
 ![image-Ori_Project_Build](asserts/images/20/20-9.png)
 
 
 
-选中项目，点击Flash Programming下载。结果如下。
+Select the project and click Flash Programming to download. The result is as follows.
 
 ~~~
 Info : Valid NUSPI on device Nuclei SoC SPI Flash at address 0x20000000 with spictrl regbase at 0x10014000
@@ -124,13 +124,12 @@ shutdown command invoked
 
 
 
-**step6：可能出现的问题**
+**step6: Possible issues**
 
 1. **Error: checksum mismatch , attempting binary compare**
 
-出现这个错误是因为flash下载和ram下载搞错了，需要在nuclei settings里面进行修改Download模式。
+This error occurs because the flash download and ram download modes were confused. You need to modify the Download mode in nuclei settings.
 
-### 总结
+### Summary
 
-**Flash Programming** 功能为用户提供了一种快速、便捷的方式将编译好的二进制文件下载到硬件开发板中。通过简单的配置，用户可以轻松适配不同的硬件环境，并确保二进制文件的正确烧录。
-
+The **Flash Programming** feature provides users with a fast and convenient way to download compiled binary files to a hardware development board. With simple configuration, users can easily adapt to different hardware environments and ensure that binary files are programmed correctly.
