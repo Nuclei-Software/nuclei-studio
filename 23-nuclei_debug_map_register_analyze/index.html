@@ -6,14 +6,14 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../img/favicon.ico" rel="shortcut icon"/>
-<title>如何使用芯来提供的DebugMap寄存器分析错误现场 - Nuclei Studio Supply Documents</title>
+<title>How to Use the DebugMap Registers Provided by Nuclei to Analyze Error Scenarios - Nuclei Studio Supply Documents</title>
 <link href="../css/theme.css" rel="stylesheet"/>
 <link href="../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <link href="../extra.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "\u5982\u4f55\u4f7f\u7528\u82af\u6765\u63d0\u4f9b\u7684DebugMap\u5bc4\u5b58\u5668\u5206\u6790\u9519\u8bef\u73b0\u573a";
+        var mkdocs_page_name = "How to Use the DebugMap Registers Provided by Nuclei to Analyze Error Scenarios";
         var mkdocs_page_input_path = "23-nuclei_debug_map_register_analyze.md";
         var mkdocs_page_url = null;
       </script>
@@ -37,11 +37,11 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">Failure to Start QEMU in Nuclei Studio Due to Insufficient Memory</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">Error When Debugging Programs with QEMU in Nuclei Studio on Windows 11</a>
 </li>
 </ul>
 <ul>
@@ -49,11 +49,11 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">Errors Occur When Using Pre-build Command/Post-build Command During Project Build</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">Upgrading npk.yml to Support Nuclei Studio 2023.10</a>
 </li>
 </ul>
 <ul>
@@ -61,27 +61,27 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">Updating Nuclei Studio 2023.10 to the Latest Fixed Version</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">Issues with OpenOCD When Operating on NOR Flash Larger Than 16 MB</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">Upgrading the Project Toolchain to GCC 13 by Modifying the .cproject File</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
+<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">Compiling Projects from the Command Line in Nuclei Studio</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">About the Inconsistency Between Dhrystone Benchmark Scores in the IDE and NSDK 0.5.0 Command-Line Scores</a>
 </li>
 </ul>
 <ul>
@@ -97,73 +97,73 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">Issues You May Encounter When Using the Profiling Feature</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">An Example of Using the Profiling Feature in Nuclei Studio for Performance Tuning</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">Demonstrate NICE/VNICE Instruction Acceleration of the Nuclei Model through Profiling</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</a>
+<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Rapid Verification of NICE/VNICE Instruction Acceleration with Nuclei Model and NICE Wizard</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming使用案例</a>
+<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming Use Case</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Live Watch 功能的使用</a>
+<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Using the Live Watch Feature</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">在llvm中新增自定义汇编指令教程</a>
+<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">Tutorial for Adding Custom Assembly Instructions in LLVM</a>
 </li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal current" href="#">如何使用芯来提供的DebugMap寄存器分析错误现场</a>
+<li class="toctree-l1 current"><a class="reference internal current" href="#">How to Use the DebugMap Registers Provided by Nuclei to Analyze Error Scenarios</a>
 <ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="#debugmap_1">首先需要确定硬件支持DebugMap功能</a>
+<li class="toctree-l2"><a class="reference internal" href="#first-confirm-that-the-hardware-supports-the-debugmap-feature">First, Confirm That the Hardware Supports the DebugMap Feature</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#debugmap_2">什么是DebugMap寄存器</a>
+<li class="toctree-l2"><a class="reference internal" href="#what-are-debugmap-registers">What Are DebugMap Registers</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#openocddebugmap">OpenOCD里DebugMap的输出信息</a>
+<li class="toctree-l2"><a class="reference internal" href="#debugmap-output-information-in-openocd">DebugMap Output Information in OpenOCD</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#_1">可能出现的错误现场</a>
+<li class="toctree-l2"><a class="reference internal" href="#possible-error-scenarios">Possible Error Scenarios</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#debugmap_3">如何正确利用DebugMap分析错误现场</a>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-correctly-use-debugmap-to-analyze-error-scenarios">How to Correctly Use DebugMap to Analyze Error Scenarios</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#openocddebugmap_1">通过OpenOCD读取其他DebugMap寄存器</a>
-</li>
-</ul>
+<li class="toctree-l2"><a class="reference internal" href="#reading-other-debugmap-registers-via-openocd">Reading Other DebugMap Registers via OpenOCD</a>
 </li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">在binutils中新增自定义汇编指令教程</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">OpenOCD 中 Nuclei 交叉触发功能使用指南</a>
+<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">Tutorial for Adding Custom Assembly Instructions in binutils</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">OpenOCD对FreeRTOS的调试支持使用指南</a>
+<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">Guide to Using the Nuclei Cross-Trigger Feature in OpenOCD</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../27-debug_with_multiple_ftdi_devices/">如何同时使用多个蜂鸟调试器进行调试</a>
+<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">User Guide for FreeRTOS Debugging Support in OpenOCD</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/">Nuclei SDK基于evalsoc快速适配customsoc</a>
+<li class="toctree-l1"><a class="reference internal" href="../27-debug_with_multiple_ftdi_devices/">How to Debug with Multiple Hummingbird Debuggers Simultaneously</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../29-using_overlay_command_in_linker_scripts/">在链接脚本中使用OVERLAY命令</a>
+<li class="toctree-l1"><a class="reference internal" href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/">Quick Porting from evalsoc to customsoc Based on Nuclei SDK</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../29-using_overlay_command_in_linker_scripts/">Using the OVERLAY Command in Linker Scripts</a>
 </li>
 </ul>
 </div>
@@ -178,7 +178,7 @@
 <div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
 <ul class="wy-breadcrumbs">
 <li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
-<li class="breadcrumb-item active">如何使用芯来提供的DebugMap寄存器分析错误现场</li>
+<li class="breadcrumb-item active">How to Use the DebugMap Registers Provided by Nuclei to Analyze Error Scenarios</li>
 <li class="wy-breadcrumbs-aside">
 <a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/23-nuclei_debug_map_register_analyze.md"> 在GitHub上编辑</a>
 </li>
@@ -187,31 +187,31 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <div class="section" itemprop="articleBody">
-<h1 id="debugmap">如何使用芯来提供的DebugMap寄存器分析错误现场<a class="headerlink" href="#debugmap" title="Permanent link">¶</a></h1>
-<h2 id="debugmap_1">首先需要确定硬件支持DebugMap功能<a class="headerlink" href="#debugmap_1" title="Permanent link">¶</a></h2>
-<p>core的顶层有一个信号叫做<strong>dm_map_enable</strong>，这个信号接1表示使能DebugMap功能</p>
+<h1 id="how-to-use-the-debugmap-registers-provided-by-nuclei-to-analyze-error-scenarios">How to Use the DebugMap Registers Provided by Nuclei to Analyze Error Scenarios<a class="headerlink" href="#how-to-use-the-debugmap-registers-provided-by-nuclei-to-analyze-error-scenarios" title="Permanent link">¶</a></h1>
+<h2 id="first-confirm-that-the-hardware-supports-the-debugmap-feature">First, Confirm That the Hardware Supports the DebugMap Feature<a class="headerlink" href="#first-confirm-that-the-hardware-supports-the-debugmap-feature" title="Permanent link">¶</a></h2>
+<p>There is a signal called <strong>dm_map_enable</strong> at the top level of the core. Tying this signal to 1 enables the DebugMap feature.</p>
 <blockquote>
-<p>详情参见 <em>Nuclei_CPU_Debug_Function_Specification.pdf</em> 文档的 <em>Debug Control Interface</em> 部分内容</p>
+<p>For details, refer to the <em>Debug Control Interface</em> section of the <em>Nuclei_CPU_Debug_Function_Specification.pdf</em> document</p>
 </blockquote>
-<h2 id="debugmap_2">什么是DebugMap寄存器<a class="headerlink" href="#debugmap_2" title="Permanent link">¶</a></h2>
-<p>DebugMap功能就是当Core被hang的时候可以通过OpenOCD查看core内部的状态，将若干内部状态映射到DM寄存器中，目前只实现了下面三个状态的映射：</p>
+<h2 id="what-are-debugmap-registers">What Are DebugMap Registers<a class="headerlink" href="#what-are-debugmap-registers" title="Permanent link">¶</a></h2>
+<p>The DebugMap feature allows you to inspect the internal state of the Core via OpenOCD when the Core is hung. Several internal states are mapped into DM registers. Currently, only the following three states are mapped:</p>
 <ul>
 <li>00: Commit PC(i0 for dual issue)</li>
 <li>16: ICache miss address(ICache is supported)</li>
 <li>32: DCache address waiting for retire(DCache is supported)</li>
 </ul>
 <blockquote>
-<p>详情参见 <em>Nuclei_CPU_Debug_Function_Specification.pdf</em> 文档的 <em>CFR0 (Custom Feature Register0)</em> 部分内容</p>
+<p>For details, refer to the <em>CFR0 (Custom Feature Register0)</em> section of the <em>Nuclei_CPU_Debug_Function_Specification.pdf</em> document</p>
 </blockquote>
-<h2 id="openocddebugmap">OpenOCD里DebugMap的输出信息<a class="headerlink" href="#openocddebugmap" title="Permanent link">¶</a></h2>
-<p>在使用OpenOCD连接FPGA/芯片时，经常会看到类似下面这样的输出信息：</p>
+<h2 id="debugmap-output-information-in-openocd">DebugMap Output Information in OpenOCD<a class="headerlink" href="#debugmap-output-information-in-openocd" title="Permanent link">¶</a></h2>
+<p>When using OpenOCD to connect to an FPGA/chip, you will often see output similar to the following:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">coreid</span><span class="o">=</span><span class="mi">0</span><span class="o">,</span><span class="w"> </span><span class="n">nuclei</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="n">reg</span><span class="w"> </span><span class="mi">00</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa00003ac</span><span class="o">,</span><span class="w"> </span><span class="mi">16</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa0003240</span><span class="o">,</span><span class="w"> </span><span class="mi">32</span><span class="o">:</span><span class="w"> </span><span class="mh">0x10003014</span>
 </code></pre></div>
 <ul>
-<li><strong>coreid</strong> 表示当前输出的是哪个core的debug-map信息</li>
+<li><strong>coreid</strong> indicates which core's debug-map information is currently being output</li>
 </ul>
-<h2 id="_1">可能出现的错误现场<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
-<p>错误现场一：</p>
+<h2 id="possible-error-scenarios">Possible Error Scenarios<a class="headerlink" href="#possible-error-scenarios" title="Permanent link">¶</a></h2>
+<p>Error scenario 1:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Using</span><span class="w"> </span><span class="n">libusb</span><span class="w"> </span><span class="n">driver</span>
 <span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="n">kHz</span>
 <span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">JTAG</span><span class="w"> </span><span class="n">tap</span><span class="o">:</span><span class="w"> </span><span class="n">riscv</span><span class="o">.</span><span class="na">cpu</span><span class="w"> </span><span class="n">tap</span><span class="o">/</span><span class="n">device</span><span class="w"> </span><span class="n">found</span><span class="o">:</span><span class="w"> </span><span class="mh">0x10900a6d</span><span class="w"> </span><span class="o">(</span><span class="n">mfg</span><span class="o">:</span><span class="w"> </span><span class="mh">0x536</span><span class="w"> </span><span class="o">(</span><span class="n">Nuclei</span><span class="w"> </span><span class="n">System</span><span class="w"> </span><span class="n">Technology</span><span class="w"> </span><span class="n">Co</span><span class="w"> </span><span class="n">Ltd</span><span class="o">),</span><span class="w"> </span><span class="n">part</span><span class="o">:</span><span class="w"> </span><span class="mh">0x0900</span><span class="o">,</span><span class="w"> </span><span class="n">ver</span><span class="o">:</span><span class="w"> </span><span class="mh">0x1</span><span class="o">)</span>
@@ -230,7 +230,7 @@
 <span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Listening</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="mi">22800</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">gdb</span><span class="w"> </span><span class="n">connections</span>
 <span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Target</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">examined</span><span class="w"> </span><span class="n">yet</span>
 </code></pre></div>
-<p>错误现场二：</p>
+<p>Error scenario 2:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">libusb_open</span><span class="o">()</span><span class="w"> </span><span class="n">failed</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">LIBUSB_ERROR_NOT_FOUND</span>
 <span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="n">found</span><span class="o">,</span><span class="w"> </span><span class="n">trying</span><span class="w"> </span><span class="n">D2xx</span><span class="w"> </span><span class="n">driver</span>
 <span class="n">Info</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">D2xx</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="n">count</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
@@ -252,27 +252,27 @@
 <span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Timed</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="mi">2</span><span class="n">s</span><span class="w"> </span><span class="n">waiting</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">busy</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">go</span><span class="w"> </span><span class="n">low</span><span class="w"> </span><span class="o">(</span><span class="n">abstractcs</span><span class="o">=</span><span class="mh">0x2001004</span><span class="o">).</span><span class="w"> </span><span class="n">Increase</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">timeout</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">riscv</span><span class="w"> </span><span class="n">set_command_timeout_sec</span><span class="o">.</span>
 <span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Abstract</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">ended</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="s1">'busy'</span><span class="w"> </span><span class="o">(</span><span class="n">abstractcs</span><span class="o">=</span><span class="mh">0x2001104</span><span class="o">)</span>
 </code></pre></div>
-<h2 id="debugmap_3">如何正确利用DebugMap分析错误现场<a class="headerlink" href="#debugmap_3" title="Permanent link">¶</a></h2>
+<h2 id="how-to-correctly-use-debugmap-to-analyze-error-scenarios">How to Correctly Use DebugMap to Analyze Error Scenarios<a class="headerlink" href="#how-to-correctly-use-debugmap-to-analyze-error-scenarios" title="Permanent link">¶</a></h2>
 <ul>
-<li>在出现Core被hang的现象之后，需要在不断电、不复位的情况下再次使用OpenOCD连接FPGA/芯片，此时OpenOCD输出的DebugMap才可被用于分析错误现场</li>
-<li>“00”：当前Commit的PC——用来指示最近正在Commit的PC，通过此信息可以大概推测CPU跑到了什么PC位置</li>
-<li>“16”：配置了ICache的话，记录ICache最近发出去的地址（暂时没有记录ILM的地址），理论上ICache有2个Oustanding，记录的是那个最先发出去还没有返回Response的地址</li>
-<li>“32”：配置了DCache 的话，记录DCache最近发出去的地址（DLM、Mem也可以被记录，暂时没有记录PPI/FIO发出去的地址），理论上DCache有很多个Oustanding，记录的是那个最先发出去还没有返回Response的地址</li>
+<li>After the Core-hang symptom occurs, you need to use OpenOCD to connect to the FPGA/chip again without power-cycling or resetting. Only the DebugMap output at this point can be used to analyze the error scenario.</li>
+<li>"00": The currently committed PC — indicates the most recently committed PC. From this information, you can roughly infer which PC location the CPU has reached.</li>
+<li>"16": If ICache is configured, this records the most recent address issued by the ICache (ILM addresses are not recorded for now). In theory, the ICache has 2 outstanding transactions; what is recorded is the address of the earliest issued transaction that has not yet returned a response.</li>
+<li>"32": If DCache is configured, this records the most recent address issued by the DCache (DLM and Mem can also be recorded; addresses issued to PPI/FIO are not recorded for now). In theory, the DCache has many outstanding transactions; what is recorded is the address of the earliest issued transaction that has not yet returned a response.</li>
 </ul>
-<h2 id="openocddebugmap_1">通过OpenOCD读取其他DebugMap寄存器<a class="headerlink" href="#openocddebugmap_1" title="Permanent link">¶</a></h2>
-<p>OpenOCD里有一组 <em>nuclei expose_cpu_core</em> <em>nuclei examine_cpu_core</em> 命令，可以使用这两个命令读取其他DebugMap寄存器, 详细参见 <a href="https://doc.nucleisys.com/nuclei_tools/openocd/intro.html#debug-map-feature">https://doc.nucleisys.com/nuclei_tools/openocd/intro.html#debug-map-feature</a></p>
+<h2 id="reading-other-debugmap-registers-via-openocd">Reading Other DebugMap Registers via OpenOCD<a class="headerlink" href="#reading-other-debugmap-registers-via-openocd" title="Permanent link">¶</a></h2>
+<p>OpenOCD provides a set of commands, <em>nuclei expose_cpu_core</em> and <em>nuclei examine_cpu_core</em>, which can be used to read other DebugMap registers. For details, see <a href="https://doc.nucleisys.com/nuclei_tools/openocd/intro.html#debug-map-feature">https://doc.nucleisys.com/nuclei_tools/openocd/intro.html#debug-map-feature</a></p>
 <blockquote>
-<p>OpenOCD里的命令实现及使用方法 <a href="https://github.com/riscv-mcu/riscv-openocd/blob/be0e02e2f4b74fc33e7617154791570e74fde2d0/src/target/riscv/nuclei_riscv.c#L984-L999">source code</a></p>
+<p>Command implementation and usage in OpenOCD: <a href="https://github.com/riscv-mcu/riscv-openocd/blob/be0e02e2f4b74fc33e7617154791570e74fde2d0/src/target/riscv/nuclei_riscv.c#L984-L999">source code</a></p>
 </blockquote>
 <ul>
-<li>注意 <em>nuclei expose_cpu_core</em> 命令需要在<strong>init</strong>命令之前使用</li>
-<li><em>nuclei examine_cpu_core</em> 在<strong>init</strong>命令之后使用，也可以在gdb/telent连接上后使用，注意gdb给openocd发送命令需要使用monitor关键词 <em>monitor nuclei examine_cpu_core</em></li>
+<li>Note that the <em>nuclei expose_cpu_core</em> command must be used before the <strong>init</strong> command</li>
+<li><em>nuclei examine_cpu_core</em> is used after the <strong>init</strong> command, and can also be used after a gdb/telnet connection is established. Note that sending commands from gdb to OpenOCD requires the monitor keyword: <em>monitor nuclei examine_cpu_core</em></li>
 </ul>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
-<a class="btn btn-neutral float-left" href="../22-example_for_adding_new_instructions_in_llvm/" title="在llvm中新增自定义汇编指令教程"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
-<a class="btn btn-neutral float-right" href="../24-example_for_adding_new_instructions_in_binutils/" title="在binutils中新增自定义汇编指令教程">下一章 <span class="icon icon-circle-arrow-right"></span></a>
+<a class="btn btn-neutral float-left" href="../22-example_for_adding_new_instructions_in_llvm/" title="Tutorial for Adding Custom Assembly Instructions in LLVM"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
+<a class="btn btn-neutral float-right" href="../24-example_for_adding_new_instructions_in_binutils/" title="Tutorial for Adding Custom Assembly Instructions in binutils">下一章 <span class="icon icon-circle-arrow-right"></span></a>
 </div>
 <hr/>
 <div role="contentinfo">

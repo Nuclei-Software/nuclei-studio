@@ -6,14 +6,14 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../img/favicon.ico" rel="shortcut icon"/>
-<title>通过修改.cproject文件，升级工程工具链到GCC 13 - Nuclei Studio Supply Documents</title>
+<title>Upgrading the Project Toolchain to GCC 13 by Modifying the .cproject File - Nuclei Studio Supply Documents</title>
 <link href="../css/theme.css" rel="stylesheet"/>
 <link href="../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <link href="../extra.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "\u901a\u8fc7\u4fee\u6539.cproject\u6587\u4ef6\uff0c\u5347\u7ea7\u5de5\u7a0b\u5de5\u5177\u94fe\u5230GCC 13";
+        var mkdocs_page_name = "Upgrading the Project Toolchain to GCC 13 by Modifying the .cproject File";
         var mkdocs_page_input_path = "9-modify_the_cproject_file_to_change_the_project_to_gcc13.md";
         var mkdocs_page_url = null;
       </script>
@@ -37,11 +37,11 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">Failure to Start QEMU in Nuclei Studio Due to Insufficient Memory</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">Error When Debugging Programs with QEMU in Nuclei Studio on Windows 11</a>
 </li>
 </ul>
 <ul>
@@ -49,11 +49,11 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">Errors Occur When Using Pre-build Command/Post-build Command During Project Build</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">Upgrading npk.yml to Support Nuclei Studio 2023.10</a>
 </li>
 </ul>
 <ul>
@@ -61,39 +61,39 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">Updating Nuclei Studio 2023.10 to the Latest Fixed Version</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">Issues with OpenOCD When Operating on NOR Flash Larger Than 16 MB</a>
 </li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal current" href="#">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+<li class="toctree-l1 current"><a class="reference internal current" href="#">Upgrading the Project Toolchain to GCC 13 by Modifying the .cproject File</a>
 <ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="#_1">问题描述</a>
+<li class="toctree-l2"><a class="reference internal" href="#problem-description">Problem Description</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#toolchain">修改toolchain相关配置</a>
+<li class="toctree-l2"><a class="reference internal" href="#modifying-toolchain-related-configuration">Modifying Toolchain-Related Configuration</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#risc-v">修改RISC-V扩展相关配置</a>
+<li class="toctree-l2"><a class="reference internal" href="#modifying-risc-v-extension-related-configuration">Modifying RISC-V Extension-Related Configuration</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#libncrt-c">修改libncrt C库相关配置</a>
+<li class="toctree-l2"><a class="reference internal" href="#modifying-libncrt-c-library-related-configuration">Modifying libncrt C Library-Related Configuration</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#link-warning">增加link warning消除的配置</a>
-</li>
-</ul>
+<li class="toctree-l2"><a class="reference internal" href="#adding-configuration-to-eliminate-link-warnings">Adding Configuration to Eliminate Link Warnings</a>
 </li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">Compiling Projects from the Command Line in Nuclei Studio</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">About the Inconsistency Between Dhrystone Benchmark Scores in the IDE and NSDK 0.5.0 Command-Line Scores</a>
 </li>
 </ul>
 <ul>
@@ -109,59 +109,59 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">Issues You May Encounter When Using the Profiling Feature</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">An Example of Using the Profiling Feature in Nuclei Studio for Performance Tuning</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">Demonstrate NICE/VNICE Instruction Acceleration of the Nuclei Model through Profiling</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</a>
+<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Rapid Verification of NICE/VNICE Instruction Acceleration with Nuclei Model and NICE Wizard</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming使用案例</a>
+<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming Use Case</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Live Watch 功能的使用</a>
+<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Using the Live Watch Feature</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">在llvm中新增自定义汇编指令教程</a>
+<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">Tutorial for Adding Custom Assembly Instructions in LLVM</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../23-nuclei_debug_map_register_analyze/">如何使用芯来提供的DebugMap寄存器分析错误现场</a>
+<li class="toctree-l1"><a class="reference internal" href="../23-nuclei_debug_map_register_analyze/">How to Use the DebugMap Registers Provided by Nuclei to Analyze Error Scenarios</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">在binutils中新增自定义汇编指令教程</a>
+<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">Tutorial for Adding Custom Assembly Instructions in binutils</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">OpenOCD 中 Nuclei 交叉触发功能使用指南</a>
+<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">Guide to Using the Nuclei Cross-Trigger Feature in OpenOCD</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">OpenOCD对FreeRTOS的调试支持使用指南</a>
+<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">User Guide for FreeRTOS Debugging Support in OpenOCD</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../27-debug_with_multiple_ftdi_devices/">如何同时使用多个蜂鸟调试器进行调试</a>
+<li class="toctree-l1"><a class="reference internal" href="../27-debug_with_multiple_ftdi_devices/">How to Debug with Multiple Hummingbird Debuggers Simultaneously</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/">Nuclei SDK基于evalsoc快速适配customsoc</a>
+<li class="toctree-l1"><a class="reference internal" href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/">Quick Porting from evalsoc to customsoc Based on Nuclei SDK</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../29-using_overlay_command_in_linker_scripts/">在链接脚本中使用OVERLAY命令</a>
+<li class="toctree-l1"><a class="reference internal" href="../29-using_overlay_command_in_linker_scripts/">Using the OVERLAY Command in Linker Scripts</a>
 </li>
 </ul>
 </div>
@@ -176,7 +176,7 @@
 <div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
 <ul class="wy-breadcrumbs">
 <li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
-<li class="breadcrumb-item active">通过修改.cproject文件，升级工程工具链到GCC 13</li>
+<li class="breadcrumb-item active">Upgrading the Project Toolchain to GCC 13 by Modifying the .cproject File</li>
 <li class="wy-breadcrumbs-aside">
 <a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/9-modify_the_cproject_file_to_change_the_project_to_gcc13.md"> 在GitHub上编辑</a>
 </li>
@@ -185,23 +185,23 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <div class="section" itemprop="articleBody">
-<h1 id="cprojectgcc-13">通过修改.cproject文件，升级工程工具链到GCC 13<a class="headerlink" href="#cprojectgcc-13" title="Permanent link">¶</a></h1>
-<h2 id="_1">问题描述<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
+<h1 id="upgrading-the-project-toolchain-to-gcc-13-by-modifying-the-cproject-file">Upgrading the Project Toolchain to GCC 13 by Modifying the .cproject File<a class="headerlink" href="#upgrading-the-project-toolchain-to-gcc-13-by-modifying-the-cproject-file" title="Permanent link">¶</a></h1>
+<h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>Nuclei Studio 2023.10的IDE进行了一次大版本的升级, 其中自带的工具链从gcc10升级到了gcc13, 并且工具链的前缀也发生了变化。
-参见 <a href="https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2023.10">https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2023.10</a></p>
+<p>Nuclei Studio 2023.10 is a major version upgrade of the IDE, in which the bundled toolchain was upgraded from gcc10 to gcc13, and the toolchain prefix also changed.
+See <a href="https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2023.10">https://github.com/Nuclei-Software/nuclei-studio/releases/tag/2023.10</a></p>
 </blockquote>
-<p>虽然我们在2023.10的IDE中提供了<a href="https://doc.nucleisys.com/nuclei_tools/ide/advanceusage.html#gcc-13">右键选中工程一键升级的工具（参见IDE的手册第8章节）</a>，但是这个只能一个工程一个工程的转换，对于有大量工程需要批量转换的项目而言不太友好，因此
-我们这里列出来如果写脚本进行工程的转换升级，则可以参考如下的思路进行转换。</p>
-<p>以下变更仅针对Nuclei Studio 2023.10之前版本创建的gcc10的工程，进行升级变更，如果需要批量变更，编写脚本的时候应先检查工程是否是riscv gcc10的工程。</p>
-<h2 id="toolchain">修改toolchain相关配置<a class="headerlink" href="#toolchain" title="Permanent link">¶</a></h2>
-<p>在Nuclei Studio 2023.10之前的版本中使用的gcc是做了许多个性化的变更，需要Nuclei Studio 2023.10版中使用的gcc,继承了官方版本的特性和一些命名方式，在工程中的<code>.cproject</code>文件中，主要是要修改以下几个值。其中<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name</code>的值是<code>RISC-V Nuclei GCC</code> 、<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id</code>的值是<code>3901352267</code> 、<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix</code>的值是<code>riscv-nuclei-elf-</code>,则说明工程在创建时所使用的是GCC 10。如果需要使工程支持GCC 13,需要进行如下变更：</p>
+<p>Although the 2023.10 IDE provides a <a href="https://doc.nucleisys.com/nuclei_tools/ide/advanceusage.html#gcc-13">one-click upgrade tool by right-clicking a project (see Chapter 8 of the IDE manual)</a>, it can only convert one project at a time, which is not friendly for projects that need to convert a large number of projects in batch. Therefore,
+we list here the approach you can refer to if you want to write a script to convert and upgrade projects.</p>
+<p>The following changes only apply to upgrading gcc10 projects created with versions of Nuclei Studio earlier than 2023.10. If batch conversion is required, the script should first check whether the project is a riscv gcc10 project.</p>
+<h2 id="modifying-toolchain-related-configuration">Modifying Toolchain-Related Configuration<a class="headerlink" href="#modifying-toolchain-related-configuration" title="Permanent link">¶</a></h2>
+<p>The gcc used in versions of Nuclei Studio earlier than 2023.10 incorporated many customizations, whereas the gcc used in Nuclei Studio 2023.10 inherits the features and some naming conventions of the official version. In the project's <code>.cproject</code> file, the following values mainly need to be modified. If the value of <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name</code> is <code>RISC-V Nuclei GCC</code>, the value of <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id</code> is <code>3901352267</code>, and the value of <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix</code> is <code>riscv-nuclei-elf-</code>, it means the project was created using GCC 10. To make the project support GCC 13, the following changes are required:</p>
 <ul>
-<li>toolchain.name的值 从<strong>RISC-V Nuclei GCC</strong>变更为<strong>RISC-V GCC/Newlib</strong></li>
-<li>toolchain.id的值 从<strong>3901352267</strong>变更为<strong>2262347901</strong></li>
-<li>command.prefix的值 从<strong>riscv-nuclei-elf-</strong>变更为<strong>riscv64-unknown-elf-</strong></li>
+<li>Change the value of toolchain.name from <strong>RISC-V Nuclei GCC</strong> to <strong>RISC-V GCC/Newlib</strong></li>
+<li>Change the value of toolchain.id from <strong>3901352267</strong> to <strong>2262347901</strong></li>
+<li>Change the value of command.prefix from <strong>riscv-nuclei-elf-</strong> to <strong>riscv64-unknown-elf-</strong></li>
 </ul>
-<p>变更前<code>.cproject</code>文件的内容</p>
+<p>Contents of the <code>.cproject</code> file before the change</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name.129748485"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name"</span><span class="w"> </span><span class="na">value=</span><span class="s">"RISC-V Nuclei GCC"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id.1143901706"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id"</span><span class="w"> </span><span class="na">value=</span><span class="s">"3901352267"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix.1270840820"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix"</span><span class="w"> </span><span class="na">value=</span><span class="s">"riscv-nuclei-elf-"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
@@ -214,7 +214,7 @@
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make.1355881376"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make"</span><span class="w"> </span><span class="na">value=</span><span class="s">"make"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm.1330665916"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm"</span><span class="w"> </span><span class="na">value=</span><span class="s">"rm"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 </code></pre></div>
-<p>变更后<code>.cproject</code>文件的内容</p>
+<p>Contents of the <code>.cproject</code> file after the change</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name.129748485"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.name"</span><span class="w"> </span><span class="na">value=</span><span class="s">"RISC-V GCC/Newlib"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id.1143901706"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id"</span><span class="w"> </span><span class="na">value=</span><span class="s">"2262347901"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix.1270840820"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.prefix"</span><span class="w"> </span><span class="na">value=</span><span class="s">"riscv64-unknown-elf-"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
@@ -227,62 +227,62 @@
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make.1355881376"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.make"</span><span class="w"> </span><span class="na">value=</span><span class="s">"make"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm.1330665916"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.command.rm"</span><span class="w"> </span><span class="na">value=</span><span class="s">"rm"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 </code></pre></div>
-<h2 id="risc-v">修改RISC-V扩展相关配置<a class="headerlink" href="#risc-v" title="Permanent link">¶</a></h2>
-<p>在Nuclei Studio 2023.10之前的版创建的工程中，RISC-V扩展是存放在四个单独的boolean类型的值中，而在Nuclei Studio 2023.10创建的工程中，
-改为一个string类型的值中,所以我在要在工程的<code>.cproject</code>文件中找到四个旧的值，并按规则转换成为新的RISC-V扩展的字符串，
-存放到<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions</code>中，同时将旧的四个单独的boolean类型的值置空或者删除。</p>
-<div class="codehilite"><pre><span></span><code># 四个单独的boolean类型的值
+<h2 id="modifying-risc-v-extension-related-configuration">Modifying RISC-V Extension-Related Configuration<a class="headerlink" href="#modifying-risc-v-extension-related-configuration" title="Permanent link">¶</a></h2>
+<p>In projects created with versions of Nuclei Studio earlier than 2023.10, RISC-V extensions were stored in four separate boolean values, whereas in projects created with Nuclei Studio 2023.10,
+they are stored in a single string value. Therefore, we need to find the four old values in the project's <code>.cproject</code> file, convert them into the new RISC-V extension string according to the rules,
+store it in <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions</code>, and clear or delete the four old separate boolean values.</p>
+<div class="codehilite"><pre><span></span><code># The four separate boolean values
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.rvb
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.rvk
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.dsp
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.vector
 
-# 一个string类型的值
+# The single string value
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions
 </code></pre></div>
 <ol>
-<li>首先，根据<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base</code>确认工程对应的arch是rv32/rv64</li>
-<li>其次，根据<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp</code>确认是否带f/d</li>
-<li>最后，根据对应转换规则转换出正确的RISC-V扩展字符串</li>
+<li>First, determine whether the arch corresponding to the project is rv32/rv64 based on <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base</code></li>
+<li>Second, determine whether f/d is included based on <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp</code></li>
+<li>Finally, convert to the correct RISC-V extension string according to the corresponding conversion rules</li>
 </ol>
-<p>转换规则(特别说明，p的值需要接在RISC-V扩展字符串的最后)：</p>
+<p>Conversion rules (note in particular that the value of p needs to be appended at the end of the RISC-V extension string):</p>
 <ul>
 <li><code>b</code> -&gt; <code>_zba_zbb_zbc_zbs</code></li>
 <li><code>k</code> -&gt; <code>_zk_zks</code></li>
 <li><code>v</code> -&gt; <code>rv32f/d : _zve32f</code>, <code>rv64f: _zve64f</code>, <code>rv64fd: v</code></li>
 <li><code>p</code> -&gt; <code>rv64: _xxldsp</code>, <code>rv32: _xxldspn1x</code></li>
 </ul>
-<p>例如，现在有一个N307FD的工程，它的<code>arch=rv32imafdcbpv</code>(gcc10)，可以知道它是一个<strong>rv32</strong>,带<strong>fd</strong>并且使用了<strong>bpv</strong>扩展，那么根据转换规则，转换出来的RISC-V扩展字符串为<code>_zba_zbb_zbc_zbs_zve32f_xxldspn1x</code>。</p>
-<p>变更前<code>.cproject</code>文件的内容</p>
+<p>For example, suppose there is an N307FD project whose <code>arch=rv32imafdcbpv</code> (gcc10). We can tell that it is <strong>rv32</strong>, includes <strong>fd</strong>, and uses the <strong>bpv</strong> extensions. According to the conversion rules, the resulting RISC-V extension string is <code>_zba_zbb_zbc_zbs_zve32f_xxldspn1x</code>.</p>
+<p>Contents of the <code>.cproject</code> file before the change</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base.489743203"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base"</span><span class="w"> </span><span class="na">value=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32i"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"enumerated"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp.1936924005"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp"</span><span class="w"> </span><span class="na">value=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.double"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"enumerated"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.rvb.168405526"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.rvb"</span><span class="w"> </span><span class="na">value=</span><span class="s">"true"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"boolean"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.dsp.565204765"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.dsp"</span><span class="w"> </span><span class="na">value=</span><span class="s">"true"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"boolean"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.vector.1142078455"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extension.vector"</span><span class="w"> </span><span class="na">value=</span><span class="s">"true"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"boolean"</span><span class="nt">/&gt;</span><span class="w">     </span>
 </code></pre></div>
-<p>变更后<code>.cproject</code>文件的内容</p>
+<p>Contents of the <code>.cproject</code> file after the change</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions.1832321358"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.extensions"</span><span class="w"> </span><span class="na">value=</span><span class="s">"_zba_zbb_zbc_zbs_zve32f_xxldspn1x"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 </code></pre></div>
-<h2 id="libncrt-c">修改libncrt C库相关配置<a class="headerlink" href="#libncrt-c" title="Permanent link">¶</a></h2>
-<p>在Nuclei Studio 2023.10之前的版创建的工程中,使用libncrt C库时，会在工程中包含一个<code>--specs=libncrt_xxx.specs</code>或者链接库 
-里面包含 <code>-lncrt_xxx</code>，而在Nuclei Studio 2023.10创建的工程中，如果使用了libncrt C库，需要将<code>--specs=libncrt_xxx.specs</code>的方式变更为<code>-lncrt_xxx</code>，
-然后额外需要链接的时候补上 <code>-lncrt_small -lheapops_basic -lfileops_uart</code>, 通用的target编译选项需要补上 <code>-isystem=/include/libncrt</code></p>
-<p><strong>举例如下</strong>：
+<h2 id="modifying-libncrt-c-library-related-configuration">Modifying libncrt C Library-Related Configuration<a class="headerlink" href="#modifying-libncrt-c-library-related-configuration" title="Permanent link">¶</a></h2>
+<p>In projects created with versions of Nuclei Studio earlier than 2023.10, when the libncrt C library is used, the project includes a <code>--specs=libncrt_xxx.specs</code> option, or the linked libraries
+include <code>-lncrt_xxx</code>. In projects created with Nuclei Studio 2023.10, if the libncrt C library is used, the <code>--specs=libncrt_xxx.specs</code> approach needs to be changed to <code>-lncrt_xxx</code>,
+and additionally <code>-lncrt_small -lheapops_basic -lfileops_uart</code> need to be added at link time, while the general target compile options need to include <code>-isystem=/include/libncrt</code></p>
+<p><strong>Examples</strong>:
 * <code>-lncrt_small</code> -&gt; <code>-lncrt_small -lheapops_basic -lfileops_uart</code>
 * <code>--specs=libncrt_small.specs</code> -&gt; <code>-lncrt_small -lheapops_basic -lfileops_uart</code></p>
 <ol>
-<li>在<code>.cproject</code>文件中确认否存存在<code>--specs=libncrt_xxx.specs</code>，如果存在，则表示这个是一个使用了libncrt的工程，则可以进行后续的步骤</li>
-<li>如果<code>--specs=libncrt_xxx.specs</code>存在，先将其删除</li>
-<li>如果<code>-lm</code>存在，则先将其删除</li>
-<li>查找<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs</code>或者<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs</code>中是否存<code>m</code>，如果存在则先将删除</li>
-<li>查找<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs</code>或者<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs</code>中是否存<code>ncrt_xxx</code></li>
-<li>根据上面的结果，在<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs</code>或者<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs</code>中补充对应的值<ul>
-<li><code>--specs=libncrt_xxx.specs</code>存在，添加<code>ncrt_xxx</code>；或者<code>ncrt_xxx</code>存在。需要额外添加<code>heapops_basic</code>和<code>fileops_uart</code></li>
+<li>Check whether <code>--specs=libncrt_xxx.specs</code> exists in the <code>.cproject</code> file. If it exists, it means this is a project that uses libncrt, and you can proceed with the subsequent steps</li>
+<li>If <code>--specs=libncrt_xxx.specs</code> exists, delete it first</li>
+<li>If <code>-lm</code> exists, delete it first</li>
+<li>Check whether <code>m</code> exists in <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs</code> or <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs</code>; if it exists, delete it first</li>
+<li>Check whether <code>ncrt_xxx</code> exists in <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs</code> or <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs</code></li>
+<li>Based on the above results, add the corresponding values to <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.libs</code> or <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs</code><ul>
+<li>If <code>--specs=libncrt_xxx.specs</code> exists, add <code>ncrt_xxx</code>; or if <code>ncrt_xxx</code> exists, you also need to add <code>heapops_basic</code> and <code>fileops_uart</code></li>
 </ul>
 </li>
-<li>在<code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other</code>中补上 <code>-isystem=/include/libncrt</code></li>
+<li>Add <code>-isystem=/include/libncrt</code> to <code>ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other</code></li>
 </ol>
-<div class="codehilite"><pre><span></span><code><span class="gh">#</span> --specs=libncrt_xxx1.specs可能存在于以下string类型的值
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> --specs=libncrt_xxx1.specs may exist in the following string values
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.other
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.other
@@ -301,12 +301,12 @@ ilg.gnumcueclipse.managedbuild.cross.riscv.option.createflash.other
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.createlisting.other
 ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.other
 </code></pre></div>
-<p>举例，工程中用到了<code>--specs=libncrt_balanced.specs</code></p>
-<p>变更前<code>.cproject</code>文件的内容</p>
+<p>For example, the project uses <code>--specs=libncrt_balanced.specs</code></p>
+<p>Contents of the <code>.cproject</code> file before the change</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other"</span><span class="w"> </span><span class="na">value=</span><span class="s">" "</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.other.443378574"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.other"</span><span class="w"> </span><span class="na">value=</span><span class="s">"--specs=libncrt_balanced.specs"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 </code></pre></div>
-<p>变更后<code>.cproject</code>文件的内容</p>
+<p>Contents of the <code>.cproject</code> file after the change</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other"</span><span class="w"> </span><span class="na">value=</span><span class="s">"-isystem=/include/libncrt "</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;option</span><span class="w"> </span><span class="na">IS_BUILTIN_EMPTY=</span><span class="s">"false"</span><span class="w"> </span><span class="na">IS_VALUE_EMPTY=</span><span class="s">"false"</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs.146128417"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.libs"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"libs"</span><span class="nt">&gt;</span>
 <span class="w">    </span><span class="nt">&lt;listOptionValue</span><span class="w"> </span><span class="na">builtIn=</span><span class="s">"false"</span><span class="w"> </span><span class="na">value=</span><span class="s">"ncrt_balanced"</span><span class="nt">/&gt;</span>
@@ -314,26 +314,26 @@ ilg.gnumcueclipse.managedbuild.cross.riscv.option.printsize.other
 <span class="w">    </span><span class="nt">&lt;listOptionValue</span><span class="w"> </span><span class="na">builtIn=</span><span class="s">"false"</span><span class="w"> </span><span class="na">value=</span><span class="s">"heapops_basic"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/option&gt;</span>
 </code></pre></div>
-<h2 id="link-warning">增加link warning消除的配置<a class="headerlink" href="#link-warning" title="Permanent link">¶</a></h2>
-<p>在GCC 13使用过程中会产生很多的warning信息，可以在链接选项中额外增加<code>-Wl,--no-warn-rwx-segments</code>参数，用以关闭这些warning信息。</p>
-<p>具体参见 <a href="https://sourceware.org/binutils/docs/ld/Options.html#index-_002d_002dwarn_002drwx_002dsegments">https://sourceware.org/binutils/docs/ld/Options.html#index-_002d_002dwarn_002drwx_002dsegments</a></p>
-<p>变更前<code>.cproject</code>文件的内容</p>
+<h2 id="adding-configuration-to-eliminate-link-warnings">Adding Configuration to Eliminate Link Warnings<a class="headerlink" href="#adding-configuration-to-eliminate-link-warnings" title="Permanent link">¶</a></h2>
+<p>Many warning messages are generated when using GCC 13. You can add the <code>-Wl,--no-warn-rwx-segments</code> parameter to the link options to disable these warning messages.</p>
+<p>For details, see <a href="https://sourceware.org/binutils/docs/ld/Options.html#index-_002d_002dwarn_002drwx_002dsegments">https://sourceware.org/binutils/docs/ld/Options.html#index-_002d_002dwarn_002drwx_002dsegments</a></p>
+<p>Contents of the <code>.cproject</code> file before the change</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.other.1000044097"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.other"</span><span class="w"> </span><span class="na">value=</span><span class="s">""</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 </code></pre></div>
-<p>变更后<code>.cproject</code>文件的内容</p>
+<p>Contents of the <code>.cproject</code> file after the change</p>
 <div class="codehilite"><pre><span></span><code><span class="nt">&lt;option</span><span class="w"> </span><span class="na">id=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.other.1000044097"</span><span class="w"> </span><span class="na">superClass=</span><span class="s">"ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.other"</span><span class="w"> </span><span class="na">value=</span><span class="s">"-Wl,--no-warn-rwx-segments"</span><span class="w"> </span><span class="na">valueType=</span><span class="s">"string"</span><span class="nt">/&gt;</span>
 </code></pre></div>
-<p>完成以上变更后，reload一下工程，工程就可以在Nuclei Studio 2023.10下正常编译、调试、运行了。</p>
+<p>After completing the above changes, reload the project, and the project can be compiled, debugged, and run normally under Nuclei Studio 2023.10.</p>
 <blockquote>
-<p><strong>说明</strong>：</p>
-<p>本文档中，所有引用的例子中关于<code>.cproject</code>文件，出现的类似<code>id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114"</code>中，
-<code>1735566114</code>是一个Nuclei Studio生成的hash值，不同时间不同工程各不相同，且其不影响配置，如果能保持与原值相同的情况下，尽量保持相同。</p>
+<p><strong>Note</strong>:</p>
+<p>In this document, in all referenced examples of the <code>.cproject</code> file, in entries like <code>id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.other.1735566114"</code>,
+<code>1735566114</code> is a hash value generated by Nuclei Studio. It varies across different times and different projects, and it does not affect the configuration. If it can be kept the same as the original value, try to keep it the same.</p>
 </blockquote>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
-<a class="btn btn-neutral float-left" href="../8-openocd_202310_flashloader_flaws/" title="OpenOCD在操作容量大于16M-Byte的nor-flash时的问题"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
-<a class="btn btn-neutral float-right" href="../10-compiling_projects_with_headless_in_nuclei_studio/" title="在Nuclei Studio下用命令行编译工程">下一章 <span class="icon icon-circle-arrow-right"></span></a>
+<a class="btn btn-neutral float-left" href="../8-openocd_202310_flashloader_flaws/" title="Issues with OpenOCD When Operating on NOR Flash Larger Than 16 MB"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
+<a class="btn btn-neutral float-right" href="../10-compiling_projects_with_headless_in_nuclei_studio/" title="Compiling Projects from the Command Line in Nuclei Studio">下一章 <span class="icon icon-circle-arrow-right"></span></a>
 </div>
 <hr/>
 <div role="contentinfo">

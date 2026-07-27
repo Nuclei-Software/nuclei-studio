@@ -6,14 +6,14 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../img/favicon.ico" rel="shortcut icon"/>
-<title>在Nuclei Studio下用命令行编译工程 - Nuclei Studio Supply Documents</title>
+<title>Compiling Projects from the Command Line in Nuclei Studio - Nuclei Studio Supply Documents</title>
 <link href="../css/theme.css" rel="stylesheet"/>
 <link href="../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <link href="../extra.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "\u5728Nuclei Studio\u4e0b\u7528\u547d\u4ee4\u884c\u7f16\u8bd1\u5de5\u7a0b";
+        var mkdocs_page_name = "Compiling Projects from the Command Line in Nuclei Studio";
         var mkdocs_page_input_path = "10-compiling_projects_with_headless_in_nuclei_studio.md";
         var mkdocs_page_url = null;
       </script>
@@ -37,11 +37,11 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">Failure to Start QEMU in Nuclei Studio Due to Insufficient Memory</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">Error When Debugging Programs with QEMU in Nuclei Studio on Windows 11</a>
 </li>
 </ul>
 <ul>
@@ -49,11 +49,11 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">Errors Occur When Using Pre-build Command/Post-build Command During Project Build</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">Upgrading npk.yml to Support Nuclei Studio 2023.10</a>
 </li>
 </ul>
 <ul>
@@ -61,33 +61,33 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+<li class="toctree-l1"><a class="reference internal" href="../7-update_nucleistudio_202310_to_fixed_version/">Updating Nuclei Studio 2023.10 to the Latest Fixed Version</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">Issues with OpenOCD When Operating on NOR Flash Larger Than 16 MB</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">Upgrading the Project Toolchain to GCC 13 by Modifying the .cproject File</a>
 </li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal current" href="#">在Nuclei Studio下用命令行编译工程</a>
+<li class="toctree-l1 current"><a class="reference internal current" href="#">Compiling Projects from the Command Line in Nuclei Studio</a>
 <ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="#_1">问题说明</a>
+<li class="toctree-l2"><a class="reference internal" href="#problem-description">Problem Description</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#_2">解决方案</a>
-</li>
-</ul>
+<li class="toctree-l2"><a class="reference internal" href="#solution">Solution</a>
 </li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">About the Inconsistency Between Dhrystone Benchmark Scores in the IDE and NSDK 0.5.0 Command-Line Scores</a>
 </li>
 </ul>
 <ul>
@@ -103,59 +103,59 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">Issues You May Encounter When Using the Profiling Feature</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">An Example of Using the Profiling Feature in Nuclei Studio for Performance Tuning</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">Demonstrate NICE/VNICE Instruction Acceleration of the Nuclei Model through Profiling</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</a>
+<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Rapid Verification of NICE/VNICE Instruction Acceleration with Nuclei Model and NICE Wizard</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming使用案例</a>
+<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming Use Case</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Live Watch 功能的使用</a>
+<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Using the Live Watch Feature</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">在llvm中新增自定义汇编指令教程</a>
+<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">Tutorial for Adding Custom Assembly Instructions in LLVM</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../23-nuclei_debug_map_register_analyze/">如何使用芯来提供的DebugMap寄存器分析错误现场</a>
+<li class="toctree-l1"><a class="reference internal" href="../23-nuclei_debug_map_register_analyze/">How to Use the DebugMap Registers Provided by Nuclei to Analyze Error Scenarios</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">在binutils中新增自定义汇编指令教程</a>
+<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">Tutorial for Adding Custom Assembly Instructions in binutils</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">OpenOCD 中 Nuclei 交叉触发功能使用指南</a>
+<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">Guide to Using the Nuclei Cross-Trigger Feature in OpenOCD</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">OpenOCD对FreeRTOS的调试支持使用指南</a>
+<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">User Guide for FreeRTOS Debugging Support in OpenOCD</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../27-debug_with_multiple_ftdi_devices/">如何同时使用多个蜂鸟调试器进行调试</a>
+<li class="toctree-l1"><a class="reference internal" href="../27-debug_with_multiple_ftdi_devices/">How to Debug with Multiple Hummingbird Debuggers Simultaneously</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/">Nuclei SDK基于evalsoc快速适配customsoc</a>
+<li class="toctree-l1"><a class="reference internal" href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/">Quick Porting from evalsoc to customsoc Based on Nuclei SDK</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../29-using_overlay_command_in_linker_scripts/">在链接脚本中使用OVERLAY命令</a>
+<li class="toctree-l1"><a class="reference internal" href="../29-using_overlay_command_in_linker_scripts/">Using the OVERLAY Command in Linker Scripts</a>
 </li>
 </ul>
 </div>
@@ -170,7 +170,7 @@
 <div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
 <ul class="wy-breadcrumbs">
 <li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
-<li class="breadcrumb-item active">在Nuclei Studio下用命令行编译工程</li>
+<li class="breadcrumb-item active">Compiling Projects from the Command Line in Nuclei Studio</li>
 <li class="wy-breadcrumbs-aside">
 <a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/10-compiling_projects_with_headless_in_nuclei_studio.md"> 在GitHub上编辑</a>
 </li>
@@ -179,62 +179,62 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <div class="section" itemprop="articleBody">
-<h1 id="nuclei-studio">在Nuclei Studio下用命令行编译工程<a class="headerlink" href="#nuclei-studio" title="Permanent link">¶</a></h1>
-<h2 id="_1">问题说明<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
-<p>很多客户咨询怎么在Nuclei Studio上使用IDE的无头Headless模式来构建和编译工程。</p>
-<h2 id="_2">解决方案<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<h1 id="compiling-projects-from-the-command-line-in-nuclei-studio">Compiling Projects from the Command Line in Nuclei Studio<a class="headerlink" href="#compiling-projects-from-the-command-line-in-nuclei-studio" title="Permanent link">¶</a></h1>
+<h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">¶</a></h2>
+<p>Many customers ask how to use the IDE's headless mode in Nuclei Studio to build and compile projects.</p>
+<h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>所有以 <code>NucleiStudio.exe</code> 开头的命令行执行时，会有一个弹框显示执行日志，如果需屏蔽弹框，可以将命令改为 <code>eclipsec.exe</code></p>
-<p>以下文档是在<strong>2024.06</strong>版本的IDE中实测，作为补充说明。</p>
+<p>When running any command line that starts with <code>NucleiStudio.exe</code>, a pop-up window appears showing the execution log. To suppress this pop-up, change the command to <code>eclipsec.exe</code></p>
+<p>The following documentation was tested with the <strong>2024.06</strong> version of the IDE and is provided as supplementary information.</p>
 </blockquote>
-<p>因NucleiStudio 2024.06版运行在java 21的环境上，实际应用中很多用户的本地没有java 21环境，故在运行命令时发现在执行该命令时，因找不到对应的jre而报错。为解决上述问题，可以在本地机器上安装java 21的环境（如何安装用户可以自行搜索相关教程），也可以在命令行中通过 <code>-vm</code> 参数指定NucleiStudio 2024.06中自带的jre的路径。</p>
+<p>Because NucleiStudio 2024.06 runs on a Java 21 environment, and many users do not have a Java 21 environment installed locally, running the command may fail with an error because the corresponding JRE cannot be found. To resolve this issue, you can either install a Java 21 environment on your local machine (users can search for relevant installation tutorials themselves), or use the <code>-vm</code> parameter on the command line to specify the path of the JRE bundled with NucleiStudio 2024.06.</p>
 <div class="codehilite"><pre><span></span><code>NucleiStudio.exe<span class="w"> </span>-vm<span class="w"> </span><span class="s2">"&lt;user_nucleistudio_path&gt;/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin"</span><span class="w"> </span>--launcher.suppressErrors<span class="w"> </span>-nosplash<span class="w"> </span>-application<span class="w"> </span>org.eclipse.cdt.managedbuilder.core.headlessbuild<span class="w"> </span>-data<span class="w"> </span>C:<span class="se">\N</span>ucleiStudio_workspace<span class="w"> </span>-cleanBuild<span class="w"> </span>test/Debug<span class="w"> </span>-Debug
 </code></pre></div>
-<p>提供一组批量导入工程并批量编译工程的命令</p>
-<p>创建workspace并批量导入工程</p>
+<p>The following is a set of commands for batch importing and batch building projects</p>
+<p>Create a workspace and batch import projects</p>
 <div class="codehilite"><pre><span></span><code>NucleiStudio.exe<span class="w"> </span>-vm<span class="w"> </span><span class="s2">"&lt;user_nucleistudio_path&gt;/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin"</span><span class="w">  </span>--launcher.suppressErrors<span class="w"> </span>-noSplash<span class="w"> </span>-application<span class="w"> </span>org.eclipse.cdt.managedbuilder.core.headlessbuild<span class="w"> </span>-data<span class="w"> </span><span class="nv">$CI_PROJECT_DIR</span><span class="w"> </span>-importAll<span class="w"> </span><span class="nv">$CI_PROJECT_DIR</span>
 </code></pre></div>
-<p>编译这组导入的工程</p>
+<p>Build the imported projects</p>
 <div class="codehilite"><pre><span></span><code>NucleiStudio.exe<span class="w"> </span>-vm<span class="w"> </span><span class="s2">"&lt;user_nucleistudio_path&gt;/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.3.v20240426-1530/jre/bin"</span><span class="w"> </span>--launcher.suppressErrors<span class="w"> </span>-noSplash<span class="w"> </span>-application<span class="w"> </span>org.eclipse.cdt.managedbuilder.core.headlessbuild<span class="w"> </span>-data<span class="w"> </span><span class="nv">$CI_PROJECT_DIR</span><span class="w"> </span>-build<span class="w"> </span><span class="si">${</span><span class="nv">TARGET_PHASE</span><span class="si">}</span>_Project/Debug
 </code></pre></div>
 <blockquote>
-<p>以下文档是在<strong>2023.10</strong>版本的IDE中实测，其他版本可能需要做一些调整适配才可以正常工作。</p>
+<p>The following documentation was tested with the <strong>2023.10</strong> version of the IDE; other versions may require some adjustments to work properly.</p>
 </blockquote>
-<p>Nuclei Studio是图形化（GUI）的代码编写工具，但是在某些特定的场景下，用户需要通过命令行来快速编译工程，
-在Nuclei Studio中，只需要一行命令就可以实现。下载好Nuclei Studio后，在Nuclei Studio的workspace已经创建好了需要编译的工程<code>test</code>,
-<strong>同时Nuclei Studio已退出运行</strong>, 执行以下命令就可以完成工程的编译。</p>
+<p>Nuclei Studio is a graphical (GUI) code editing tool, but in certain scenarios users need to build projects quickly from the command line.
+In Nuclei Studio, this can be done with a single command. After downloading Nuclei Studio, make sure the project <code>test</code> to be built has already been created in the Nuclei Studio workspace,
+<strong>and that Nuclei Studio is not running</strong>, then execute the following command to build the project.</p>
 <blockquote>
-<p><strong>提醒</strong>: 请确保 NucleiStudio的PATH已经设置到系统中，这样 <code>NucleiStudio.exe</code>/<code>NucleiStudio</code> 才可以被执行。</p>
-<p><strong>下面以Windows系统举例</strong></p>
+<p><strong>Note</strong>: Make sure the NucleiStudio PATH has been added to the system, so that <code>NucleiStudio.exe</code>/<code>NucleiStudio</code> can be executed.</p>
+<p><strong>The following example uses Windows</strong></p>
 </blockquote>
 <div class="codehilite"><pre><span></span><code>NucleiStudio.exe<span class="w"> </span>--launcher.suppressErrors<span class="w"> </span>-nosplash<span class="w"> </span>-application<span class="w"> </span>org.eclipse.cdt.managedbuilder.core.headlessbuild<span class="w"> </span>-data<span class="w"> </span>C:<span class="se">\N</span>ucleiStudio_workspace<span class="w"> </span>-cleanBuild<span class="w"> </span>test/Debug<span class="w"> </span>-Debug
 </code></pre></div>
 <blockquote>
-<p><code>--launcher.suppressErrors</code> 用来屏蔽构建出错时，Eclipse会出错弹窗.</p>
+<p><code>--launcher.suppressErrors</code> is used to suppress the Eclipse error pop-up window when a build error occurs.</p>
 </blockquote>
-<p>如果需要在<strong>2022.12版本</strong>的IDE上进行使用，则需要先设置好toolchain目录下<code>gcc/bin</code>和<code>build-tools/bin</code>的路径到系统PATH中，然后将<code>NucleiStudio.exe</code>换成<code>eclipsec.exe</code></p>
-<p>针对<strong>2022.12版本</strong>，命令举例如下:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 这里请修改成自己的IDE路径</span>
+<p>If you need to use the <strong>2022.12 version</strong> of the IDE, you must first add the paths of <code>gcc/bin</code> and <code>build-tools/bin</code> under the toolchain directory to the system PATH, and then replace <code>NucleiStudio.exe</code> with <code>eclipsec.exe</code></p>
+<p>For the <strong>2022.12 version</strong>, the example commands are as follows:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Change this to your own IDE path</span>
 <span class="nb">set</span><span class="w"> </span><span class="nv">NSIDE</span><span class="o">=</span>D:<span class="se">\N</span>ucleiStudio_IDE_202212-win64<span class="se">\N</span>ucleiStudio
-<span class="c1"># 必须设置好系统PATH</span>
+<span class="c1"># The system PATH must be set correctly</span>
 <span class="nb">set</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>%NSIDE%<span class="se">\t</span>oolchain<span class="se">\g</span>cc<span class="se">\b</span>in<span class="p">;</span>%NSIDE%<span class="se">\t</span>oolchain<span class="se">\b</span>uild-tools<span class="se">\b</span>in<span class="p">;</span>%PATH%
-<span class="c1"># 注意NucleiStudio.exe换成了eclipsec.exe</span>
+<span class="c1"># Note that NucleiStudio.exe is replaced with eclipsec.exe</span>
 %NSIDE%<span class="se">\e</span>clipsec.exe<span class="w"> </span>--launcher.suppressErrors<span class="w"> </span>-nosplash<span class="w"> </span>-application<span class="w"> </span>org.eclipse.cdt.managedbuilder.core.headlessbuild<span class="w"> </span>-data<span class="w"> </span>C:<span class="se">\N</span>ucleiStudio_workspace<span class="w"> </span>-cleanBuild<span class="w"> </span>test/Debug
 </code></pre></div>
 <blockquote>
-<p>这个<strong>2023.10</strong>版本的举例的命令 会 弹出一个额外的命令行窗口进行输出。</p>
+<p>The example command for the <strong>2023.10</strong> version opens an additional command-line window for output.</p>
 </blockquote>
 <p><img alt="Nuclei Studio Command Line Build" src="../asserts/images/10/wx_20231208153525.png"/></p>
 <ul>
-<li><code>NucleiStudio.exe</code>：该参数是Nuclei Studio的启动应用，在Nuclei Studio的安装目录下。</li>
-<li><code>--launcher.suppressErrors</code>：该参数是用于抑制Nuclei Studio启动时的错误信息。</li>
-<li><code>-nosplash</code>：该参数用于关闭启动时的 Splash 屏幕。这意味着在启动 Eclipse 时不会显示一个短暂的加载屏幕。</li>
-<li><code>-application</code>：该参数用于指定要运行的应用程序。在这里，<code>org.eclipse.cdt.managedbuilder.core.headlessbuild</code>
-   是指  Headless 构建应用程序。该应用程序用于执行构建操作，而不需要图形用户界面（GUI）。</li>
-<li><code>-data</code>：该参数用于指定工作区路径。它告诉 Nuclei Studio 将数据存储在哪里，例如工作空间、项目和文件。</li>
-<li><code>-build</code>：该参数用于指定需要编译的工程，<code>test/Debug</code>，表示的是编译test工程中的Debug配置；
-   一般Nuclei Studio创建的工程有Debug、Release两套配置，如果不指定配置，这个默认会编译出Debug、Release，
-   可以看到编译后工程目录下有Debug、Release两个目录。</li>
+<li><code>NucleiStudio.exe</code>: This is the Nuclei Studio launcher application, located in the Nuclei Studio installation directory.</li>
+<li><code>--launcher.suppressErrors</code>: This parameter is used to suppress error messages when Nuclei Studio starts.</li>
+<li><code>-nosplash</code>: This parameter disables the splash screen at startup. This means no brief loading screen is displayed when Eclipse starts.</li>
+<li><code>-application</code>: This parameter specifies the application to run. Here, <code>org.eclipse.cdt.managedbuilder.core.headlessbuild</code>
+   refers to the headless build application. This application performs build operations without a graphical user interface (GUI).</li>
+<li><code>-data</code>: This parameter specifies the workspace path. It tells Nuclei Studio where to store data, such as workspaces, projects, and files.</li>
+<li><code>-build</code>: This parameter specifies the project to build; <code>test/Debug</code> means building the Debug configuration of the test project;
+   projects created by Nuclei Studio generally have two configurations, Debug and Release. If no configuration is specified, both Debug and Release are built by default,
+   and you can see the Debug and Release directories under the project directory after the build.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code>    ├─.settings
     ├─application
@@ -247,10 +247,10 @@
         └─nuclei_sdk
 </code></pre></div>
 <ul>
-<li><code>-cleanBuild</code>：该参数与<code>-build</code>类似，只是在编译之前，会清空清理工作空间。建议使用<code>-cleanBuild</code>。</li>
-<li><code>-Debug</code>：该参数用于指定编译过程是Debug模式，在编译时会输出详细的编译过程日志。如果不带此参数，命令将静默执行，没有任何输出。</li>
+<li><code>-cleanBuild</code>: This parameter is similar to <code>-build</code>, except that it cleans the workspace before building. Using <code>-cleanBuild</code> is recommended.</li>
+<li><code>-Debug</code>: This parameter specifies that the build process runs in Debug mode, outputting detailed build logs during compilation. Without this parameter, the command runs silently with no output.</li>
 </ul>
-<p><strong>以下为上面举例命令的输出内容，以供参考</strong></p>
+<p><strong>The following is the output of the example command above, for reference</strong></p>
 <div class="codehilite"><pre><span></span><code><span class="mi">17</span><span class="o">:</span><span class="mi">00</span><span class="o">:</span><span class="mi">17</span><span class="w"> </span><span class="o">****</span><span class="w"> </span><span class="n">Clean</span><span class="o">-</span><span class="n">only</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="n">Debug</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">project</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">****</span>
 <span class="n">make</span><span class="w"> </span><span class="o">-</span><span class="n">j8</span><span class="w"> </span><span class="n">clean</span>
 <span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="o">./</span><span class="n">nuclei_sdk</span><span class="sr">/SoC/evalsoc/Common/Source/Stubs/newlib/chown.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/clock_getres.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/clock_gettime.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/clock_settime.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/close.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/environ.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/errno.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/execve.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/exit.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/fork.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/fstat.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/getpid.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/gettimeofday.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/isatty.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/kill.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/link.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/lseek.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/open.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/read.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/readlink.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/sbrk.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/stat.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/symlink.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/times.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/unlink.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/wait.o ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/write.o  ./nuclei_sdk/SoC/evalsoc/Common/Source/GCC/intexc_evalsoc.o ./nuclei_sdk/SoC/evalsoc/Common/Source/GCC/intexc_evalsoc_s.o ./nuclei_sdk/SoC/evalsoc/Common/Source/GCC/startup_evalsoc.o  ./nuclei_sdk/SoC/evalsoc/Common/Source/Drivers/evalsoc_uart.o  ./nuclei_sdk/SoC/evalsoc/Common/Source/evalsoc_common.o ./nuclei_sdk/SoC/evalsoc/Common/Source/system_evalsoc.o  ./application/main.o test.hex test.lst test.siz ./nuclei_sdk/SoC/evalsoc/Common/Source/GCC/intexc_evalsoc.d ./nuclei_sdk/SoC/evalsoc/Common/Source/GCC/intexc_evalsoc_s.d ./nuclei_sdk/SoC/evalsoc/Common/Source/GCC/startup_evalsoc.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/chown.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/clock_getres.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/clock_gettime.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/clock_settime.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/close.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/environ.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/errno.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/execve.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/exit.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/fork.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/fstat.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/getpid.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/gettimeofday.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/isatty.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/kill.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/link.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/lseek.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/open.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/read.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/readlink.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/sbrk.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/stat.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/symlink.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/times.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/unlink.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/wait.d ./nuclei_sdk/SoC/evalsoc/Common/Source/Stubs/newlib/write.d  ./nuclei_sdk/SoC/evalsoc/Common/Source/Drivers/evalsoc_uart.d  ./nuclei_sdk/SoC/evalsoc/Common/Source/evalsoc_common.d ./nuclei_sdk/SoC/evalsoc/Common/Source/system_evalsoc.d  ./application/</span><span class="n">main</span><span class="o">.</span><span class="na">d</span><span class="w">  </span><span class="n">test</span><span class="o">.</span><span class="na">elf</span>
@@ -446,7 +446,7 @@
 
 <span class="mi">17</span><span class="o">:</span><span class="mi">00</span><span class="o">:</span><span class="mi">23</span><span class="w"> </span><span class="n">Build</span><span class="w"> </span><span class="n">Finished</span><span class="o">.</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">errors</span><span class="o">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">warnings</span><span class="o">.</span><span class="w"> </span><span class="o">(</span><span class="n">took</span><span class="w"> </span><span class="mi">5</span><span class="n">s</span><span class="o">.</span><span class="mi">75</span><span class="n">ms</span><span class="o">)</span>
 </code></pre></div>
-<p>以下为<code>org.eclipse.cdt.managedbuilder.core.headlessbuild</code>所提供的参数，以供参考。</p>
+<p>The following are the parameters provided by <code>org.eclipse.cdt.managedbuilder.core.headlessbuild</code>, for reference.</p>
 <div class="codehilite"><pre><span></span><code>   <span class="o">-</span><span class="n">data</span>       <span class="p">{</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">workspace</span><span class="p">}</span>
    <span class="o">-</span><span class="n">remove</span>     <span class="p">{[</span><span class="n">uri</span><span class="p">:</span><span class="o">/</span><span class="p">]</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">project</span><span class="p">}</span>
    <span class="o">-</span><span class="n">removeAll</span>  <span class="p">{[</span><span class="n">uri</span><span class="p">:</span><span class="o">/</span><span class="p">]</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">projectTreeURI</span><span class="p">}</span> <span class="n">Remove</span> <span class="nb">all</span> <span class="n">projects</span> <span class="n">under</span> <span class="n">URI</span>
@@ -474,8 +474,8 @@
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
-<a class="btn btn-neutral float-left" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/" title="通过修改.cproject文件，升级工程工具链到GCC 13"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
-<a class="btn btn-neutral float-right" href="../11-openocd_reported_error_not_known_as_fespi_capable/" title="OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable">下一章 <span class="icon icon-circle-arrow-right"></span></a>
+<a class="btn btn-neutral float-left" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/" title="Upgrading the Project Toolchain to GCC 13 by Modifying the .cproject File"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
+<a class="btn btn-neutral float-right" href="../11-openocd_reported_error_not_known_as_fespi_capable/" title="Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable">下一章 <span class="icon icon-circle-arrow-right"></span></a>
 </div>
 <hr/>
 <div role="contentinfo">

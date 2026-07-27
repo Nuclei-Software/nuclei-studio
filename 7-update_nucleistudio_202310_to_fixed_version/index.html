@@ -6,14 +6,14 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../img/favicon.ico" rel="shortcut icon"/>
-<title>更新 Nuclei Studio 2023.10 到最新修正版本 - Nuclei Studio Supply Documents</title>
+<title>Updating Nuclei Studio 2023.10 to the Latest Fixed Version - Nuclei Studio Supply Documents</title>
 <link href="../css/theme.css" rel="stylesheet"/>
 <link href="../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <link href="../extra.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "\u66f4\u65b0 Nuclei Studio 2023.10 \u5230\u6700\u65b0\u4fee\u6b63\u7248\u672c";
+        var mkdocs_page_name = "Updating Nuclei Studio 2023.10 to the Latest Fixed Version";
         var mkdocs_page_input_path = "7-update_nucleistudio_202310_to_fixed_version.md";
         var mkdocs_page_url = null;
       </script>
@@ -37,11 +37,11 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">因内存不足，导致在Nuclei Studio中启动qemu失败</a>
+<li class="toctree-l1"><a class="reference internal" href="../1-cannot-setup-guestmemory/">Failure to Start QEMU in Nuclei Studio Due to Insufficient Memory</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">windows 11下使用Nuclei Studio进行qemu调试程序时报错</a>
+<li class="toctree-l1"><a class="reference internal" href="../2-qemu-glib-gio-unexpectedly/">Error When Debugging Programs with QEMU in Nuclei Studio on Windows 11</a>
 </li>
 </ul>
 <ul>
@@ -49,11 +49,11 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">在编译工程时，使用了Pre-build Command/Post-build Command时报错</a>
+<li class="toctree-l1"><a class="reference internal" href="../4-use_pre_build_or_post_build/">Errors Occur When Using Pre-build Command/Post-build Command During Project Build</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">升级npk.yml以支持Nuclei Studio 2023.10</a>
+<li class="toctree-l1"><a class="reference internal" href="../5-update_npk_to_support_nucleistudio_202310/">Upgrading npk.yml to Support Nuclei Studio 2023.10</a>
 </li>
 </ul>
 <ul>
@@ -61,41 +61,41 @@
 </li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal current" href="#">更新 Nuclei Studio 2023.10 到最新修正版本</a>
+<li class="toctree-l1 current"><a class="reference internal current" href="#">Updating Nuclei Studio 2023.10 to the Latest Fixed Version</a>
 <ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="#_1">问题描述</a>
+<li class="toctree-l2"><a class="reference internal" href="#problem-description">Problem Description</a>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#nuclei-studio-202310_1">升级Nuclei Studio 2023.10 到最新版本的方法</a>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-upgrade-nuclei-studio-202310-to-the-latest-version">How to Upgrade Nuclei Studio 2023.10 to the Latest Version</a>
 <ul>
-<li class="toctree-l3"><a class="reference internal" href="#20231118nuclei-studio-202310">对2023年11月18日之前下载了Nuclei Studio 2023.10进行升级</a>
+<li class="toctree-l3"><a class="reference internal" href="#upgrading-nuclei-studio-202310-downloaded-before-november-18-2023">Upgrading Nuclei Studio 2023.10 Downloaded Before November 18, 2023</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#_2">从官网下载最新的版本</a>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#_3">参考资料</a>
+<li class="toctree-l3"><a class="reference internal" href="#downloading-the-latest-version-from-the-official-website">Downloading the Latest Version from the Official Website</a>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a>
+</li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">OpenOCD在操作容量大于16M-Byte的nor-flash时的问题</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">通过修改.cproject文件，升级工程工具链到GCC 13</a>
+<li class="toctree-l1"><a class="reference internal" href="../8-openocd_202310_flashloader_flaws/">Issues with OpenOCD When Operating on NOR Flash Larger Than 16 MB</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">在Nuclei Studio下用命令行编译工程</a>
+<li class="toctree-l1"><a class="reference internal" href="../9-modify_the_cproject_file_to_change_the_project_to_gcc13/">Upgrading the Project Toolchain to GCC 13 by Modifying the .cproject File</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">OpenOCD烧写程序时报错Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+<li class="toctree-l1"><a class="reference internal" href="../10-compiling_projects_with_headless_in_nuclei_studio/">Compiling Projects from the Command Line in Nuclei Studio</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">关于dhrystone在IDE上跑分和NSDK 0.5.0命令行跑分不一致的问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE/">About the Inconsistency Between Dhrystone Benchmark Scores in the IDE and NSDK 0.5.0 Command-Line Scores</a>
 </li>
 </ul>
 <ul>
@@ -111,59 +111,59 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">使用 Profiling 功能时可能遇到的一些问题</a>
+<li class="toctree-l1"><a class="reference internal" href="../16-incomplete_data_output_when_using_profiling_function/">Issues You May Encounter When Using the Profiling Feature</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">Nuclei Studio使用Profiling功能进行性能调优举例</a>
+<li class="toctree-l1"><a class="reference internal" href="../17-an_example_to_demonstrate_the_use_of_profiling_and_code_coverage/">An Example of Using the Profiling Feature in Nuclei Studio for Performance Tuning</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">通过Profiling展示Nuclei Model NICE/VNICE指令加速</a>
+<li class="toctree-l1"><a class="reference internal" href="../18-demonstrate_NICE_VNICE_acceleration_of_the_Nuclei_Model_through_profiling/">Demonstrate NICE/VNICE Instruction Acceleration of the Nuclei Model through Profiling</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Nuclei Model结合Nice Wizard快速验证NICE/VNICE指令加速</a>
+<li class="toctree-l1"><a class="reference internal" href="../19-rapid_verification_of_NICE_VNICE_acceleration_with_Nuclei_Model_and_NICE_Wizard/">Rapid Verification of NICE/VNICE Instruction Acceleration with Nuclei Model and NICE Wizard</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming使用案例</a>
+<li class="toctree-l1"><a class="reference internal" href="../20-quick_downloads_using_flash_programming/">Flash Programming Use Case</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Live Watch 功能的使用</a>
+<li class="toctree-l1"><a class="reference internal" href="../21-livewatch_for_monitoring_variables/">Using the Live Watch Feature</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">在llvm中新增自定义汇编指令教程</a>
+<li class="toctree-l1"><a class="reference internal" href="../22-example_for_adding_new_instructions_in_llvm/">Tutorial for Adding Custom Assembly Instructions in LLVM</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../23-nuclei_debug_map_register_analyze/">如何使用芯来提供的DebugMap寄存器分析错误现场</a>
+<li class="toctree-l1"><a class="reference internal" href="../23-nuclei_debug_map_register_analyze/">How to Use the DebugMap Registers Provided by Nuclei to Analyze Error Scenarios</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">在binutils中新增自定义汇编指令教程</a>
+<li class="toctree-l1"><a class="reference internal" href="../24-example_for_adding_new_instructions_in_binutils/">Tutorial for Adding Custom Assembly Instructions in binutils</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">OpenOCD 中 Nuclei 交叉触发功能使用指南</a>
+<li class="toctree-l1"><a class="reference internal" href="../25-nuclei_cross_trigger_in_openocd/">Guide to Using the Nuclei Cross-Trigger Feature in OpenOCD</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">OpenOCD对FreeRTOS的调试支持使用指南</a>
+<li class="toctree-l1"><a class="reference internal" href="../26-debugging_support_for_freertos_by_openocd/">User Guide for FreeRTOS Debugging Support in OpenOCD</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../27-debug_with_multiple_ftdi_devices/">如何同时使用多个蜂鸟调试器进行调试</a>
+<li class="toctree-l1"><a class="reference internal" href="../27-debug_with_multiple_ftdi_devices/">How to Debug with Multiple Hummingbird Debuggers Simultaneously</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/">Nuclei SDK基于evalsoc快速适配customsoc</a>
+<li class="toctree-l1"><a class="reference internal" href="../28-quick_porting_from_evalsoc_to_customsoc_based_on_Nuclei_SDK/">Quick Porting from evalsoc to customsoc Based on Nuclei SDK</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../29-using_overlay_command_in_linker_scripts/">在链接脚本中使用OVERLAY命令</a>
+<li class="toctree-l1"><a class="reference internal" href="../29-using_overlay_command_in_linker_scripts/">Using the OVERLAY Command in Linker Scripts</a>
 </li>
 </ul>
 </div>
@@ -178,7 +178,7 @@
 <div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
 <ul class="wy-breadcrumbs">
 <li><a aria-label="文档" class="icon icon-home" href=".."></a></li>
-<li class="breadcrumb-item active">更新 Nuclei Studio 2023.10 到最新修正版本</li>
+<li class="breadcrumb-item active">Updating Nuclei Studio 2023.10 to the Latest Fixed Version</li>
 <li class="wy-breadcrumbs-aside">
 <a class="icon icon-github" href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/7-update_nucleistudio_202310_to_fixed_version.md"> 在GitHub上编辑</a>
 </li>
@@ -187,65 +187,65 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main"><a class="md-content__icon pdf-download-btn" download href="../pdf/nuclei_studio_supply.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <div class="section" itemprop="articleBody">
-<h1 id="nuclei-studio-202310">更新 Nuclei Studio 2023.10 到最新修正版本<a class="headerlink" href="#nuclei-studio-202310" title="Permanent link">¶</a></h1>
+<h1 id="updating-nuclei-studio-202310-to-the-latest-fixed-version">Updating Nuclei Studio 2023.10 to the Latest Fixed Version<a class="headerlink" href="#updating-nuclei-studio-202310-to-the-latest-fixed-version" title="Permanent link">¶</a></h1>
 <blockquote>
-<p><strong>2023.11.06</strong>上传的Nuclei Studio 2023.10版本存在一些问题，我们进行了修正，并于 <strong>2023.11.17 13:30</strong>替换线上2023.10版本。</p>
+<p>The Nuclei Studio 2023.10 version uploaded on <strong>2023.11.06</strong> had some issues. We have fixed them and replaced the online 2023.10 version at <strong>2023.11.17 13:30</strong>.</p>
 </blockquote>
-<h2 id="_1">问题描述<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
-<p><strong>2023年11月06日</strong>发布的<strong>Nuclei Studio 2023.10</strong>版本中存在一些问题,影响用户使用:</p>
+<h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">¶</a></h2>
+<p>The <strong>Nuclei Studio 2023.10</strong> version released on <strong>November 6, 2023</strong> contained some issues that affected the user experience:</p>
 <ul>
-<li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/6">build tools的busybox存在问题导致make 带 pre- post- steps时编译出问题</a></li>
-<li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/3">Nuclei Settings中corner cases在特定场景下会出错</a></li>
-<li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/11">Nuclei Settings的打开方式影响工程中其他文件的打开方式</a></li>
-<li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/12">在QEMU中使用V扩展时，没有传入RVV length</a></li>
-<li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/13">修复打开一个全新的workspace，创建新的工程的时候，能够创建同名项目的问题，重开workspace即可解决这个问题</a></li>
+<li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/6">The busybox in build tools had a problem, causing compilation failures when make is used with pre- and post-build steps</a></li>
+<li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/3">Corner cases in Nuclei Settings may fail in certain scenarios</a></li>
+<li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/11">The way Nuclei Settings is opened affects how other files in the project are opened</a></li>
+<li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/12">When using the V extension in QEMU, the RVV length was not passed in</a></li>
+<li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues/13">Fixed an issue where a project with the same name could be created when opening a brand-new workspace and creating a new project; reopening the workspace resolves this problem</a></li>
 </ul>
-<p><strong>我们重新做了一些变更，以修复以上问题</strong>：</p>
+<p><strong>We made the following changes to fix the issues above:</strong></p>
 <ul>
-<li>修改并发布Nuclei Studio Plugins 2.1.0， 上传到插件更新网站</li>
-<li>修改并发布Windows build-tools 1.2，替换了线上的Windows Build Tools 2023.10</li>
-<li>发布了新的Nuclei Studio 2023.10，替换了线上的Nuclei Studio 2023.10</li>
+<li>Modified and released Nuclei Studio Plugins 2.1.0, uploaded to the plugin update site</li>
+<li>Modified and released Windows build-tools 1.2, replacing the online Windows Build Tools 2023.10</li>
+<li>Released a new Nuclei Studio 2023.10, replacing the online Nuclei Studio 2023.10</li>
 </ul>
-<h2 id="nuclei-studio-202310_1">升级Nuclei Studio 2023.10 到最新版本的方法<a class="headerlink" href="#nuclei-studio-202310_1" title="Permanent link">¶</a></h2>
-<p>如果您的Nuclei Studio 2023.10，是在<strong>2023年11月18日</strong>之前下载，版本中存在的上述问题可能会引响您的使用体验，
-您可以选择手动进行升级，也可以选择重官网上下载我们最新发布的版本。</p>
-<h3 id="20231118nuclei-studio-202310">对2023年11月18日之前下载了Nuclei Studio 2023.10进行升级<a class="headerlink" href="#20231118nuclei-studio-202310" title="Permanent link">¶</a></h3>
-<p>如果您是在2023年11月18日之前下载了Nuclei Studio 2023.10，可以通过以下方式更新您的Nuclei Studio 2023.10 到最新版本</p>
-<p><strong>1. 升级Nuclei Studio Plugins</strong></p>
-<p>在Nuclei Studio菜单中找到<strong>Help-&gt;Install New Software</strong>, 然后在Install工具的<code>Work with</code>
-选中<code>NucleiStudio - https://ide.nucleisys.com/NucleiStudio/</code>,下面会列出所有待更新的插件。</p>
+<h2 id="how-to-upgrade-nuclei-studio-202310-to-the-latest-version">How to Upgrade Nuclei Studio 2023.10 to the Latest Version<a class="headerlink" href="#how-to-upgrade-nuclei-studio-202310-to-the-latest-version" title="Permanent link">¶</a></h2>
+<p>If your Nuclei Studio 2023.10 was downloaded before <strong>November 18, 2023</strong>, the issues described above may affect your user experience.
+You can either upgrade manually or download our latest release from the official website.</p>
+<h3 id="upgrading-nuclei-studio-202310-downloaded-before-november-18-2023">Upgrading Nuclei Studio 2023.10 Downloaded Before November 18, 2023<a class="headerlink" href="#upgrading-nuclei-studio-202310-downloaded-before-november-18-2023" title="Permanent link">¶</a></h3>
+<p>If you downloaded Nuclei Studio 2023.10 before November 18, 2023, you can update your Nuclei Studio 2023.10 to the latest version in the following ways.</p>
+<p><strong>1. Upgrade Nuclei Studio Plugins</strong></p>
+<p>In the Nuclei Studio menu, go to <strong>Help-&gt;Install New Software</strong>, then in the Install dialog's <code>Work with</code>
+field, select <code>NucleiStudio - https://ide.nucleisys.com/NucleiStudio/</code>. All plugins pending update will be listed below.</p>
 <p><img alt="" src="../asserts/images/7/195660415249583.png"/></p>
-<p>在弹出的插件列表中选中需要升级的插件，我们选中<code>RISC-V C/C++ Cross Development Tools</code>, 然后Next。</p>
+<p>In the plugin list that pops up, select the plugins to upgrade. We select <code>RISC-V C/C++ Cross Development Tools</code>, then click Next.</p>
 <p><img alt="" src="../asserts/images/7/v_20231116151002.png"/></p>
-<p>在升级过程中，Nuclei Studio会询问Trust Artifacts时，操作如下图，选择Trust Selected, 然后升级完成，Nuclei Studio会重启。至此Nuclei Studio Plugins升级完成。</p>
+<p>During the upgrade, when Nuclei Studio asks about Trust Artifacts, proceed as shown in the figure below: select Trust Selected. Once the upgrade is complete, Nuclei Studio will restart. At this point, the Nuclei Studio Plugins upgrade is finished.</p>
 <p><img alt="" src="../asserts/images/7/v_18001190261409.png"/></p>
-<p><strong>2. 升级build-tools</strong></p>
+<p><strong>2. Upgrade build-tools</strong></p>
 <blockquote>
-<p>Linux版本不需要执行此步骤，只需要确保系统中装了<code>make</code>工具就行。</p>
+<p>The Linux version does not require this step; you only need to make sure the <code>make</code> tool is installed on your system.</p>
 </blockquote>
-<p>下载<code>build-tools-1.2</code>，并替换Nuclei Studio 2023.10中的<code>NucleiStudio\toolchain\build-tools</code>中内容。</p>
-<p>关于这部分，可以查阅<a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/4-use_pre_build_or_post_build.md">编译工程时，使用了Pre-build Command/Post-build Command时报错</a>中的详细说明。</p>
+<p>Download <code>build-tools-1.2</code> and replace the contents of <code>NucleiStudio\toolchain\build-tools</code> in Nuclei Studio 2023.10.</p>
+<p>For details on this part, refer to <a href="https://github.com/Nuclei-Software/nuclei-studio/blob/main/4-use_pre_build_or_post_build.md">Errors when using Pre-build Command/Post-build Command during project compilation</a>.</p>
 <ul>
-<li><a href="https://www.nucleisys.com/upload/files/toochain/build-tools/win32-buildtools-1.2.zip">build-tools-1.2下载</a></li>
+<li><a href="https://www.nucleisys.com/upload/files/toochain/build-tools/win32-buildtools-1.2.zip">Download build-tools-1.2</a></li>
 </ul>
-<p>经此两步，完成了对Nuclei Studio 2023.10的升级。</p>
-<h3 id="_2">从官网下载最新的版本<a class="headerlink" href="#_2" title="Permanent link">¶</a></h3>
-<p>如果不想做手动升级工作，可以直接从我们的网站上下载最新的Nuclei Studio 2023.10。</p>
+<p>With these two steps, the upgrade of Nuclei Studio 2023.10 is complete.</p>
+<h3 id="downloading-the-latest-version-from-the-official-website">Downloading the Latest Version from the Official Website<a class="headerlink" href="#downloading-the-latest-version-from-the-official-website" title="Permanent link">¶</a></h3>
+<p>If you do not want to perform a manual upgrade, you can download the latest Nuclei Studio 2023.10 directly from our website.</p>
 <ul>
-<li><a href="https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-win64.zip">Windows版下载</a></li>
-<li><a href="https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-lin64.tgz">Linux版下载</a></li>
+<li><a href="https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-win64.zip">Download Windows version</a></li>
+<li><a href="https://www.nucleisys.com/upload/files/nucleistudio/NucleiStudio_IDE_202310-lin64.tgz">Download Linux version</a></li>
 </ul>
-<h2 id="_3">参考资料<a class="headerlink" href="#_3" title="Permanent link">¶</a></h2>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://www.rvmcu.com/nucleistudio-faq.html">Nuclei Studio FAQs</a></li>
-<li><a href="https://github.com/Nuclei-Software/nuclei-studio">Nuclei Studio/Tools 不断更新的补充文档</a></li>
+<li><a href="https://github.com/Nuclei-Software/nuclei-studio">Continuously updated supplementary documentation for Nuclei Studio/Tools</a></li>
 <li><a href="https://github.com/Nuclei-Software/nuclei-studio/issues">Nuclei Studio Issues</a></li>
 </ul>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">
 <a class="btn btn-neutral float-left" href="../6-gcc13_gen_rvv_instructions_when_rvv_enabled/" title="GCC13 auto generated RVV instructions when RVV enabled"><span class="icon icon-circle-arrow-left"></span> 上一章</a>
-<a class="btn btn-neutral float-right" href="../8-openocd_202310_flashloader_flaws/" title="OpenOCD在操作容量大于16M-Byte的nor-flash时的问题">下一章 <span class="icon icon-circle-arrow-right"></span></a>
+<a class="btn btn-neutral float-right" href="../8-openocd_202310_flashloader_flaws/" title="Issues with OpenOCD When Operating on NOR Flash Larger Than 16 MB">下一章 <span class="icon icon-circle-arrow-right"></span></a>
 </div>
 <hr/>
 <div role="contentinfo">
