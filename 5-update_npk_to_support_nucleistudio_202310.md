@@ -160,7 +160,7 @@ The final display effect when creating a project is as follows
 
 ## libncrt Upgrade
 
-libncrt has also changed somewhat compared to before. Before using libncrt in NPK, both the old and new versions of the SDK define a variable `stdclib` in **conifguration**,
+libncrt has also changed somewhat compared to before. Before using libncrt in NPK, both the old and new versions of the SDK define a variable `stdclib` in **configuration**,
 whose value is a dropdown box that allows selecting different values. The difference lies in how `stdclib` is used in `common_flags` or elsewhere after it is obtained.
 
 For some notes about `stdclib`, see [here](https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#stdclib)

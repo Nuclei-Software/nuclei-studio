@@ -12,7 +12,7 @@ The detailed steps and screenshots are as follows:
 
 1. Download the **sdk-nuclei_sdk 0.5.0** NPK component package.
 
-2. Create a new **Nuclei RISCV-V C/C++ project**.
+2. Create a new **Nuclei RISC-V C/C++ project**.
 
 3. During project creation, select **Dhrystone Benchmark** and **N307FD Core**, and keep the default settings for the other options. If you build and run it directly at this point, the benchmark score is **1.405**.
 

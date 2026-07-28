@@ -3,8 +3,8 @@
 ## Problem Description
 
 If you are using `Nuclei SDK 0.5.0` with Nuclei RISC-V Toolchain 2023.10, and
-when compile some examples with RVV enabled, it may generate rvv instructions
-which called auto-vectorzation.
+when compiling some examples with RVV enabled, it may generate RVV instructions,
+which is called auto-vectorization.
 
 Take `application/baremetal/benchmark/dhrystone` for example:
 
@@ -15,12 +15,12 @@ make CORE=nx900fd ARCH_EXT=v clean
 make CORE=nx900fd ARCH_EXT=v dasm
 ~~~
 
-Then if you check the `dhrystone.dasm`, you will be able to see rvv instructions:
+Then if you check the `dhrystone.dasm`, you will be able to see RVV instructions:
 
 ## Solution
 
-This auto generated instructions may affect your hardware performance, so if you want
-to disable it, you don't need to pass rvv extension when compile application.
+These auto-generated instructions may affect your hardware performance, so if you want
+to disable it, you don't need to pass the RVV extension when compiling the application.
 
 ~~~shell
 $ cat dhrystone.dasm |grep vs
@@ -39,6 +39,6 @@ $ cat dhrystone.dasm |grep vs
 
 You can check https://gcc.gnu.org/bugzilla/show_bug.cgi?id=112537 for more details.
 
-In gcc 14.x, if you want to disable the RISC-V RVV automatic vectorization, you can use the options ``-fno-tree-loop-vectorize -fno-tree-slp-vectorize``.
+In GCC 14.x, if you want to disable the RISC-V RVV automatic vectorization, you can use the options ``-fno-tree-loop-vectorize -fno-tree-slp-vectorize``.
 
-In gcc 13.x, you need to pass ``--param=riscv-autovec-preference=none``
+In GCC 13.x, you need to pass ``--param=riscv-autovec-preference=none``.

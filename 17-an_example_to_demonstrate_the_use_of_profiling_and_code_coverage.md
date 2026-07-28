@@ -38,7 +38,7 @@ The following example demonstrates the latter method:
 
 **Step 1: Create a new Profiling demo project**
 
-`File->New->New Nuclei RISC-V C/C++ Project`, select `Nuclei FPGA Evalution Board->sdk-nuclei_sdk @0.6.0`
+`File->New->New Nuclei RISC-V C/C++ Project`, select `Nuclei FPGA Evaluation Board->sdk-nuclei_sdk @0.6.0`
 
 **Note:** Nuclei SDK version 0.6.0 or later must be selected to support the Profiling and Code coverage features
 
@@ -119,7 +119,7 @@ Start parsing the gprof data. **Note:** Some issues may be encountered in this s
 * Testing on qemu, with logs printed to the Console
 
 **Note**: qemu is only used for demonstration purposes. If accurate hotspot functions are desired, on-board testing is required.
-![call_prase_tools](asserts/images/17/call_prase_tools.png)   
+![call_parse_tools](asserts/images/17/call_prase_tools.png)   
 After parsing is complete, a gmon.out file is generated in the current project directory. Double-click to open it:  
 ![profiling_on_qemu](asserts/images/17/profiling_on_qemu.png)   
 
@@ -295,7 +295,7 @@ Clean the project and recompile, then run profiling again. You can see the optim
 **Note:** The above is only a simple example. Users can analyze and optimize the hotspot functions one by one. Due to sampling and other factors during execution,
 the distribution of TOP functions may fluctuate, which is normal. The final precise analysis requires counting the total number of cycles and then calculating the improvement ratio.
 
-### 2 Call Graph Feature
+### 3 Call Graph Feature
 
 The Call Graph in Nuclei Studio mainly obtains the function call relationships in the program by analyzing Profiling data.
 
@@ -327,7 +327,7 @@ It presents the program's time consumption relationships very intuitively in the
 
 ![Aggregate View](asserts/images/17/Aggregate_View.png)
 
-### 3 Code coverage Feature
+### 4 Code coverage Feature
 
 The Code coverage feature in Nuclei Studio is based on the gcov tool provided by the gcc compiler. During compilation, the specified source files must be compiled with the specific compiler option `-coverage`. After a successful build, an ELF file is obtained, which is then run on the actual development board to collect the required coverage files (gcda/gcno files), and finally the results are displayed graphically in the IDE.
 
@@ -365,13 +365,13 @@ Add the `-coverage` compiler option and recompile the code:
 
 You can run it in the qemu simulator or on the actual board (coverage statistics do not involve performance analysis, so either qemu or on-board testing works).  
 
-![prase coverage data](asserts/images/17/prase_coverage_data.png)  
+![parse coverage data](asserts/images/17/prase_coverage_data.png)  
 
 After parsing, gcda and gcno files are generated in the Debug->application folder; double-click to open them  
 
 ![coverage_result](asserts/images/17/coverage_result.png)  
 
-### 4 Additional Notes
+### 5 Additional Notes
 
 1. The Profiling and Code coverage features can be enabled at the same time. Simply add code that collects both Profiling data and Code coverage data, and add the `-pg -coverage` compiler options when compiling.
 

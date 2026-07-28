@@ -1,4 +1,4 @@
-# Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable
+# Error Reported by OpenOCD When Flashing a Program: Error: Device ID 0x1e200a6d is not known as FESPI capable
 
 ## Problem Description
 

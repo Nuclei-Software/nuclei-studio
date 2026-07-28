@@ -41,7 +41,7 @@ This document uses the first method to create the project. Since this demo uses 
 
 #### step1: Create a new demo_vnice project
 
-File->New->New Nuclei RISC-V C/C++ Project, select Nuclei FPGA Evalution Board->sdk-nuclei_sdk @0.6.0
+File->New->New Nuclei RISC-V C/C++ Project, select Nuclei FPGA Evaluation Board->sdk-nuclei_sdk @0.6.0
 
 **Note:** Nuclei SDK version 0.6.0 or later is required
 
@@ -111,7 +111,7 @@ aes_ecb_encrypt
 
 In the backed-up `aes_demo_nice` project, the user needs to study the algorithmic characteristics of the hotspot functions and replace them with **NICE/VNICE** instructions to improve overall program performance.
 
-Add `#include "insn.h"` to the two C files `aes_dec.c` and `aes_dec.c`, which contain the **TOP5** hotspot functions of AES encryption/decryption, so that **NICE/VNICE** instruction replacements can be added.
+Add `#include "insn.h"` to the two C files `aes_dec.c` and `aes_enc.c`, which contain the **TOP5** hotspot functions of AES encryption/decryption, so that **NICE/VNICE** instruction replacements can be added.
 
 The **TOP1** hotspot function is `aes_mix_columns_dec`, which implements the inverse MixColumns of AES decryption. It takes a state matrix as input, performs the computation, and outputs the computed state matrix to the same address. It implements Load data, the inverse mix computation, and Store data. The code is as follows:
 
@@ -186,7 +186,7 @@ static void aes_mix_columns_dec(
 }
 ~~~
 
-The **TOP2** hotspot function is `aes_mix_columns_enc`, which, similar to TOP1, implements the inverse MixColumns of AES encryption. It likewise takes a state matrix as input, performs the computation, and outputs the computed state matrix to the same address:
+The **TOP2** hotspot function is `aes_mix_columns_enc`, which, similar to TOP1, implements the MixColumns of AES encryption. It likewise takes a state matrix as input, performs the computation, and outputs the computed state matrix to the same address:
 
 ~~~c
 static void aes_mix_columns_enc(
@@ -216,7 +216,7 @@ static void aes_mix_columns_enc(
 
 Considering that the instruction implementation may not be achievable with a single instruction, two **VNICE** instructions can be used to replace this algorithm: the first one loads 16 bytes of data into a Vector register, and the second one performs the computation and the store.
 
-The `opcode`, `funct3`, and `funct7` of the instructions can still be customized within the encoding fields. The first instruction uses `rd` to describe the Vector register and `rs1` to describe the input parameter address; the second instruction uses `rs1` to describe the input parameter address and `rs1` to describe the input Vector register. The inline assembly for the two **VNICE** instructions is written into `insn.h` and defined as follows:
+The `opcode`, `funct3`, and `funct7` of the instructions can still be customized within the encoding fields. The first instruction uses `rd` to describe the Vector register and `rs1` to describe the input parameter address; the second instruction uses `rs1` to describe the input parameter address and `rs2` to describe the input Vector register. The inline assembly for the two **VNICE** instructions is written into `insn.h` and defined as follows:
 
 ~~~c
 __STATIC_FORCEINLINE vint8m1_t __custom_vnice_load_v_i8m1 (uint8_t* addr)

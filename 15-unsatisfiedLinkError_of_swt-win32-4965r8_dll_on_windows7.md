@@ -39,6 +39,9 @@ java.lang.UnsatisfiedLinkError: Could not load SWT library. Reasons:
 	
 ```
 
+> [!NOTE]
+> The version number in the SWT library file name (e.g., `swt-win32-4965r8.dll`, `swt-win32-4965r11.dll`) depends on the Eclipse/SWT plugin version bundled with each Nuclei Studio release. Different IDE versions ship with different SWT plugin versions, so the exact DLL name in your log may differ from the one in the title of this document.
+
 This is because Eclipse 2024.06 uses certain features that have specific operating system requirements. For details, refer to https://github.com/eclipse-platform/eclipse.platform.swt/issues/1252
 
 ![](asserts/images/15/15-1.png)
