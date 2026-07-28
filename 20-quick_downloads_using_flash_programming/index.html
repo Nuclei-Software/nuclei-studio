@@ -77,7 +77,7 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error: Device ID 0x1e200a6d is not known as FESPI capable</a>
 </li>
 </ul>
 <ul>
@@ -197,7 +197,7 @@
 </ul>
 <h3 id="flash-programming-demo">Flash Programming Demo<a class="headerlink" href="#flash-programming-demo" title="Permanent link">¶</a></h3>
 <p><strong>step1: Create a project and program the bit file</strong></p>
-<p>Use version 0.7.1 of sdk-nuclei_sdk to create a u900 helloworld project. Select Simple Helloworld Demo, FLASH download mode, and U900 Core in sequence, then click Finsh.</p>
+<p>Use version 0.7.1 of sdk-nuclei_sdk to create a u900 helloworld project. Select Simple Helloworld Demo, FLASH download mode, and U900 Core in sequence, then click Finish.</p>
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20.png"/></p>
 <p>Program the corresponding bit file to the development board. Here we use trace-u900_best_config_ku060_16M_e85631d489_e82e2771f_202409232110_v3.12.0.bit</p>
 <p><strong>step2: Configure and build the original Nuclei SDK project</strong></p>
@@ -235,7 +235,7 @@
 <p><strong>step5: Differences when downloading to memory</strong></p>
 <p>Nuclei Studio supports multiple download modes: DDR, FLASH, FLASHXIP, ILM, and SRAM.</p>
 <p>The FLASH and FLASHXIP modes can be used by following the steps above, while DDR, ILM, and SRAM download to memory, which differs from Flash. The following uses ILM as an example.</p>
-<p>Click Nulcei Settings to open the page, select ILM in Download, and save.</p>
+<p>Click Nuclei Settings to open the page, select ILM in Download, and save.</p>
 <p><img alt="image-Ori_Project_Build" src="../asserts/images/20/20-7.png"/></p>
 <p>Rebuild the project: clean project -&gt; build project</p>
 <p>Then open the corresponding .map file, here u900_helloworld.map, and find the initial load address in it, such as 0x80000000 in the figure below.</p>

@@ -77,7 +77,7 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error: Device ID 0x1e200a6d is not known as FESPI capable</a>
 </li>
 </ul>
 <ul>
@@ -237,7 +237,7 @@ are compiled and run. This document will adapt a more common AES encryption/decr
 </ul>
 <p>This document uses the first method to create the project. Since this demo uses VNICE instructions, a <code>demo_vnice</code> project is created, and then the AES encryption/decryption program is ported into it.</p>
 <h4 id="step1-create-a-new-demo_vnice-project">step1: Create a new demo_vnice project<a class="headerlink" href="#step1-create-a-new-demo_vnice-project" title="Permanent link">¶</a></h4>
-<p>File-&gt;New-&gt;New Nuclei RISC-V C/C++ Project, select Nuclei FPGA Evalution Board-&gt;sdk-nuclei_sdk @0.6.0</p>
+<p>File-&gt;New-&gt;New Nuclei RISC-V C/C++ Project, select Nuclei FPGA Evaluation Board-&gt;sdk-nuclei_sdk @0.6.0</p>
 <p><strong>Note:</strong> Nuclei SDK version 0.6.0 or later is required</p>
 <p><img alt="image-create_aes_project" src="../asserts/images/18/create_aes_project.png"/></p>
 <h4 id="step2-port-the-aes_demo-bare-metal-test-case-based-on-the-demo_vnice-project">step2: Port the aes_demo bare-metal test case based on the demo_vnice project<a class="headerlink" href="#step2-port-the-aes_demo-bare-metal-test-case-based-on-the-demo_vnice-project" title="Permanent link">¶</a></h4>
@@ -282,7 +282,7 @@ aes_ecb_encrypt
 <p><strong>Note:</strong> At this point, back up the current <code>aes_demo</code> project and rename the copy to <code>aes_demo_nice</code>. This way, both projects can be opened in Nuclei Studio at the same time, making it easy to compare the Profiling results of the project optimized with <strong>NICE/VNICE</strong> instructions against the original <code>aes_demo</code> project.</p>
 <h4 id="step5-replace-hotspot-functions-with-nicevnice-instructions">step5: Replace hotspot functions with NICE/VNICE instructions<a class="headerlink" href="#step5-replace-hotspot-functions-with-nicevnice-instructions" title="Permanent link">¶</a></h4>
 <p>In the backed-up <code>aes_demo_nice</code> project, the user needs to study the algorithmic characteristics of the hotspot functions and replace them with <strong>NICE/VNICE</strong> instructions to improve overall program performance.</p>
-<p>Add <code>#include "insn.h"</code> to the two C files <code>aes_dec.c</code> and <code>aes_dec.c</code>, which contain the <strong>TOP5</strong> hotspot functions of AES encryption/decryption, so that <strong>NICE/VNICE</strong> instruction replacements can be added.</p>
+<p>Add <code>#include "insn.h"</code> to the two C files <code>aes_dec.c</code> and <code>aes_enc.c</code>, which contain the <strong>TOP5</strong> hotspot functions of AES encryption/decryption, so that <strong>NICE/VNICE</strong> instruction replacements can be added.</p>
 <p>The <strong>TOP1</strong> hotspot function is <code>aes_mix_columns_dec</code>, which implements the inverse MixColumns of AES decryption. It takes a state matrix as input, performs the computation, and outputs the computed state matrix to the same address. It implements Load data, the inverse mix computation, and Store data. The code is as follows:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">aes_mix_columns_dec</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">uint8_t</span><span class="w">     </span><span class="n">pt</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w">       </span><span class="c1">//!&lt; Current block state</span>
@@ -347,7 +347,7 @@ aes_ecb_encrypt
 <span class="cp">#endif</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>The <strong>TOP2</strong> hotspot function is <code>aes_mix_columns_enc</code>, which, similar to TOP1, implements the inverse MixColumns of AES encryption. It likewise takes a state matrix as input, performs the computation, and outputs the computed state matrix to the same address:</p>
+<p>The <strong>TOP2</strong> hotspot function is <code>aes_mix_columns_enc</code>, which, similar to TOP1, implements the MixColumns of AES encryption. It likewise takes a state matrix as input, performs the computation, and outputs the computed state matrix to the same address:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">aes_mix_columns_enc</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">uint8_t</span><span class="w">     </span><span class="n">ct</span><span class="w"> </span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w">       </span><span class="c1">//!&lt; Current block state</span>
 <span class="p">){</span>
@@ -373,7 +373,7 @@ aes_ecb_encrypt
 <span class="p">}</span>
 </code></pre></div>
 <p>Considering that the instruction implementation may not be achievable with a single instruction, two <strong>VNICE</strong> instructions can be used to replace this algorithm: the first one loads 16 bytes of data into a Vector register, and the second one performs the computation and the store.</p>
-<p>The <code>opcode</code>, <code>funct3</code>, and <code>funct7</code> of the instructions can still be customized within the encoding fields. The first instruction uses <code>rd</code> to describe the Vector register and <code>rs1</code> to describe the input parameter address; the second instruction uses <code>rs1</code> to describe the input parameter address and <code>rs1</code> to describe the input Vector register. The inline assembly for the two <strong>VNICE</strong> instructions is written into <code>insn.h</code> and defined as follows:</p>
+<p>The <code>opcode</code>, <code>funct3</code>, and <code>funct7</code> of the instructions can still be customized within the encoding fields. The first instruction uses <code>rd</code> to describe the Vector register and <code>rs1</code> to describe the input parameter address; the second instruction uses <code>rs1</code> to describe the input parameter address and <code>rs2</code> to describe the input Vector register. The inline assembly for the two <strong>VNICE</strong> instructions is written into <code>insn.h</code> and defined as follows:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">__STATIC_FORCEINLINE</span><span class="w"> </span><span class="n">vint8m1_t</span><span class="w"> </span><span class="n">__custom_vnice_load_v_i8m1</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="n">vint8m1_t</span><span class="w"> </span><span class="n">rdata</span><span class="w"> </span><span class="p">;</span>

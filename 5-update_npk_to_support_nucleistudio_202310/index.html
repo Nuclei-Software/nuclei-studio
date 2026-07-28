@@ -89,7 +89,7 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error: Device ID 0x1e200a6d is not known as FESPI capable</a>
 </li>
 </ul>
 <ul>
@@ -330,7 +330,7 @@ so that users can use RISC-V instruction extensions more flexibly. If in certain
 <p>The final display effect when creating a project is as follows</p>
 <p><img alt="" src="../asserts/images/5/create_project.png"/></p>
 <h2 id="libncrt-upgrade">libncrt Upgrade<a class="headerlink" href="#libncrt-upgrade" title="Permanent link">¶</a></h2>
-<p>libncrt has also changed somewhat compared to before. Before using libncrt in NPK, both the old and new versions of the SDK define a variable <code>stdclib</code> in <strong>conifguration</strong>,
+<p>libncrt has also changed somewhat compared to before. Before using libncrt in NPK, both the old and new versions of the SDK define a variable <code>stdclib</code> in <strong>configuration</strong>,
 whose value is a dropdown box that allows selecting different values. The difference lies in how <code>stdclib</code> is used in <code>common_flags</code> or elsewhere after it is obtained.</p>
 <p>For some notes about <code>stdclib</code>, see <a href="https://doc.nucleisys.com/nuclei_sdk/develop/buildsystem.html#stdclib">here</a></p>
 <div class="codehilite"><pre><span></span><code><span class="c1">## Define the stdclib variable</span>

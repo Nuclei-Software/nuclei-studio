@@ -83,7 +83,7 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error: Device ID 0x1e200a6d is not known as FESPI capable</a>
 </li>
 </ul>
 <ul>
@@ -182,18 +182,18 @@
 <h1 id="gcc13-auto-generated-rvv-instructions-when-rvv-enabled">GCC13 auto generated RVV instructions when RVV enabled<a class="headerlink" href="#gcc13-auto-generated-rvv-instructions-when-rvv-enabled" title="Permanent link">¶</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">¶</a></h2>
 <p>If you are using <code>Nuclei SDK 0.5.0</code> with Nuclei RISC-V Toolchain 2023.10, and
-when compile some examples with RVV enabled, it may generate rvv instructions
-which called auto-vectorzation.</p>
+when compiling some examples with RVV enabled, it may generate RVV instructions,
+which is called auto-vectorization.</p>
 <p>Take <code>application/baremetal/benchmark/dhrystone</code> for example:</p>
 <div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>application/baremetal/benchmark/dhrystone
 <span class="c1"># enable extra vector extension, which means the -march=rv64imafdcv</span>
 make<span class="w"> </span><span class="nv">CORE</span><span class="o">=</span>nx900fd<span class="w"> </span><span class="nv">ARCH_EXT</span><span class="o">=</span>v<span class="w"> </span>clean
 make<span class="w"> </span><span class="nv">CORE</span><span class="o">=</span>nx900fd<span class="w"> </span><span class="nv">ARCH_EXT</span><span class="o">=</span>v<span class="w"> </span>dasm
 </code></pre></div>
-<p>Then if you check the <code>dhrystone.dasm</code>, you will be able to see rvv instructions:</p>
+<p>Then if you check the <code>dhrystone.dasm</code>, you will be able to see RVV instructions:</p>
 <h2 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">¶</a></h2>
-<p>This auto generated instructions may affect your hardware performance, so if you want
-to disable it, you don't need to pass rvv extension when compile application.</p>
+<p>These auto-generated instructions may affect your hardware performance, so if you want
+to disable it, you don't need to pass the RVV extension when compiling the application.</p>
 <div class="codehilite"><pre><span></span><code>$<span class="w"> </span>cat<span class="w"> </span>dhrystone.dasm<span class="w"> </span><span class="p">|</span>grep<span class="w"> </span>vs
 <span class="w">    </span>800003e2:<span class="w">   </span>cc3ff057<span class="w">                </span>vsetivli<span class="w">        </span>zero,31,e8,m8,ta,ma
 <span class="w">    </span>800003f8:<span class="w">   </span><span class="m">02038427</span><span class="w">                </span>vse8.v<span class="w">  </span>v8,<span class="o">(</span>t2<span class="o">)</span>
@@ -208,8 +208,8 @@ to disable it, you don't need to pass rvv extension when compile application.</p
 <span class="w">    </span>80000e28:<span class="w">   </span><span class="m">02047027</span><span class="w">                </span>vse64.v<span class="w"> </span>v0,<span class="o">(</span>s0<span class="o">)</span>
 </code></pre></div>
 <p>You can check <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=112537">https://gcc.gnu.org/bugzilla/show_bug.cgi?id=112537</a> for more details.</p>
-<p>In gcc 14.x, if you want to disable the RISC-V RVV automatic vectorization, you can use the options <code>-fno-tree-loop-vectorize -fno-tree-slp-vectorize</code>.</p>
-<p>In gcc 13.x, you need to pass <code>--param=riscv-autovec-preference=none</code></p>
+<p>In GCC 14.x, if you want to disable the RISC-V RVV automatic vectorization, you can use the options <code>-fno-tree-loop-vectorize -fno-tree-slp-vectorize</code>.</p>
+<p>In GCC 13.x, you need to pass <code>--param=riscv-autovec-preference=none</code>.</p>
 </div>
 </div><footer>
 <div aria-label="页脚导航" class="rst-footer-buttons" role="navigation">

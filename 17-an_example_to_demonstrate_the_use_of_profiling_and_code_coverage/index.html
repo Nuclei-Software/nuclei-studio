@@ -77,7 +77,7 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error:Device ID 8xle2g8a6d is not known as FESPI capable</a>
+<li class="toctree-l1"><a class="reference internal" href="../11-openocd_reported_error_not_known_as_fespi_capable/">Error Reported by OpenOCD When Flashing a Program: Error: Device ID 0x1e200a6d is not known as FESPI capable</a>
 </li>
 </ul>
 <ul>
@@ -111,11 +111,11 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#2-profiling-feature">2 Profiling Feature</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#2-call-graph-feature">2 Call Graph Feature</a>
+<li class="toctree-l3"><a class="reference internal" href="#3-call-graph-feature">3 Call Graph Feature</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#3-code-coverage-feature">3 Code coverage Feature</a>
+<li class="toctree-l3"><a class="reference internal" href="#4-code-coverage-feature">4 Code coverage Feature</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#4-additional-notes">4 Additional Notes</a>
+<li class="toctree-l3"><a class="reference internal" href="#5-additional-notes">5 Additional Notes</a>
 </li>
 </ul>
 </li>
@@ -221,7 +221,7 @@ which is then run on the actual development board to collect the required gmon.o
 </ul>
 <p>The following example demonstrates the latter method:</p>
 <p><strong>Step 1: Create a new Profiling demo project</strong></p>
-<p><code>File-&gt;New-&gt;New Nuclei RISC-V C/C++ Project</code>, select <code>Nuclei FPGA Evalution Board-&gt;sdk-nuclei_sdk @0.6.0</code></p>
+<p><code>File-&gt;New-&gt;New Nuclei RISC-V C/C++ Project</code>, select <code>Nuclei FPGA Evaluation Board-&gt;sdk-nuclei_sdk @0.6.0</code></p>
 <p><strong>Note:</strong> Nuclei SDK version 0.6.0 or later must be selected to support the Profiling and Code coverage features</p>
 <p>You can choose different toolchains according to your needs:</p>
 <ol>
@@ -281,7 +281,7 @@ which is then run on the actual development board to collect the required gmon.o
 <li>Testing on qemu, with logs printed to the Console</li>
 </ul>
 <p><strong>Note</strong>: qemu is only used for demonstration purposes. If accurate hotspot functions are desired, on-board testing is required.
-<img alt="call_prase_tools" src="../asserts/images/17/call_prase_tools.png"/> <br/>
+<img alt="call_parse_tools" src="../asserts/images/17/call_prase_tools.png"/> <br/>
 After parsing is complete, a gmon.out file is generated in the current project directory. Double-click to open it:<br/>
 <img alt="profiling_on_qemu" src="../asserts/images/17/profiling_on_qemu.png"/> </p>
 <ul>
@@ -427,7 +427,7 @@ After refreshing the project, you can double-click to open this gmon.out file.</
 <p><img alt="Alt text" src="../asserts/images/17/profiling_on_fpga_opt.png"/></p>
 <p><strong>Note:</strong> The above is only a simple example. Users can analyze and optimize the hotspot functions one by one. Due to sampling and other factors during execution,
 the distribution of TOP functions may fluctuate, which is normal. The final precise analysis requires counting the total number of cycles and then calculating the improvement ratio.</p>
-<h3 id="2-call-graph-feature">2 Call Graph Feature<a class="headerlink" href="#2-call-graph-feature" title="Permanent link">¶</a></h3>
+<h3 id="3-call-graph-feature">3 Call Graph Feature<a class="headerlink" href="#3-call-graph-feature" title="Permanent link">¶</a></h3>
 <p>The Call Graph in Nuclei Studio mainly obtains the function call relationships in the program by analyzing Profiling data.</p>
 <p><img alt="call_graph" src="../asserts/images/17/call_graph.png"/></p>
 <p>The Call Graph feature includes the following views:</p>
@@ -451,7 +451,7 @@ the distribution of TOP functions may fluctuate, which is normal. The final prec
 </ul>
 <p>It presents the program's time consumption relationships very intuitively in the form of a block diagram.</p>
 <p><img alt="Aggregate View" src="../asserts/images/17/Aggregate_View.png"/></p>
-<h3 id="3-code-coverage-feature">3 Code coverage Feature<a class="headerlink" href="#3-code-coverage-feature" title="Permanent link">¶</a></h3>
+<h3 id="4-code-coverage-feature">4 Code coverage Feature<a class="headerlink" href="#4-code-coverage-feature" title="Permanent link">¶</a></h3>
 <p>The Code coverage feature in Nuclei Studio is based on the gcov tool provided by the gcc compiler. During compilation, the specified source files must be compiled with the specific compiler option <code>-coverage</code>. After a successful build, an ELF file is obtained, which is then run on the actual development board to collect the required coverage files (gcda/gcno files), and finally the results are displayed graphically in the IDE.</p>
 <p>The usage is similar to the Profiling feature; only the differences are explained here:</p>
 <p><strong>Step 1: Create a new Profiling demo project</strong><br/>
@@ -478,10 +478,10 @@ the distribution of TOP functions may fluctuate, which is normal. The final prec
 <p><img alt="add_coverage_compile" src="../asserts/images/17/add_coverage_compile.png"/></p>
 <p><strong>Step 4: Run the program</strong> </p>
 <p>You can run it in the qemu simulator or on the actual board (coverage statistics do not involve performance analysis, so either qemu or on-board testing works).  </p>
-<p><img alt="prase coverage data" src="../asserts/images/17/prase_coverage_data.png"/> </p>
+<p><img alt="parse coverage data" src="../asserts/images/17/prase_coverage_data.png"/> </p>
 <p>After parsing, gcda and gcno files are generated in the Debug-&gt;application folder; double-click to open them  </p>
 <p><img alt="coverage_result" src="../asserts/images/17/coverage_result.png"/> </p>
-<h3 id="4-additional-notes">4 Additional Notes<a class="headerlink" href="#4-additional-notes" title="Permanent link">¶</a></h3>
+<h3 id="5-additional-notes">5 Additional Notes<a class="headerlink" href="#5-additional-notes" title="Permanent link">¶</a></h3>
 <ol>
 <li>The Profiling and Code coverage features can be enabled at the same time. Simply add code that collects both Profiling data and Code coverage data, and add the <code>-pg -coverage</code> compiler options when compiling.</li>
 </ol>
