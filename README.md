@@ -24,8 +24,6 @@ Please create new doc based on [Doc Template](0-template.md)
 
 Click [this link](https://doc.nucleisys.com/nuclei_studio_supply/) to see online version.
 
-> If you find any spelling errors or imperfections in the documentation, you are welcome to submit a Pull Request or Issue to help us improve it!
-
 > If you come across any spelling errors or areas that need improvement in the document, feel free to submit a Pull Request or Issue to help us enhance it!
 
 ## Documents
@@ -42,7 +40,7 @@ Click [this link](https://doc.nucleisys.com/nuclei_studio_supply/) to see online
 - [8. Issues with OpenOCD when operating nor-flash larger than 16M-Byte](8-openocd_202310_flashloader_flaws.md)
 - [9. Upgrade the project toolchain to GCC 13 by modifying the .cproject file](9-modify_the_cproject_file_to_change_the_project_to_gcc13.md)
 - [10. Compiling projects with the command line in Nuclei Studio](10-compiling_projects_with_headless_in_nuclei_studio.md)
-- [11. Error reported when OpenOCD flashes a program: Error:Device ID 8xle2g8a6d is not known as FESPI capable](11-openocd_reported_error_not_known_as_fespi_capable.md)
+- [11. Error reported when OpenOCD flashes a program: Error: Device ID 0x1e200a6d is not known as FESPI capable](11-openocd_reported_error_not_known_as_fespi_capable.md)
 - [12. About the inconsistency between Dhrystone benchmark scores in the IDE and NSDK 0.5.0 command-line scores](12-nucleisdk-0.5.0-dhrystone-score-lower-than-expected-in-IDE.md)
 - [13. Error: Couldn't find an available hardware trigger / Error: can't add breakpoint: resource not available](13-error_could_not_find_an_available_hardware_trigger.md)
 - [14. cannot find -lncrt_balanced: No such file or directory](14-cannot_find_-lncrt_balanced_no_such_file_or_directory.md)

@@ -17,7 +17,7 @@ Version >= 202412 is required. Version 202502 is provided below.
 
 **step1: Create a project and program the bit file**
 
-Use version 0.7.1 of sdk-nuclei_sdk to create a u900 helloworld project. Select Simple Helloworld Demo, FLASH download mode, and U900 Core in sequence, then click Finsh.
+Use version 0.7.1 of sdk-nuclei_sdk to create a u900 helloworld project. Select Simple Helloworld Demo, FLASH download mode, and U900 Core in sequence, then click Finish.
 
 ![image-Ori_Project_Build](asserts/images/20/20.png)
 
@@ -81,7 +81,7 @@ Nuclei Studio supports multiple download modes: DDR, FLASH, FLASHXIP, ILM, and S
 
 The FLASH and FLASHXIP modes can be used by following the steps above, while DDR, ILM, and SRAM download to memory, which differs from Flash. The following uses ILM as an example.
 
-Click Nulcei Settings to open the page, select ILM in Download, and save.
+Click Nuclei Settings to open the page, select ILM in Download, and save.
 
 ![image-Ori_Project_Build](asserts/images/20/20-7.png)
 
