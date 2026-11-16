@@ -13,12 +13,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
-          python-version: 3.8
+          # 3.13 is the oldest version the runner-image manifest still ships for
+          # ubuntu-26.04; 3.8/3.9/3.12 only have builds up to 24.04.
+          python-version: "3.13"
 
       - name: Install dependencies
         run: |
@@ -28,6 +30,9 @@ jobs:
           # https://github.com/hedgedoc/container/pull/19
           # https://github.com/comwes/mkpdfs-mkdocs-plugin/issues/19
           sudo apt install -y fonts-noto lftp
+          # WeasyPrint >= 59 renders through system pango/cairo instead of
+          # bundling them, so they must be present on the runner.
+          sudo apt install -y libpango-1.0-0 libpangoft2-1.0-0 libgdk-pixbuf-2.0-0
           python3 -m pip install --upgrade pip
           # https://github.com/comwes/mkpdfs-mkdocs-plugin/issues/59
           # https://github.com/Kozea/WeasyPrint/issues/2202
@@ -66,7 +71,7 @@ jobs:
           echo "Click https://doc.nucleisys.com/nuclei_studio_supply to view the latest deployment!"
 
       - name: Upload Documentation
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           # Artifact name
           name: nuclei_studio_supply
